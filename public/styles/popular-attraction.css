@@ -1,0 +1,214 @@
+/* public/styles/popular-attraction.css */
+.recommended-module {
+    
+    height: 100%;
+}
+
+.recommended-module-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.recommend-module-usp-container {
+    display: flex;
+    justify-content: left;
+    margin-bottom: 20px;
+}
+
+.recommend-module-usp-item {
+    display: flex;
+    align-items: left;
+    margin-right: 40px;
+}
+
+.recommend-module-usp-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 10px;
+}
+
+.recommend-module-usp-text-con {
+    display: flex;
+    align-items: left;
+}
+
+.recommend-module-usp-text {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.usp__title__dashline {
+    display: none;
+}
+
+.js-tab-ajax-switch .tab-con {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.js-tab-wrapper {
+    display: flex;
+    gap: 10px;
+}
+
+.js-tab-item {
+    margin-top: 15px;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+}
+
+.js-tab-item.is-active {
+    background-color: #0056b3;
+}
+
+.content-con {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.new-recommend-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.l-tile__item {
+    width: calc(25% - 20px); /* 4개 아이템을 맞추기 위한 설정 */
+    box-sizing: border-box;
+    height: 100%; /* 높이를 동일하게 설정 */
+}
+
+.c-hot-hotel-item-v2 {
+    margin-top: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 350px; /* 높이를 동일하게 설정 */
+}
+
+.c-hot-hotel-item-v2__image-con {
+    width: 100%;
+    height: 200px;
+}
+
+.c-hot-hotel-item-v2__image-clipping {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.c-hot-hotel-item-v2__image {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+}
+
+.c-hot-hotel-item-v2__content {
+    padding: 10px;
+    flex: 1;
+}
+
+.c-hot-hotel-item-v2__name {
+    font-size: 16px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.c-hot-hotel-item-v2__level i {
+    color: gold;
+}
+
+.c-hot-hotel-item-v2__review {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.c-hot-hotel-item-v2__score {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.hotel-comments {
+    font-size: 12px;
+    color: #555;
+}
+
+.hotel-tag-con {
+    margin-top: 10px;
+}
+
+.o-price {
+    display: flex;
+    align-items: center;
+}
+
+.o-price__from {
+    font-size: 14px;
+    color: #999;
+    margin-right: 5px;
+}
+
+.o-price__content {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.promo-card {
+    margin-top: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+    height: 350px; /* 높이를 동일하게 설정 */
+    width: calc(25% - 20px); /* 4개 아이템을 맞추기 위한 설정 */
+}
+
+.promo-card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.promo-text {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.tripui-online-btn {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.tripui-online-btn:hover {
+    background-color: #0056b3;
+}
+
+.tripui-online-btn-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

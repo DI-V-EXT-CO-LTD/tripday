@@ -1,0 +1,81 @@
+<!-- views/partials/recommended-package-tour.ejs -->
+<link rel="stylesheet" href="/styles/featured-properties.css">
+
+<style>
+  .triangle-image-container {
+    position: relative;
+    width: 100%;
+    padding-top: 100%; /* 1:1 Aspect Ratio */
+    overflow: hidden;
+  }
+  .triangle-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 75%;
+    object-fit: cover;
+  }
+  .triangle-image.hotel {
+    clip-path: polygon(0 0, 0% 100%, 100% 0);
+  }
+  .triangle-image.golf {
+    clip-path: polygon(100% 100%, 0% 100%, 100% 0);
+  }
+  .c-hot-hotel-item-v2__name{
+    font-size: 16px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #007bff;
+  }
+</style>
+
+<div class="recommended-module recommended-hotel new-theme" dir="ltr">
+  <div class="recommended-module-title">Recommended Package Tour</div>
+  <div class="js-tab-ajax-switch new-theme">
+    <div class="content-con">
+      <div class="new-recommend-list l-tile-hotels online-hotels-recommend">
+        <% for(let i = 0; i < Math.min(hotels.length, golfCourses.length, 4); i++) { %>
+          <% const hotel = hotels[i]; %>
+          <% const golfCourse = golfCourses[i]; %>
+          <div class="l-tile__item c-hot-hotel-item-v2__wrapper">
+            <div class="c-hot-hotel-item-v2">
+              <div class="c-hot-hotel-item-v2__image-con">
+                <div class="triangle-image-container">
+                  <img src="/uploads/<%= hotel.image_id %>" alt="<%= hotel.title %>" class="triangle-image hotel">
+                  <img src="/uploads/<%= golfCourse.image_id %>" alt="<%= golfCourse.title %>" class="triangle-image golf">
+                </div>
+              </div>
+              <div class="c-hot-hotel-item-v2__content">
+                <div class="c-hot-hotel-item-v2__overlay-label">
+                  <div class="c-hot-hotel-item-v2__name" title="<%= hotel.title %> & <%= golfCourse.title %>">
+                        <%= hotel.title %>
+                    <div class="c-hot-package-item-v2__level">
+                        <%= golfCourse.title %>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="hotel-tag-con">
+                 
+                </div>
+                <div class="c-hot-hotel-item-v2__info-con u-clearfix">
+                  <div class="c-hot-hotel-item-v2__price-box">
+                    <div class="o-price">
+                      <span class="o-price__from">From</span>
+                      <span class="o-price__content">
+                        <%= ((hotel.price || 0) + (golfCourse.price || 0)).toLocaleString('en-US', { style: 'currency', currency: 'THB' }) %> / package
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>

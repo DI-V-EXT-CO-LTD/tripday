@@ -1,0 +1,62 @@
+<link rel="stylesheet" href="/styles/userDetails.css">
+<h2>User Details</h2>
+<div class="user-details">
+    <p><strong>Email:</strong> <%= user.email %></p>
+    <p><strong>Company Name:</strong> <%= user.companyName %></p>
+    <p><strong>Contact Person:</strong> <%= user.contactPerson %></p>
+    <p><strong>Contact Number:</strong> <%= user.contactNumber %></p>
+    <p><strong>Business Number:</strong> <%= user.businessNumber %></p>
+    <p><strong>Verified:</strong> <%= user.isVerified ? 'Yes' : 'No' %></p>
+    <p><strong>Email Verified:</strong> <%= user.isEmailVerified ? 'Yes' : 'No' %></p>
+    <p><strong>Approved:</strong> <%= user.isApproved ? 'Yes' : 'No' %></p>
+    <p><strong>Registration Country:</strong> <%= user.registrationCountry %></p>
+    <p><strong>Registration Date:</strong> <%= new Date(user.registrationDate).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }) %></p>
+</div>
+
+<div class="user-actions mt-4">
+    <button class="btn btn-success approve-account" data-user-id="<%= user._id %>">Approve Account</button>
+    <button class="btn btn-warning suspend-account" data-user-id="<%= user._id %>">Suspend Account</button>
+    <button class="btn btn-primary edit-user" data-user-id="<%= user._id %>">Edit User Information</button>
+    <button class="btn btn-secondary reset-password" data-user-id="<%= user._id %>">Reset Password</button>
+    <button class="btn btn-info send-email" data-user-id="<%= user._id %>">Send Email</button>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const approveButton = document.querySelector('.approve-account');
+        const suspendButton = document.querySelector('.suspend-account');
+        const editButton = document.querySelector('.edit-user');
+        const resetPasswordButton = document.querySelector('.reset-password');
+        const sendEmailButton = document.querySelector('.send-email');
+
+        approveButton.addEventListener('click', function() {
+            const userId = this.getAttribute('data-user-id');
+            // Implement approve account functionality
+            console.log('Approve account for user:', userId);
+        });
+
+        suspendButton.addEventListener('click', function() {
+            const userId = this.getAttribute('data-user-id');
+            // Implement suspend account functionality
+            console.log('Suspend account for user:', userId);
+        });
+
+        editButton.addEventListener('click', function() {
+            const userId = this.getAttribute('data-user-id');
+            // Implement edit user information functionality
+            console.log('Edit user information for user:', userId);
+        });
+
+        resetPasswordButton.addEventListener('click', function() {
+            const userId = this.getAttribute('data-user-id');
+            // Implement reset password functionality
+            console.log('Reset password for user:', userId);
+        });
+
+        sendEmailButton.addEventListener('click', function() {
+            const userId = this.getAttribute('data-user-id');
+            // Implement send email functionality
+            console.log('Send email to user:', userId);
+        });
+    });
+</script>

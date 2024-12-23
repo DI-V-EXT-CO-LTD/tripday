@@ -1,0 +1,59 @@
+<div class="row">
+  <div class="col-md-4 mb-4">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Total Users</h5>
+        <p class="card-text">1,234</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 mb-4">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Total Hotels</h5>
+        <p class="card-text">56</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 mb-4">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Total Reservations</h5>
+        <p class="card-text">789</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6 mb-4">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Branch Quick Actions</h5>
+        <button id="acceptPaidBtn" class="btn btn-primary mb-2">Accept Paid</button>
+        <!-- <a href="#" class="btn btn-secondary mb-2">Generate Report</a> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('acceptPaidBtn').addEventListener('click', function() {
+    fetch('/admin/accept-paid', { method: 'POST' })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert(data.message);
+          // Redirect to the split invoice page
+          window.location.href = '/split-invoice/' + data.invoiceId;
+        } else {
+          alert('An error occurred while updating purchases: ' + data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while processing the request.');
+      });
+  });
+});
+</script>

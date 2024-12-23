@@ -1,0 +1,374 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= package.nameEn %></title>
+  <link rel="stylesheet" href="/styles/hotelDetails.css">
+  <link rel="stylesheet" href="/styles/index.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="/styles/auth-popup.css">
+  <style>
+   .quantity-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .quantity-button {
+      background-color: #f0f0f0; /* 밝은 회색 배경 */
+      border: none;
+      padding: 10px 15px; /* 버튼 크기 증가 */
+      cursor: pointer;
+      font-size: 18px; /* 폰트 크기 증가 */
+    }
+
+    .quantity-input {
+      width: 60px; /* 입력 필드 너비 증가 */
+      text-align: center;
+      margin: 0 10px; /* 입력 필드 여백 증가 */
+      font-size: 18px; /* 폰트 크기 증가 */
+    }
+
+    #reservePackageBtn {
+      background-color: #007bff; /* 파란색 배경 */
+      color: white;
+      border: none;
+      padding: 15px 30px; /* 버튼 크기 증가 */
+      border-radius: 5px; /* 둥근 모서리 */
+      cursor: pointer;
+      font-size: 18px; /* 폰트 크기 증가 */
+    }
+  </style>
+</head>
+<body>
+  <%- include('partials/header-hotel-details') %>
+  <div class="body-container">
+    <div class="section golf-summary-section">
+      <h2><%= package.title %></h2>
+      <div class="golf-summary-container">
+        <div class="golf-information-row">
+          <div class="column-1">
+            <div class="address-row">
+              <i class="fa fa-map-marker"></i>
+              <span class="address-text"><%- package.address %></span>
+            </div>
+            <div class="detailed-address-row">
+              <i class="fa fa-building"></i>
+              <span class="detailed-address-text"><%- package.content %></span>
+            </div>
+          </div>
+          
+          <div class="column-2">
+            <div class="price-container">
+              <% if (package.sale_price && golf.price > package.sale_price) { %>
+                <s class="delete-price">THB <%= package.price.toLocaleString() %></s>
+              <% } %>
+              <span class="real-price">THB <%= (package.sale_price || package.price).toLocaleString() %></span>
+            </div>
+            <div class="price-match">
+              <div class="price-match-icon"></div>
+              <span class="price-match-text">We Price Match</span>
+            </div>
+          </div>
+          
+        </div>
+        <div class="golf-images-row">
+          <div class="image-gallery-container">
+            <div class="main-image">
+              <% if (package.gallery && package.gallery.length > 0) { %>
+                <img src="/uploads/<%= package.gallery[0] %>" alt="<%= package.title %> Main Image" style="width: 100%; height: 100%;">
+              <% } else { %>
+                <p>No images available</p>
+              <% } %>
+            </div>
+            <div class="small-images">
+              <% for(let i = 0; i < Math.min(package.gallery.length, 5); i++) { %>
+                <div class="small-image-item">
+                  <img src="/uploads/<%= package.gallery[i] %>" alt="<%= package.title %> Image <%= i %>">
+                </div>
+              <% } %>
+              <% if(package.gallery.length > 6) { %>
+                <div class="small-image-item more-images">
+                  <img src="/uploads/<%= package.gallery[5] %>" alt="<%= package.title %> Image 5">
+                  <div class="see-all-images">
+                    <i class="smarticon u-icon u-icon-ic_images"></i>
+                    <span>See All <%= package.gallery.length %> Photos</span>
+                  </div>
+                </div>
+              <% } else if (package.gallery.length === 6) { %>
+                <div class="small-image-item">
+                  <img src="/uploads/<%= package.gallery[5] %>" alt="<%= package.title %> Image 5">
+                </div>
+              <% } %>
+            </div>
+          </div>
+        </div>
+        
+        <div class="amenities-column">
+          <h3 class="section-title">Amenities</h3>
+          <div class="amenities-list">
+            <% const amenities = [
+                {name: 'Pro Shop', icon: 'icon-shop'},
+                {name: 'Driving Range', icon: 'icon-driving-range'},
+                {name: 'Golf Cart', icon: 'icon-golf-cart'},
+                {name: 'Clubhouse', icon: 'icon-clubhouse'},
+                {name: 'Restaurant', icon: 'icon-restaurant'},
+                {name: 'Locker Room', icon: 'icon-locker-room'},
+                {name: 'Caddie Service', icon: 'icon-caddie'},
+                {name: 'Golf Lessons', icon: 'icon-lessons'},
+                {name: 'Putting Green', icon: 'icon-putting-green'},
+                {name: 'Golf Club Rental', icon: 'icon-club-rental'},
+                {name: 'Shower Facilities', icon: 'icon-shower'},
+                {name: 'Free Parking', icon: 'icon-parking'}
+              ];
+              for(let i = 0; i < 4; i++) { %>
+                <div class="amenities-row">
+                  <% for(let j = i*3; j < Math.min((i+1)*3, amenities.length); j++) { %>
+                    <span class="amenities-item">
+                      <i class="smarticon u-icon <%= amenities[j].icon %>"></i>
+                      <span class="amenities-desc"><%= amenities[j].name %></span>
+                    </span>
+                  <% } %>
+                </div>
+              <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Date Selection Section -->
+    <div class="section date-selection-section">
+      <div class="date-inputs">
+        <label for="check-in">valid from:</label>
+        <input type="date" id="check-in" name="check-in" required>
+
+        <label for="nights" style="margin-left: 40px;">Nights:</label>
+        <input type="number" id="nights" name="nights" min="1" value="1" style="width: 50px; margin-right: 40px;">
+
+        <label for="check-out">valid until:</label>
+        <input type="date" id="check-out" name="check-out" required>
+      </div>
+      <div style="margin-top: 20px;">
+        <button id="reservePackageBtn" data-package-id="<%= package._id %>" data-package-price="<%= package.price %>">Reserve</button>
+      </div>
+    </div>
+
+    <!-- Golf Course Details Section -->
+    <div class="section golf-course-details-section">
+      <h2>Golf Course Details</h2>
+      <div class="course-info">
+        <p>Holes: 18</p>
+        <p>Par: 72</p>
+        
+      </div>
+    </div>
+     
+
+
+    <!-- Booking Method Section -->
+    <div class="section booking-method-section">
+      <h2>Booking Method</h2>
+      <div class="step-container">
+        <div class="step">Check available tee times</div>
+        <div class="step">Select your preferred tee time</div>
+        <div class="step">Choose any additional services (e.g., caddie, golf cart)</div>
+        <div class="step">Review booking details and total amount</div>
+        <div class="step">Click the 'Book Now' button</div>
+        <div class="step">Provide necessary information and agree to terms and conditions</div>
+        <div class="step">Complete the payment process</div>
+        <div class="step">Receive booking confirmation</div>
+      </div>
+    </div>
+
+    <!-- Payment Method Section -->
+    <div class="section payment-method-section">
+      <h2>Payment Method</h2>
+      <div class="step-container">
+        <div class="step">Select 'My Bookings' in your profile</div>
+        <div class="step">Choose the golf booking you want to pay for</div>
+        <div class="step">Review and accept the cancellation/refund policy</div>
+        <div class="step">Check the invoice details</div>
+        <div class="step">Select your preferred payment method</div>
+        <div class="step">Confirm the details and amount, then click 'Pay Now'</div>
+        <div class="step">Complete the payment process</div>
+        <div class="step">Receive payment confirmation</div>
+      </div>
+    </div>
+
+    <!-- Frequently Asked Questions Section -->
+    <div class="section faq-section">
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq-chat">
+        <!-- FAQ 내용은 골프장 특성에 맞게 수정 -->
+        <div class="chat-bubble question">How do I book a tee time?</div>
+        <div class="chat-bubble answer">You can book a tee time by selecting your preferred date and time on our booking calendar, then following the checkout process.</div>
+        
+        <div class="chat-bubble question">What is included in the green fee?</div>
+        <div class="chat-bubble answer">The green fee typically includes access to the golf course for 18 holes. Additional services like golf carts or caddies may be available for an extra fee.</div>
+        
+        <div class="chat-bubble question">Can I rent golf clubs?</div>
+        <div class="chat-bubble answer">Yes, golf club rentals are available. You can add this option during the booking process or inquire at the pro shop upon arrival.</div>
+        
+        <div class="chat-bubble question">What is the cancellation policy?</div>
+        <div class="chat-bubble answer">Please refer to our cancellation and refund policy on the website. Policies may vary depending on the specific golf course and booking conditions.</div>
+        
+        <!-- 추가 FAQ 항목들... -->
+      </div>
+    </div>
+
+    <!-- Cancel & Refund Policy Section -->
+    <div class="section cancel-and-refund-policy-section">
+      <h2>Cancel & Refund Policy</h2>
+      <div class="policy-content">
+        <div class="policy-section">
+          <h3>Cancellation</h3>
+          <ul class="policy-list">
+            <li>Cancellation/refund is not possible due to unidentified precautions.</li>
+            <li>If a travel agency cancels a product booked/purchased on Trip-day.com, we may request a penalty or may not be able to cancel it as per the following regulations.</li>
+            <li>In case of cancellation due to natural disasters, no placebo will be processed and the regulations for each product will be observed in accordance with Thai law.</li>
+            <li>If you cancel or change, please register with the reservation number at Trip-Day.com.</li>
+          </ul>
+        </div>
+
+        <div class="policy-section">
+          <h3>Refund</h3>
+          <ul class="policy-list">
+            <li>E-tickets and reservation code products/date pre-order products cannot be canceled/refunded after ordering.</li>
+            <li>Physical receipt ticket products can be used within a set period from the date of purchase.</li>
+            <li>You can get a refund if you return the unused ticket before or within 7 days of receiving it.</li>
+            <li>Physical tickets cannot be reissued if you lose your ticket.</li>
+          </ul>
+        </div>
+
+        <div class="policy-section">
+          <h3>Changes</h3>
+          <ul class="policy-list">
+            <li>Changes are only applicable to physical tickets except E-Ticket/E Vouchers and are only applicable to non-overlapping attractions.</li>
+            <li>The schedule can be changed only for the possible schedule, and please refer to each product page for the possible period.</li>
+          </ul>
+        </div>
+
+        <div class="policy-section">
+          <h3>Hotel-Specific Policies</h3>
+          <ul class="policy-list">
+            <li>Trip-day.com is responsible for booking accommodation for each hotel and operates separately, so we ensure that we comply with the cancellation refund regulations specified by Trip-day.com.</li>
+            <li>Reservation fee: No refund regardless of the time of reservation.</li>
+            <li>Deposit: 
+              <ul>
+                <li>If more than 30% of the total schedule is left: partial refund is possible</li>
+                <li>If less than 30% of the total schedule is left: No refund</li>
+              </ul>
+            </li>
+            <li>Change and cancel:
+              <ul>
+                <li>After check-in: Reservation period change and reservation cancellation not allowed</li>
+                <li>Before check-in: Depending on the items, it may be partially possible (*refer to the hotel's change regulations)</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div class="policy-note">
+          For more detailed information on change regulations, daily car tours, city tours, activities, tourist attractions, walking tours, pickup/drop services, and other specific policies, please refer to our complete policy document or contact our customer support.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include('partials/footer') %>
+
+</body>
+</html>
+<script src="/js/datePickerHandler.js"></script>
+<script src="/js/golfDetails.js"></script>
+<script src="/scripts/auth.js"></script>
+<script>
+   var checkInPicker = document.getElementById('check-in');
+  var checkOutPicker = document.getElementById('check-out');
+  var nightsInput = document.getElementById('nights');
+
+  function updateDates() {
+    var checkInDate = new Date(checkInPicker.value);
+    var nights = parseInt(nightsInput.value, 10);
+    
+    if (!isNaN(checkInDate.getTime()) && nights > 0) {
+      var checkOutDate = new Date(checkInDate);
+      checkOutDate.setDate(checkOutDate.getDate() + nights);
+      checkOutPicker.value = checkOutDate.toISOString().split('T')[0];
+    }
+  }
+
+  checkInPicker.addEventListener('change', updateDates);
+  nightsInput.addEventListener('change', updateDates);
+  nightsInput.addEventListener('input', updateDates);
+
+  checkOutPicker.addEventListener('change', function() {
+    var checkInDate = new Date(checkInPicker.value);
+    var checkOutDate = new Date(checkOutPicker.value);
+
+    if (!isNaN(checkInDate.getTime()) && !isNaN(checkOutDate.getTime())) {
+      var diffTime = Math.abs(checkOutDate - checkInDate);
+      var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+      nightsInput.value = diffDays;
+    }
+  });
+  
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const reservePackageBtn = document.getElementById('reservePackageBtn');
+    
+    reservePackageBtn.addEventListener('click', () => {
+      const packageId = reservePackageBtn.getAttribute('data-package-id');
+      const packagePrice = reservePackageBtn.getAttribute('data-package-price');
+      const checkIn = document.getElementById('check-in').value;
+      const checkOut = document.getElementById('check-out').value;
+      const nights = document.getElementById('nights').value;
+      
+      if (!checkIn || !checkOut) {
+        alert('Please select check-in and check-out dates before reserving a package.');
+        return;
+      }
+      
+      addPackageToCart(packageId, packagePrice, checkIn, checkOut, nights);
+    });
+  });
+
+  function addPackageToCart(packageId, packagePrice, checkIn, checkOut, nights) {
+    fetch(`/cart/addPackage/${packageId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        packageId,packageId,
+        packagePrice: packagePrice,
+        checkIn: checkIn,
+        checkOut: checkOut,
+        nights: nights,
+        quantity: nights
+      }),
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      if (data.success) {
+        if (confirm('Package added to cart successfully! Do you want to view your cart?')) {
+          window.location.href = '/dashboard#cart';
+        }
+      } else {
+        alert(data.message || 'Failed to add package to cart. Please try again.');
+      }
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      alert('An error occurred while adding the package to the cart. Please check the console for more details and try again.');
+    });
+  }
+</script>

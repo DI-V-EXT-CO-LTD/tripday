@@ -1,0 +1,305 @@
+<!-- Bootstrap CSS 추가 -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<style>
+  .modal-backdrop {
+    z-index: 1040 !important;
+  }
+  .modal-content {
+    z-index: 1100 !important;
+  }
+  .btn-primary-APIS {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    border-width: 2px;
+    border-style: solid;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+  }
+  .btn-primary-APIS:hover {
+    color: #fff;
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+  .form-row {
+    margin-bottom: 10px;
+  }
+  .add-row, .remove-row {
+    margin-top: 10px;
+  }
+  .modal-xl {
+    max-width: 95%;
+  }
+  .form-row .col {
+    padding: 0 5px;
+  }
+  .form-row input, .form-row select {
+    width: 100%;
+  }
+  .form-row .col-lg {
+    flex-basis: 0;
+    flex-grow: 1;
+    max-width: 100%;
+  }
+</style>
+
+<div class="container-fluid mt-4" style="width: 100%;">
+
+  <% if (vouchers.length > 0) { %>
+    <table class="table" style="width: 100%;">
+      <thead>
+        <tr>
+          <td style="text-align: center; vertical-align: middle;">Hotel</td>
+          <td style="text-align: center; vertical-align: middle;">Code</td>
+          <td style="text-align: center; vertical-align: middle;">Value</td>
+          <td style="text-align: center; vertical-align: middle;">Expiry Date</td>
+          <td style="text-align: center; vertical-align: middle;">Action</td>
+        </tr>
+      </thead>
+      <tbody>
+        <% vouchers.forEach(voucher => { %>
+          <tr>
+            <td style="text-align: center; vertical-align: middle;"><%= voucher.hotelName %></td>
+            <td style="text-align: center; vertical-align: middle;"><%= voucher.voucherCode %></td>
+            <td style="text-align: center; vertical-align: middle;"><%= voucher.quantity.toLocaleString() %></td>
+            <td style="text-align: center; vertical-align: middle;"><%= voucher.validUntil.toDateString() %></td>
+            <td style="text-align: center; vertical-align: middle;">
+              <button class="btn-primary-APIS" data-toggle="modal" data-target="#voucherModal<%= voucher.voucherCode %>">
+                APIS
+              </button>
+            </td>
+          </tr>
+
+          <!-- 바우처 사용신청 팝업 모달 -->
+          <div class="modal fade" id="voucherModal<%= voucher.voucherCode %>" tabindex="-1" role="dialog" aria-labelledby="voucherModalLabel<%= voucher.voucherCode %>" aria-hidden="true">
+            <div class="modal-dialog modal-xl" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="voucherModalLabel<%= voucher.voucherCode %>">APIS Request</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form id="voucherForm<%= voucher.voucherCode %>" data-voucher-code="<%= voucher.voucherCode %>" data-voucher-quantity="<%= voucher.quantity %>">
+                    <div class="form-group">
+                      <label for="hotelName">Hotel Name</label>
+                      <input type="text" class="form-control hotelName" name="hotelName" value="<%= voucher.hotelName %>" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label for="voucherCode">Code</label>
+                      <input type="text" class="form-control voucherCode" name="voucherCode" value="<%= voucher.voucherCode %>" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label for="remainingQuantity">Remain Amount</label>
+                      <input type="text" class="form-control remaining-quantity" name="remainingQuantity" value="<%= voucher.quantity %>" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label for="roomCount">Rooms</label>
+                      <input type="number" class="form-control room-count" name="roomCount" min="1" value="1">
+                    </div>
+                    <div class="form-group">
+                      <label for="startDate">Check-In</label>
+                      <input type="date" class="form-control start-date" name="startDate">
+                    </div>
+                    <div class="form-group">
+                      <label for="endDate">Check-Out</label>
+                      <input type="date" class="form-control end-date" name="endDate">
+                    </div>
+                    <div class="form-group">
+                      <label for="totalUsage">Total Usage</label>
+                      <input type="text" class="form-control total-usage" name="totalUsage" readonly>
+                    </div>
+                    <div id="guestInfoContainer">
+                      <div class="form-row">
+                        <div class="col-lg">
+                          <input type="text" class="form-control" placeholder="Last name">
+                        </div>
+                        <div class="col-lg">
+                          <input type="text" class="form-control" placeholder="First name">
+                        </div>
+                        <div class="col-lg">
+                          <input type="text" class="form-control" placeholder="Passport No.">
+                        </div>
+                        <div class="col-lg">
+                          <select class="form-control">
+                            <option value="">Sex</option>
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                          </select>
+                        </div>
+                        <div class="col-lg">
+                          <input type="date" class="form-control" placeholder="Birthday">
+                        </div>
+                        <div class="col-lg">
+                          <input type="text" class="form-control" placeholder="Remark">
+                        </div>
+                      </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary add-row">Add Row</button>
+                    <button type="button" class="btn btn-danger remove-row">Remove Row</button>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary submit-voucher">Submit</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <p>No Vouchers Found.</p>
+  <% } %>
+</div>
+
+<!-- jQuery와 Bootstrap JavaScript 로드 -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="/js/datePickerHandler.js"></script>
+
+<script>
+  // 서버에서 전달된 user 정보를 JavaScript 변수로 설정
+  const currentUser = {
+    email: "<%= user.email %>"
+  };
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var startDatePicker = document.querySelector('.start-date');
+    var endDatePicker = document.querySelector('.end-date');
+    var totalUseAmount = document.querySelector('.total-usage');
+    var roomCount = document.querySelector('.room-count');
+    var submitButton = document.querySelector('.submit-voucher');
+    var voucherCode = document.querySelector('.voucherCode');
+    var hotelName = document.querySelector('.hotelName');
+    const remainingQuantity = document.querySelector('.remaining-quantity');
+    
+    function setMinDates() {
+      var today = new Date().toISOString().split('T')[0];
+      startDatePicker.min = today;
+    }
+
+    function calculateUsage() {
+      if (startDatePicker && endDatePicker && totalUseAmount && roomCount) {
+        if (startDatePicker.value && endDatePicker.value) {
+          var startDate = new Date(startDatePicker.value);
+          var endDate = new Date(endDatePicker.value);
+          var diffTime = Math.abs(endDate - startDate);
+          var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+          var usage = diffDays * roomCount.value;
+          totalUseAmount.value = usage;
+          console.log('Total Usage calculated:', usage); // 디버깅 로그 추가
+        }
+      } else {
+        console.log('calculateUsage: One or more elements are null');
+      }
+    }
+
+    startDatePicker.addEventListener('change', function() {
+      endDatePicker.min = startDatePicker.value;
+      calculateUsage();
+    });
+
+    endDatePicker.addEventListener('change', calculateUsage);
+    roomCount.addEventListener('change', calculateUsage);
+
+    // Add row functionality
+    document.querySelector('.add-row').addEventListener('click', function() {
+      var container = document.getElementById('guestInfoContainer');
+      var newRow = container.querySelector('.form-row').cloneNode(true);
+      newRow.querySelectorAll('input, select').forEach(input => input.value = '');
+      container.appendChild(newRow);
+    });
+
+    // Remove row functionality
+    document.querySelector('.remove-row').addEventListener('click', function() {
+      var container = document.getElementById('guestInfoContainer');
+      if (container.childElementCount > 1) {
+        container.removeChild(container.lastChild);
+      }
+    });
+
+    submitButton.addEventListener('click', function() {
+      var form = this.closest('.modal').querySelector('form');
+      if (!form) {
+        console.error('Form not found');
+        return;
+      }
+
+      var usage = parseInt(totalUseAmount.value) || 0;
+      console.log("current user email: ", currentUser.email);
+      console.log('Form submission attempt:');
+      console.log('Hotel Name:', hotelName.value);
+      console.log('Voucher Code:', voucherCode.value);
+      console.log('remaining Quantity',remainingQuantity.value)
+      console.log('Room Count:', roomCount.value);
+      console.log('Start Date:', startDatePicker.value);
+      console.log('End Date:', endDatePicker.value);
+      console.log('Total Usage:', totalUseAmount.value);
+
+      if (isNaN(usage) || usage <= 0) {
+        alert("Invalid usage amount. Please check your dates and room count.");
+        return;
+      }
+
+      if (usage > remainingQuantity) {
+        alert("Request amount exceed remain amount.");
+        return;
+      }
+
+      // Collect guest information
+      var guestInfo = [];
+      document.querySelectorAll('#guestInfoContainer .form-row').forEach(function(row) {
+        var inputs = row.querySelectorAll('input, select');
+        if(inputs[0].value === '' || inputs[1].value === '' || inputs[2].value === '' || inputs[3].value === '' || inputs[4].value === '') {
+          
+        }
+        else{
+          guestInfo.push({
+          lastName: inputs[0].value,
+          firstName: inputs[1].value,
+          passportNumber: inputs[2].value,
+          sex: inputs[3].value,
+          birthday: inputs[4].value,
+          remark: inputs[5].value
+        });
+        }
+        
+      });
+
+      console.log('Guest Info:', guestInfo);
+
+      $.ajax({
+            url: '/api/vouchers/submit-voucher',
+            method: 'POST',
+            data: { 
+              userId: currentUser.email, // 서버에서 전달받은 user 정보 사용
+              hotelName: hotelName.value, 
+              voucherCode: voucherCode.value, 
+              remainingQuantity: remainingQuantity.value, 
+              roomCount: roomCount.value, 
+              startDate: startDatePicker.value, 
+              endDate: endDatePicker.value, 
+              totalUsage: totalUseAmount.value, 
+              guestInfo: guestInfo 
+            },
+            success: function(response) {
+                  alert("Voucher use request is successfully done.");
+                  $(form.closest('.modal')).modal('hide');
+                  location.reload();
+            },
+            error: function(error) {
+              alert("Error: " + error.responseJSON.message);
+            }
+        });
+    });
+
+    setMinDates();
+  });
+</script>

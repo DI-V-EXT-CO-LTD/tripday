@@ -1,0 +1,85 @@
+/* public/styles/contents.css */
+.contents-wrapper {
+    padding: 0 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    margin: 32px;
+    justify-content: center;
+    align-items: center; 
+    justify-content: center;
+    text-align: center;
+}
+
+/* 추가적인 섹션 스타일 */
+.banner-section {    
+    border-radius: 8px; 
+    padding: 0px;
+    
+}
+
+.banner-carousel {
+    position: relative;
+    width: 1160px;
+    max-width: 1170px; /* 3 * 376px */
+ 
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.banner-wrapper {
+    display: flex;
+    transition: transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.banner-wrapper img {
+    width: 375px;
+    height: 188px;
+    border-radius:15px;
+    
+}
+
+.carousel-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 15px;
+    cursor: pointer;
+}
+
+.carousel-control.prev {
+    left: 0;
+}
+
+.carousel-control.next {
+    right: 0;
+}
+
+.featured-properties-section,
+.popular-attractions-section,
+.recommended-car-rentals-section {
+    background: linear-gradient(to bottom right, #fafeff, #ddfbff); 
+    border-radius: 8px; 
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+.featured-properties-section{
+    height:552px;
+    max-width: 1160px;
+}
+
+.popular-attractions-section{
+    height: 552px;
+    max-width: 1160px;
+}
+.recommended-car-rentals-section{
+    height: 535px;
+    width: 1160px;
+    max-width: 1160px;
+}

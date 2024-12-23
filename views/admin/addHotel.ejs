@@ -1,0 +1,433 @@
+<%- include('../partials/head') %>
+<link rel="stylesheet" href="/styles/dashboard.css">
+<style>
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  h2 {
+    color: #007bff;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .form-group {
+    margin-bottom: 20px;
+  }
+  label {
+    font-weight: bold;
+  }
+  .required-field label::after {
+    content: " *";
+    color: red;
+  }
+  .required-field input,
+  .required-field select,
+  .required-field textarea {
+    border-left: 4px solid #007bff;
+  }
+  .optional-field label {
+    color: #6c757d;
+  }
+  .optional-field input,
+  .optional-field select,
+  .optional-field textarea {
+    border-left: 4px solid #6c757d;
+  }
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    width: 100%;
+    margin-top: 20px;
+  }
+  .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+  .file-input-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+  }
+  .file-input-wrapper input[type=file] {
+    font-size: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .file-input-wrapper .btn-file-input {
+    border: 2px solid #007bff;
+    color: #007bff;
+    background-color: white;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .file-name {
+    margin-left: 10px;
+  }
+  #uploadProgress {
+    display: none;
+    margin-top: 20px;
+  }
+  .alert {
+    display: none;
+    margin-top: 20px;
+  }
+  @media (max-width: 768px) {
+    .container {
+      padding: 10px;
+    }
+    .btn-file-input {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  }
+</style>
+
+<div class="container mt-4">
+  <h2>Add New Hotel</h2>
+  <div class="alert alert-danger" id="errorAlert" role="alert"></div>
+  <div class="alert alert-success" id="successAlert" role="alert"></div>
+  <form id="addHotelForm" action="/admin/hotels/add" method="POST" enctype="multipart/form-data">
+    <div class="form-group required-field">
+      <label for="title">Hotel Name</label>
+      <input type="text" class="form-control" id="title" name="title" placeholder="Enter the full name of the hotel" required>
+    </div>
+    <div class="form-group required-field">
+      <label for="slug">URL Slug</label>
+      <input type="text" class="form-control" id="slug" name="slug" placeholder="Enter a URL-friendly version of the hotel name (e.g., grand-hotel-seoul)" required>
+    </div>
+    <div class="form-group required-field">
+      <label for="content">Description</label>
+      <textarea class="form-control" id="content" name="content" rows="3" placeholder="Provide a detailed description of the hotel" required></textarea>
+    </div>
+    <div class="form-group optional-field">
+      <label for="nameEn">English Name</label>
+      <input type="text" class="form-control" id="nameEn" name="nameEn" placeholder="Enter the hotel name in English (if different from the main name)">
+    </div>
+    <div class="form-group required-field">
+      <label for="image">Main Image (Max 5MB, JPEG/PNG/GIF/WebP only)</label>
+      <div class="file-input-wrapper">
+        <button class="btn-file-input" type="button" aria-label="Choose main image file">Choose File</button>
+        <input type="file" class="form-control-file" id="image" name="image" accept="image/jpeg,image/png,image/gif,image/webp" required aria-describedby="imageHelp">
+      </div>
+      <span class="file-name" id="mainImageName"></span>
+      <small id="imageHelp" class="form-text text-muted">Please select an image file less than 5MB in size.</small>
+    </div>
+    <div class="form-group required-field">
+      <label for="banner_image">Banner Image (Max 5MB, JPEG/PNG/GIF/WebP only)</label>
+      <div class="file-input-wrapper">
+        <button class="btn-file-input" type="button" aria-label="Choose banner image file">Choose File</button>
+        <input type="file" class="form-control-file" id="banner_image" name="banner_image" accept="image/jpeg,image/png,image/gif,image/webp" required aria-describedby="bannerImageHelp">
+      </div>
+      <span class="file-name" id="bannerImageName"></span>
+      <small id="bannerImageHelp" class="form-text text-muted">Please select an image file less than 5MB in size.</small>
+    </div>
+    <div class="form-group optional-field">
+      <label for="gallery">Gallery Images (Max 10 images, 5MB each, JPEG/PNG/GIF/WebP only)</label>
+      <div class="file-input-wrapper">
+        <button class="btn-file-input" type="button" aria-label="Choose gallery image files">Choose Files</button>
+        <input type="file" class="form-control-file" id="gallery" name="gallery" accept="image/jpeg,image/png,image/gif,image/webp" multiple aria-describedby="galleryHelp">
+      </div>
+      <div id="galleryImageNames"></div>
+      <small id="galleryHelp" class="form-text text-muted">You can select up to 10 images, each less than 5MB in size.</small>
+    </div>
+    <div class="form-group required-field">
+      <label for="location_id">Location ID</label>
+      <input type="text" class="form-control" id="location_id" name="location_id" placeholder="Enter a unique identifier for the hotel's location" required>
+    </div>
+    <div class="form-group required-field">
+      <label for="address">Address</label>
+      <input type="text" class="form-control" id="address" name="address" placeholder="Enter the full address of the hotel" required>
+    </div>
+    <div class="form-group required-field">
+      <label for="map_lat">Latitude</label>
+      <input type="number" class="form-control" id="map_lat" name="map_lat" step="any" placeholder="Enter the latitude coordinate (e.g., 37.5665)" required>
+    </div>
+    <div class="form-group required-field">
+      <label for="map_lng">Longitude</label>
+      <input type="number" class="form-control" id="map_lng" name="map_lng" step="any" placeholder="Enter the longitude coordinate (e.g., 126.9780)" required>
+    </div>
+    <div class="form-group">
+      <label for="map_zoom">Map Zoom Level</label>
+      <input type="number" class="form-control" id="map_zoom" name="map_zoom" value="14" readonly>
+      <small class="form-text text-muted">Default zoom level is set to 14 and cannot be changed.</small>
+    </div>
+    <div class="form-group optional-field">
+      <label for="is_featured">Featured Hotel</label>
+      <select class="form-control" id="is_featured" name="is_featured">
+        <option value="false">No</option>
+        <option value="true">Yes</option>
+      </select>
+    </div>
+    <div class="form-group required-field">
+      <label for="star_rate">Star Rating</label>
+      <input type="number" class="form-control" id="star_rate" name="star_rate" min="1" max="5" placeholder="Enter the star rating (1-5)" required>
+    </div>
+    <div class="form-group required-field">
+      <label for="price">Base Price</label>
+      <input type="number" class="form-control" id="price" name="price" step="0.01" placeholder="Enter the base price per night" required>
+    </div>
+    <div class="form-group required-field">
+      <label for="check_in_time">Check-in Time</label>
+      <input type="time" class="form-control" id="check_in_time" name="check_in_time" value="13:00" required>
+      <small class="form-text text-muted">Default check-in time is 1:00 PM</small>
+    </div>
+    <div class="form-group required-field">
+      <label for="check_out_time">Check-out Time</label>
+      <input type="time" class="form-control" id="check_out_time" name="check_out_time" value="11:00" required>
+      <small class="form-text text-muted">Default check-out time is 11:00 AM</small>
+    </div>
+    <div class="form-group optional-field">
+      <label for="allow_full_day">Allow Full Day Booking</label>
+      <select class="form-control" id="allow_full_day" name="allow_full_day">
+        <option value="false">No</option>
+        <option value="true">Yes</option>
+      </select>
+    </div>
+    <div class="form-group optional-field">
+      <label for="sale_price">Sale Price</label>
+      <input type="number" class="form-control" id="sale_price" name="sale_price" step="0.01" placeholder="Enter the discounted price (if applicable)">
+    </div>
+    <div class="form-group required-field">
+      <label for="status">Status</label>
+      <select class="form-control" id="status" name="status" required>
+        <option value="published">Published</option>
+        <option value="draft">Draft</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Hotel</button>
+  </form>
+  <div id="uploadProgress" class="progress">
+    <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+  </div>
+</div>
+
+<script>
+function validateForm() {
+  var imageInput = document.getElementById('image');
+  var bannerImageInput = document.getElementById('banner_image');
+  var galleryInput = document.getElementById('gallery');
+
+  if (!validateImageFile(imageInput, 5)) {
+    showError('Main image must be a valid image file (JPEG, PNG, GIF, or WebP) and less than 5MB.');
+    return false;
+  }
+
+  if (!validateImageFile(bannerImageInput, 5)) {
+    showError('Banner image must be a valid image file (JPEG, PNG, GIF, or WebP) and less than 5MB.');
+    return false;
+  }
+
+  if (galleryInput.files.length > 0) {
+    if (galleryInput.files.length > 10) {
+      showError('You can only upload up to 10 gallery images.');
+      return false;
+    }
+    for (var i = 0; i < galleryInput.files.length; i++) {
+      if (!validateImageFile(galleryInput, 5, i)) {
+        showError('All gallery images must be valid image files (JPEG, PNG, GIF, or WebP) and less than 5MB each.');
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
+function validateImageFile(input, maxSizeMB, index) {
+  var file = index !== undefined ? input.files[index] : input.files[0];
+  if (file) {
+    var allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+      return false;
+    }
+    if (file.size > maxSizeMB * 1024 * 1024) {
+      showError(`File size exceeds ${maxSizeMB}MB limit.`);
+      return false;
+    }
+  }
+  return true;
+}
+
+function showError(message) {
+  var errorAlert = document.getElementById('errorAlert');
+  errorAlert.textContent = message;
+  errorAlert.style.display = 'block';
+  console.error('Error:', message);
+}
+
+function showSuccess(message) {
+  var successAlert = document.getElementById('successAlert');
+  successAlert.textContent = message;
+  successAlert.style.display = 'block';
+  console.log('Success:', message);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var form = document.getElementById('addHotelForm');
+  var progressBar = document.querySelector('.progress-bar');
+  var uploadProgress = document.getElementById('uploadProgress');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    console.log('Form submission started');
+    if (validateForm()) {
+      uploadProgress.style.display = 'block';
+      var xhr = new XMLHttpRequest();
+      xhr.open(form.method, form.action);
+      
+      xhr.upload.onprogress = function(e) {
+        if (e.lengthComputable) {
+          var percentComplete = (e.loaded / e.total) * 100;
+          progressBar.style.width = percentComplete + '%';
+          progressBar.textContent = percentComplete.toFixed(2) + '%';
+          progressBar.setAttribute('aria-valuenow', percentComplete);
+          console.log('Upload progress: ' + percentComplete.toFixed(2) + '%');
+        }
+      };
+      
+      xhr.onload = function() {
+        console.log('XHR onload - status:', xhr.status);
+        console.log('XHR onload - response:', xhr.responseText);
+        try {
+          var response = JSON.parse(xhr.responseText);
+          if (xhr.status === 200) {
+            showSuccess('Hotel added successfully!');
+            form.reset();
+          } else {
+            var errorMessage = 'Error adding hotel. ';
+            if (response && response.error) {
+              errorMessage += response.error;
+            } else {
+              errorMessage += 'Unknown error occurred.';
+            }
+            showError(errorMessage);
+          }
+        } catch (e) {
+          console.error('Error parsing server response:', e);
+          showError('Error processing server response. Please try again.');
+        }
+        uploadProgress.style.display = 'none';
+      };
+      
+      xhr.onerror = function() {
+        console.error('XHR error:', xhr.status, xhr.statusText);
+        showError('Network error. Please check your connection and try again.');
+        uploadProgress.style.display = 'none';
+      };
+      
+      var formData = new FormData(form);
+      console.log('Sending form data. Fields:', Array.from(formData.entries()));
+      xhr.send(formData);
+    } else {
+      console.log('Form validation failed');
+    }
+  });
+
+  // Display file names when selected
+  document.getElementById('image').addEventListener('change', function(e) {
+    document.getElementById('mainImageName').textContent = e.target.files[0] ? e.target.files[0].name : '';
+  });
+  document.getElementById('banner_image').addEventListener('change', function(e) {
+    document.getElementById('bannerImageName').textContent = e.target.files[0] ? e.target.files[0].name : '';
+  });
+  document.getElementById('gallery').addEventListener('change', function(e) {
+    var names = Array.from(e.target.files).map(file => file.name).join(', ');
+    document.getElementById('galleryImageNames').textContent = names;
+  });
+
+  // File selection button functionality
+  var fileButtons = document.querySelectorAll('.btn-file-input');
+  fileButtons.forEach(function(button) {
+    button.addEventListener('click', function() {
+      this.nextElementSibling.click();
+    });
+  });
+
+  // Auto-generate slug
+  document.getElementById('title').addEventListener('input', function() {
+    var slug = this.value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    document.getElementById('slug').value = slug;
+  });
+
+  // Input field validation
+  var requiredFields = document.querySelectorAll('.required-field input, .required-field select, .required-field textarea');
+  requiredFields.forEach(function(field) {
+    field.addEventListener('blur', function() {
+      if (!this.value) {
+        this.classList.add('is-invalid');
+      } else {
+        this.classList.remove('is-invalid');
+      }
+    });
+  });
+
+  // Number input validation
+  var numberFields = document.querySelectorAll('input[type="number"]');
+  numberFields.forEach(function(field) {
+    field.addEventListener('input', function() {
+      if (this.validity.badInput) {
+        this.setCustomValidity('Please enter a valid number');
+      } else {
+        this.setCustomValidity('');
+      }
+    });
+  });
+
+  // Price field formatting
+  var priceFields = document.querySelectorAll('#price, #sale_price');
+  priceFields.forEach(function(field) {
+    field.addEventListener('blur', function() {
+      if (this.value) {
+        this.value = parseFloat(this.value).toFixed(2);
+      }
+    });
+  });
+
+  // Check-in and Check-out time validation and default setting
+  var checkInTime = document.getElementById('check_in_time');
+  var checkOutTime = document.getElementById('check_out_time');
+
+  // Set default values if not already set
+  if (!checkInTime.value) {
+    checkInTime.value = '13:00';
+  }
+  if (!checkOutTime.value) {
+    checkOutTime.value = '11:00';
+  }
+
+  // Validate check-in and check-out times
+  checkInTime.addEventListener('change', validateCheckInTime);
+  checkOutTime.addEventListener('change', validateCheckOutTime);
+
+  function validateCheckInTime() {
+    var time = checkInTime.value.split(':');
+    var hours = parseInt(time[0]);
+    if (hours < 0 || hours > 23) {
+      showError('Invalid check-in time. Please enter a time between 00:00 and 23:59.');
+      checkInTime.value = '13:00';
+    }
+  }
+
+  function validateCheckOutTime() {
+    var time = checkOutTime.value.split(':');
+    var hours = parseInt(time[0]);
+    if (hours < 0 || hours > 23) {
+      showError('Invalid check-out time. Please enter a time between 00:00 and 23:59.');
+      checkOutTime.value = '11:00';
+    }
+  }
+});
+</script>
+
+<%- include('../partials/dashboard-scripts') %>
+<%- include('../footer') %>

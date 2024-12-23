@@ -1,0 +1,88 @@
+<div class="head-container">
+  <div class="top-row">
+    <div class="left-section">
+      <div class="logo" style="width: 176px; height: 43px;">
+        <img src="/images/TripDay_Logo.png" alt="Logo">
+      </div>
+      <div class="category-section">
+        <button class="category-button">Hotels</button>
+        <button class="category-button">Golf Tours</button>
+        <button class="category-button">Flight</button>
+        <button class="category-button">Cars</button>
+        <button class="category-button">Boats</button>
+      </div>
+    </div>
+    <div class="right-section">
+      <% if (user) { %>
+        <div class="user-dropdown">
+          <button class="button-text" onclick="toggleUserMenu()"><%= user.email %></button>
+          <div class="user-menu" id="userMenu">
+            <a href="/profile">My Profile</a>
+            <a href="/trip-coins">Trip-Coins</a>
+            <a href="/bookings">Bookings</a>
+            <a href="/member-tiers">Member Tiers</a>
+            <hr>
+            <a href="/auth/logout">Sign Out</a>
+          </div>
+        </div>
+      <% } else { %>
+        <button class="button-text" onclick="showAuthPopup()">Sign in / Register</button>
+      <% } %>
+    </div>
+  </div>
+  <div class="bottom-row">
+    <div class="background-rounded">
+      <div class="search-box">
+        <div class="destinationbox">
+          <label for="destinationbox">Destination</label>
+          <input type="text" id="destination" placeholder="City, airport, region, landmark or property name">
+        </div>
+        <div class="checkin-outbox">
+          <div class="label-container"></div>
+          <div class="input-container">
+            <div class="checkin-container">
+              <label for="checkin">Check-in</label>
+              <input type="text" id="checkin" placeholder="Check-in">
+            </div>
+            <div class="nightsdisplayer">1 night</div>
+            <div class="checkout-container">
+              <label for="checkout">Check-out</label>
+              <input type="text" id="checkout" placeholder="Check-out">
+            </div>
+          </div>
+        </div>
+        <div class="rooms-and-guests-box">
+          <label for="rooms-and-guests-box">Rooms and Guests</label>
+          <div class="dropdown">
+            <button type="button" class="dropbtn">
+              <span id="rooms-guests-display">1 Room, 2 Adults, 0 Children</span>
+            </button>
+            <div class="dropdown-content">
+              <div>
+                <label>Rooms</label>
+                <button type="button" onclick="changeValue('rooms', -1)">-</button>
+                <span id="rooms">1</span>
+                <button type="button" onclick="changeValue('rooms', 1)">+</button>
+              </div>
+              <div>
+                <label>Adults</label>
+                <button type="button" onclick="changeValue('adults', -1)">-</button>
+                <span id="adults">2</span>
+                <button type="button" onclick="changeValue('adults', 1)">+</button>
+              </div>
+              <div>
+                <label>Children</label>
+                <button type="button" onclick="changeValue('children', -1)">-</button>
+                <span id="children">0</span>
+                <button type="button" onclick="changeValue('children', 1)">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="search-button-box">
+          <button class="search-button"><i class="fa fa-search"></i> Search</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

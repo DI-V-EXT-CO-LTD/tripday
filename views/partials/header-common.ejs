@@ -1,0 +1,112 @@
+<link rel="stylesheet" href="/styles/index.css">
+<style>
+  .head-container {
+    background-color: #003580;
+    color: white;
+    padding: 10px 20px;
+  }
+  .top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .logo img {
+    height: 43px;
+    width: 176px;
+  }
+  .category-section {
+    margin-top: 10px;
+  }
+  .category-button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    margin-right: 15px;
+  }
+  .user-dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  .icon-button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+  }
+  .user-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  .user-menu a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+  .user-menu a:hover {
+    background-color: #f1f1f1;
+  }
+  .show {
+    display: block;
+  }
+</style>
+
+<div class="head-container">
+  <div class="top-row">
+    <div class="logo">
+      <a href="/"><img src="/images/logo.png" alt="Tripday Logo"></a>
+    </div>
+    <div class="user-dropdown">
+      <% if (typeof user !== 'undefined' && user) { %>
+        <button class="icon-button" onclick="toggleUserMenu()">
+          <i class="fas fa-user"></i> <%= user.email %>
+        </button>
+        <div class="user-menu" id="userMenu">
+          <% if (user.role === 'Admin' || user.role === 'SuperAdmin') { %>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/admin/dashboard">Admin Dashboard</a>
+            <a href="/auth/logout">Logout</a>
+          <% } else { %>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/auth/logout">Logout</a>
+          <% } %>
+        </div>
+      <% } else { %>
+        <a href="/auth/login" class="icon-button">
+          <i class="fas fa-sign-in-alt"></i> Login
+        </a>
+      <% } %>
+    </div>
+  </div>
+  <div class="category-section">
+    <button class="category-button">Hotels</button>
+    <button class="category-button">Activities</button>
+    <button class="category-button">Flight Reservation</button>
+  </div>
+</div>
+
+<script>
+function toggleUserMenu() {
+  var menu = document.getElementById("userMenu");
+  menu.classList.toggle("show");
+}
+
+window.onclick = function(event) {
+  if (!event.target.matches('.icon-button')) {
+    var dropdowns = document.getElementsByClassName("user-menu");
+    for (var i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+</script>

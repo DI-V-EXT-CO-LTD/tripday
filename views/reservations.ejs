@@ -1,0 +1,14 @@
+<h2>My Reservations</h2>
+<% if (reservations && reservations.length > 0) { %>
+  <ul class="list-group">
+    <% reservations.forEach(reservation => { %>
+      <li class="list-group-item">
+        <h5><%= reservation.title %></h5>
+        <p>Date: <%= reservation.date %></p>
+        <p>Status: <%= reservation.status %></p>
+      </li>
+    <% }); %>
+  </ul>
+<% } else { %>
+  <p>You have no reservations at the moment.</p>
+<% } %>

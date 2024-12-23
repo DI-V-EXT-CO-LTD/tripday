@@ -1,0 +1,105 @@
+<%- include('../partials/head') %>
+<div class="container mt-4">
+    <h1 class="mb-4">Edit Golf Course</h1>
+    
+    <form action="/admin/golf-courses/<%= golfCourse._id %>/edit" method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="title" class="form-label">Golf Course Name</label>
+            <input type="text" class="form-control" id="title" name="title" value="<%= golfCourse.title %>"
+                   required>
+        </div>
+
+        <div class="mb-3">
+            <label for="slug" class="form-label">Slug</label>
+            <input type="text" class="form-control" id="slug" name="slug" value="<%= golfCourse.slug %>"
+                   required>
+        </div>
+
+        <div class="mb-3">
+            <label for="content" class="form-label">Content</label>
+            <textarea class="form-control" id="content" name="content" rows="3"><%= golfCourse.content %></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="nameEn" class="form-label">English Name</label>
+            <input type="text" class="form-control" id="nameEn" name="nameEn" value="<%= golfCourse.nameEn %>">
+        </div>
+        
+        <div class="mb-3">
+            <label for="location_id" class="form-label">Location ID</label>
+            <input type="text" class="form-control" id="location_id" name="location_id" value="<%= golfCourse.location_id %>"
+                   required>
+        </div>
+        
+        <div class="mb-3">
+            <label for="address" class="form-label">Address</label>
+            <input type="text" class="form-control" id="address" name="address" value="<%= golfCourse.address %>">
+        </div>
+        
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="is_featured" name="is_featured" <%= golfCourse.is_featured ? 'checked' : '' %>>
+            <label class="form-check-label" for="is_featured">Featured</label>
+        </div>
+        
+        <div class="mb-3">
+            <label for="price" class="form-label">Price</label>
+            <input type="number" class="form-control" id="price" name="price" value="<%= golfCourse.price %>"
+                   required>
+        </div>
+        
+        <div class="mb-3">
+            <label for="tee_time" class="form-label">Tee Time</label>
+            <input type="text" class="form-control" id="tee_time" name="tee_time" value="<%= golfCourse.tee_time %>"
+                   required>
+        </div>
+        
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="allow_full_day" name="allow_full_day" <%= golfCourse.allow_full_day ? 'checked' : '' %>>
+            <label class="form-check-label" for="allow_full_day">Allow Full Day</label>
+        </div>
+        
+        <div class="mb-3">
+            <label for="sale_price" class="form-label">Sale Price</label>
+            <input type="number" class="form-control" id="sale_price" name="sale_price" value="<%= golfCourse.sale_price %>">
+        </div>
+        
+        <div class="mb-3">
+            <label for="status" class="form-label">Status</label>
+            <select class="form-control" id="status" name="status" required>
+                <option value="published" <%= golfCourse.status === 'published' ? 'selected' : '' %>>Published</option>
+                <option value="draft" <%= golfCourse.status === 'draft' ? 'selected' : '' %>>Draft</option>
+            </select>
+        </div>
+        
+        <div class="mb-3">
+            <label for="image" class="form-label">Main Image</label>
+            <input type="file" class="form-control" id="image" name="image" accept="image/*">
+        </div>
+        
+        <div class="mb-3">
+            <label for="banner_image" class="form-label">Banner Image</label>
+            <input type="file" class="form-control" id="banner_image" name="banner_image" accept="image/*">
+        </div>
+        
+        <div class="mb-3">
+            <label for="gallery" class="form-label">Gallery Images</label>
+            <input type="file" class="form-control" id="gallery" name="gallery" accept="image/*" multiple>
+        </div>
+
+        <!-- Golf specific fields -->
+        <div class="mb-3">
+            <label for="holes" class="form-label">Number of Holes</label>
+            <input type="number" class="form-control" id="holes" name="course_info[holes]" value="<%= golfCourse.course_info.holes %>"
+                   required>
+        </div>
+
+        <div class="mb-3">
+            <label for="par" class="form-label">Par</label>
+            <input type="number" class="form-control" id="par" name="course_info[par]" value="<%= golfCourse.course_info.par %>"
+                   required>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+</div>
+<%- include('../partials/footer') %>

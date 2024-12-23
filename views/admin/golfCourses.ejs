@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Golf Courses</title>
+    <link rel="stylesheet" href="/css/admin-invoices.css">
+    <style>
+      html, body {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+      </style>
+</head>
+<body>
+  <button id="menu-toggle" class="btn btn-primary">Menu</button>
+
+  <div class="container-fluid"style="width: 100%;">
+    <div class="row">
+
+        <div id="content" style="width: 100%;">
+          <a href="/admin/golf-courses/add" class="btn btn-success">Add Golf Course</a>
+          <% if (golfCourses && golfCourses.length > 0) { %>
+            <div class="table-responsive">
+              <table class="table table-striped table-sm">
+                <thead>
+                  <tr>
+                    <th style="text-align: center;">Name</th>
+                    <th style="text-align: center;">Price</th>
+                    <th style="text-align: center;">Status</th>
+                    <th style="text-align: center;">Holes</th>
+                    <th style="text-align: center;">Par</th>
+                    <th style="text-align: center;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <% golfCourses.forEach(function(course) { %>
+                        <tr>
+                            <td style="text-align: center;"><%= course.title %></td>
+                            <td style="text-align: center;"><%= course.price.toLocaleString() %></td>
+                            <td style="text-align: center;"><%= course.status %></td>
+                            <td style="text-align: center;"><%= course.course_info.holes %></td>
+                            <td style="text-align: center;"><%= course.course_info.par %></td>
+                            <td style="text-align: center;">
+                                <a href="/admin/golf-courses/<%= course._id %>/golf-details?course=<%= JSON.stringify(course) %>" class="btn btn-info btn-sm">Details</a>
+                                <a href="/admin/golf-courses/<%= course._id %>/manage-golf" class="btn btn-sm btn-secondary">Manage Course Hole</a>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+              </table>
+            </div>
+            <% 
+              let paginationTotalPages, paginationCurrentPage;
+              if (typeof invoiceTotalPages !== 'undefined' && typeof invoiceCurrentPage !== 'undefined') {
+                paginationTotalPages = invoiceTotalPages;
+                paginationCurrentPage = invoiceCurrentPage;
+              } else if (typeof totalPages !== 'undefined' && typeof currentPage !== 'undefined') {
+                paginationTotalPages = totalPages;
+                paginationCurrentPage = currentPage;
+              } else {
+                paginationTotalPages = 1;
+                paginationCurrentPage = 1;
+              }
+            %>
+
+            <% if (paginationTotalPages > 1) { %>
+              <nav aria-label="Page navigation" class="mt-4">
+                <ul class="pagination justify-content-center">
+                  <% 
+                    const maxVisiblePages = 9;
+                    const halfMaxPages = Math.floor(maxVisiblePages / 2);
+                    let startPage = Math.max(paginationCurrentPage - halfMaxPages, 1);
+                    let endPage = Math.min(startPage + maxVisiblePages - 1, paginationTotalPages);
+    
+                    if (endPage - startPage + 1 < maxVisiblePages) {
+                      startPage = Math.max(endPage - maxVisiblePages + 1, 1);
+                    }
+                  %>
+    
+                  <% if (paginationCurrentPage > 1) { %>
+                    <li class="page-item">
+                      <a class="page-link" href="/admin/golfCourses=<%= paginationCurrentPage - 1 %>">Previous</a>
+                    </li>
+                  <% } %>
+                  
+                  <% for(let i = startPage; i <= endPage; i++) { %>
+                    <li class="page-item <%= i === paginationCurrentPage ? 'active' : '' %>">
+                      <a class="page-link" href="/admin/golfCourses?page=<%= i %>"><%= i %></a>
+                    </li>
+                  <% } %>
+                  
+                  <% if (paginationCurrentPage < paginationTotalPages) { %>
+                    <li class="page-item">
+                      <a class="page-link" href="/admin/golfCourses?page=<%= paginationCurrentPage + 1 %>">Next</a>
+                    </li>
+                  <% } %>
+    
+                  <% if (endPage < paginationTotalPages) { %>
+                    <li class="page-item">
+                      <a class="page-link" href="/admin/golfCourses?page=<%= endPage + 1 %>">...</a>
+                    </li>
+                  <% } %>
+                </ul>
+              </nav>
+            <% } %>
+
+          <% } else { %>
+            <p>No Golf Course found.</p>
+          <% } %>
+        </div>
+  
+    </div>
+  </div>
+
+  <%- include('../partials/dashboard-scripts') %>
+</body>
+</html>

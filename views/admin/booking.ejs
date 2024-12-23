@@ -1,0 +1,189 @@
+<div class="booking-container">
+    <div id="calendar"></div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const calendarEl = document.getElementById('calendar');
+    const today = new Date();
+    let currentMonth = today.getMonth();
+    let currentYear = today.getFullYear();
+
+    function renderCalendar() {
+        const firstDay = new Date(currentYear, currentMonth, 1);
+        const lastDay = new Date(currentYear, currentMonth + 1, 0);
+        const daysInMonth = lastDay.getDate();
+
+        let calendarHTML = `
+            <div class="calendar-header">
+                <button onclick="changeMonth(-1)">&lt;</button>
+                <h2>${new Date(currentYear, currentMonth).toLocaleString('default', { month: 'long' })} ${currentYear}</h2>
+                <button onclick="changeMonth(1)">&gt;</button>
+            </div>
+            <table>
+        `;
+
+        let day = 1;
+        for (let i = 0; i < 6; i++) {
+            calendarHTML += '<tr>';
+            for (let j = 0; j < 7; j++) {
+                if (i === 0 && j < firstDay.getDay()) {
+                    calendarHTML += '<td class="empty-cell"></td>';
+                } else if (day > daysInMonth) {
+                    calendarHTML += '<td class="empty-cell"></td>';
+                } else {
+                    const date = `${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+                    calendarHTML += `
+                        <td>
+                            <div class="date">${day}</div>
+                            <div class="cell-content">
+                                <div class="bookings">
+                                    <div class="booking">예약 1: ${date}</div>
+                                    <div class="booking">예약 2: ${date}</div>
+                                </div>
+                                <textarea class="booking-input" placeholder="예약 내역 입력"></textarea>
+                            </div>
+                        </td>
+                    `;
+                    day++;
+                }
+            }
+            calendarHTML += '</tr>';
+            if (day > daysInMonth) {
+                break;
+            }
+        }
+
+        calendarHTML += '</table>';
+        calendarEl.innerHTML = calendarHTML;
+    }
+
+    window.changeMonth = function(delta) {
+        currentMonth += delta;
+        if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+        } else if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+        }
+        renderCalendar();
+    }
+
+    renderCalendar();
+});
+
+function loadBookings(year, month) {
+    // 이 함수는 실제 예약 데이터를 로드할 때 사용할 수 있습니다.
+    // 현재는 샘플 데이터를 직접 렌더링하고 있으므로 이 함수를 호출하지 않습니다.
+    fetch(`/admin/bookings?year=${year}&month=${month}`)
+        .then(response => response.json())
+        .then(data => {
+            Object.entries(data).forEach(([date, bookings]) => {
+                const cell = document.querySelector(`#calendar td:nth-child(${new Date(year, month - 1, date).getDay() + 1}):nth-of-type(${Math.ceil(date / 7)}) .bookings`);
+                if (cell) {
+                    cell.innerHTML = bookings.map(booking => 
+                        `<div class="booking">${booking.user}: ${booking.status}</div>`
+                    ).join('');
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching booking data:', error);
+        });
+}
+</script>
+
+<style>
+.booking-container {
+    position: relative;
+    width: 100%;
+    height: 900px;
+    font-family: Arial, sans-serif;
+}
+#calendar {
+    width: 100%;
+    height: 100%;
+}
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+}
+.calendar-header button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.calendar-header h2 {
+    font-size: 24px;
+    color: #333;
+}
+#calendar table {
+    width: 100%;
+    height: calc(100% - 60px);
+    border-collapse: separate;
+    border-spacing: 3px;
+}
+#calendar td {
+    border: 2px solid #ddd;
+    padding: 10px;
+    vertical-align: top;
+    height: 120px;
+    background-color: #fff;
+    transition: background-color 0.3s;
+}
+#calendar td:hover {
+    background-color: #f9f9f9;
+}
+#calendar td.empty-cell {
+    background-color: #f9f9f9;
+}
+.date {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+.cell-content {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 30px);
+}
+.bookings {
+    font-size: 12px;
+    overflow-y: auto;
+    flex-grow: 1;
+    margin-bottom: 10px;
+    max-height: 60px;
+}
+.booking {
+    margin-bottom: 5px;
+    padding: 5px;
+    background-color: #e9e9e9;
+    border-radius: 3px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+}
+.booking-input {
+    width: 100%;
+    height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 5px;
+    font-size: 12px;
+    resize: none;
+}
+.booking-input:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76,175,80,0.5);
+}
+</style>

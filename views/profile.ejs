@@ -1,0 +1,148 @@
+<%- include('partials/head') %>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Helvetica:wght@300;400;500;700&display=swap');
+
+  body {
+    background-color: #f0f2f5;
+    font-family: 'Roboto', 'Helvetica', Arial, sans-serif, 'Noto Sans KR', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+    margin: 0;
+    padding: 0;
+  }
+
+  .profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 100px);
+    padding: 10px;
+  }
+
+  .profile-background {
+    background-color: white;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 600px;
+  }
+
+  h1 {
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .profile-info {
+    font-size: 18px;
+    line-height: 1.8;
+  }
+
+  .profile-info p {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center; /* Align stars vertically */
+  }
+
+  .profile-info strong {
+    color: #555;
+    display: block;
+    margin-bottom: 5px;
+    margin-right: 10px; /* Add spacing between label and stars */
+  }
+
+  .star-ratings {
+    display: inline-block;
+    margin-left: 20px; /* Add space between ID and stars */
+  }
+
+  .star-ratings i {
+    color: #f0ad4e; /* Gold color for filled stars */
+    font-size: 18px;
+  }
+
+  .star-ratings .empty-star {
+    color: #ddd; /* Light gray for empty stars */
+  }
+
+  #resetPassword, #kycRequest {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+  }
+
+  #resetPassword {
+    background-color: #f0ad4e;
+  }
+
+  #resetPassword:hover {
+    background-color: #ec971f;
+  }
+
+  #kycRequest {
+    background-color: #5bc0de;
+  }
+
+  #kycRequest:hover {
+    background-color: #46b8da;
+  }
+</style>
+
+<div class="profile-container">
+  <div class="profile-background">
+    <div class="profile-info">
+      <p>
+        <strong>ID:</strong> <%= user.email %>
+        <span class="star-ratings">
+          <% for (let i = 1; i <= user.userLevel; i++) { %>
+            <i class="fas fa-star"></i>
+          <% } %>
+          <% for (let i = user.userLevel + 1; i <= 5; i++) { %>
+            <i class="fas fa-star empty-star"></i>
+          <% } %>
+        </span>
+   
+      </p>
+
+      <p><strong>userPaybackRate:</strong> <%= user.userPaybackRate %>%</p>
+      <p><strong>Company Name:</strong> <%= user.companyName || 'Not Registered' %></p>
+      <p><strong>Business Number:</strong> <%= user.businessNumber || 'Not Registered' %></p>
+      <p><strong>Contact Person:</strong> <%= user.contactPerson || 'Not Registered' %></p>
+      <p><strong>Contact Number:</strong> <%= user.contactNumber || 'Not Registered' %></p>
+      <p><strong>Email:</strong> <%= user.userReceiveEmail %></p>
+      <p><strong>Role:</strong> <%= user.role %></p>      
+      <p><strong>KYC Status:</strong> <%= user.kycStatus %></p>
+      <button id="resetPassword">Reset Password</button>
+      <% if (user.businessNumber === 'Not Registered') { %>
+        <button id="kycRequest">KYC Request</button>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('resetPassword').addEventListener('click', function(e) {
+  e.preventDefault();
+  // Here you would typically send a request to the server to initiate the password reset process
+  alert('Password reset functionality will be implemented here.');
+});
+
+// <% if (user.businessNumber === 'N/A') { %>
+// document.getElementById('kycRequest').addEventListener('click', function(e) {
+//   e.preventDefault();
+//   // Here you would typically send a request to the server to initiate the KYC request process
+//   alert('KYC request functionality will be implemented here.');
+// });
+// <% } %>
+</script>

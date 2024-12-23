@@ -1,0 +1,43 @@
+<%- include('partials/header-hotel-details') %>
+
+<link rel="stylesheet" href="/css/customerService.css">
+
+<div class="container">
+    <h1>Customer Service</h1>
+    <p>If you have any questions, please feel free to contact us using the form below..</p>
+    
+    <form id="messageForm">
+        <input type="hidden" id="userEmail" value="<%= user.email %>">
+        <div class="form-group">
+            <label for="messageContent">input message:</label>
+            <textarea class="form-control" id="messageContent" rows="5" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">SEND</button>
+    </form>
+
+    <div id="messageStatus"></div>
+</div>
+
+<script>
+document.getElementById('messageForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const content = document.getElementById('messageContent').value;
+    const email = document.getElementById('userEmail').value;
+    try {
+        const response = await fetch('/customer-service/send', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ content, email }),
+        });
+        const data = await response.json();
+        document.getElementById('messageStatus').innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+        document.getElementById('messageContent').value = '';
+    } catch (error) {
+        document.getElementById('messageStatus').innerHTML = '<div class="alert alert-danger">메시지 전송 중 오류가 발생했습니다.</div>';
+    }
+});
+</script>
+
+<%- include('partials/footer') %>

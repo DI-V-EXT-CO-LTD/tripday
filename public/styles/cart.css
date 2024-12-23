@@ -1,0 +1,347 @@
+/* public/styles/cart.css */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f2f5;
+    color: #333;
+}
+
+.cart-container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+h1 {
+    color: #2c3e50;
+    text-align: center;
+    padding: 20px 0;
+    font-size: 2.5rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.cart-items-container {
+    margin-bottom: 30px;
+}
+
+.cart-items {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.cart-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.item-select {
+    margin-right: 20px;
+}
+
+.item-checkbox {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+
+.item-image {
+    width: 120px;
+    height: 120px;
+    overflow: hidden;
+    margin-right: 30px;
+    flex-shrink: 0;
+    border-radius: 8px;
+}
+
+.item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.item-image img:hover {
+    transform: scale(1.1);
+}
+
+.item-details {
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+}
+
+.item-column {
+    flex: 1;
+    padding: 0 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.item-column:first-child {
+    align-items: flex-start;
+    text-align: left;
+}
+
+.item-column:last-child {
+    align-items: flex-end;
+    text-align: right;
+}
+
+.hotel-name {
+    color: #2c3e50;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.room-type {
+    color: #34495e;
+    font-size: 1.1rem;
+    font-style: italic;
+}
+
+.item-price {
+    font-size: 1.2rem;
+    color: #27ae60;
+    font-weight: bold;
+}
+
+.item-nights {
+    color: #2c3e50;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.item-total {
+    font-size: 1.3rem;
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+.remove-item {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.remove-item:hover {
+    background-color: #c0392b;
+    transform: scale(1.05);
+}
+
+.cart-summary {
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.cart-summary h2 {
+    margin-top: 0;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 15px;
+    color: #2c3e50;
+    font-size: 2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+.summary-item.total {
+    font-weight: bold;
+    font-size: 1.5rem;
+    border-top: 2px solid #ecf0f1;
+    padding-top: 15px;
+    margin-top: 15px;
+    color: #2c3e50;
+}
+
+#proceed-to-payment {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: 6px;
+    width: 100%;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+#proceed-to-payment:hover {
+    background-color: #2980b9;
+    transform: scale(1.03);
+}
+
+.empty-cart {
+    text-align: center;
+    padding: 50px 0;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.empty-cart i {
+    color: #bdc3c7;
+    margin-bottom: 20px;
+    font-size: 5rem;
+}
+
+.empty-cart p {
+    font-size: 1.4rem;
+    color: #7f8c8d;
+    margin-bottom: 30px;
+}
+
+.btn {
+    display: inline-block;
+    background: #3498db;
+    color: #fff;
+    padding: 15px 30px;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 1.1rem;
+}
+
+.btn:hover {
+    background: #2980b9;
+    transform: scale(1.05);
+}
+
+@media (max-width: 1200px) {
+    .cart-container {
+        padding: 15px;
+    }
+
+    .item-image {
+        width: 100px;
+        height: 100px;
+    }
+
+    .hotel-name {
+        font-size: 1.2rem;
+    }
+
+    .item-price, .item-total {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .item-details {
+        flex-wrap: wrap;
+    }
+
+    .item-column {
+        flex-basis: 50%;
+        margin-bottom: 15px;
+    }
+
+    .item-column:nth-child(5) {
+        flex-basis: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .cart-container {
+        padding: 10px;
+    }
+
+    .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .item-image {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+
+    .item-details {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    .item-column {
+        width: 100%;
+        margin-bottom: 15px;
+        padding: 0;
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .remove-item {
+        width: 100%;
+    }
+
+    .cart-summary {
+        padding: 20px;
+    }
+
+    .cart-summary h2 {
+        font-size: 1.8rem;
+    }
+
+    .summary-item {
+        font-size: 1.1rem;
+    }
+
+    .summary-item.total {
+        font-size: 1.3rem;
+    }
+
+    #proceed-to-payment {
+        padding: 12px 24px;
+        font-size: 1.1rem;
+    }
+}

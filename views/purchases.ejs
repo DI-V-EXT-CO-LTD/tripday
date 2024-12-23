@@ -1,0 +1,132 @@
+
+<%
+function getStatusColor(status) {
+  switch(status.toLowerCase()) {
+    case 'completed':
+      return 'success';
+    case 'pending':
+      return 'warning';
+    case 'cancelled':
+      return 'danger';
+    default:
+      return 'secondary';
+  }
+}
+%>
+
+<div class="container-fluid mt-4" style="width: 100%;">
+
+  <table class="table table-striped" style="width: 100%;">
+    <thead>
+      <tr>
+        <th style="text-align: center; vertical-align: middle;">Hotel Name</th>
+        <th style="text-align: center; vertical-align: middle;">Room Name</th>
+        <th style="text-align: center; vertical-align: middle;">Valid-from</th>
+        <th style="text-align: center; vertical-align: middle;">Valid-until</th>
+        <th style="text-align: center; vertical-align: middle;">Amount</th>
+        <th style="text-align: center; vertical-align: middle;">Price(THB)</th>
+        <th style="text-align: center; vertical-align: middle;">Payment Method</th>
+        <th style="text-align: center; vertical-align: middle;">Status</th>
+ 
+      </tr>
+    </thead>
+    <tbody>
+      <% purchases.forEach(purchase => { %>
+        <tr>
+          <td style="text-align: center; vertical-align: middle;"><%= purchase.hotelName %></td>
+          <td style="text-align: center; vertical-align: middle;"><%= purchase.roomName %></td>
+          <td style="text-align: center; vertical-align: middle;"><%= purchase.checkIn.toLocaleDateString() %></td>
+          <td style="text-align: center; vertical-align: middle;"><%= purchase.checkOut.toLocaleDateString() %></td>
+          <td style="text-align: center; vertical-align: middle;"><%= purchase.nights %></td>
+          <td style="text-align: center; vertical-align: middle;"><%= purchase.amount.toLocaleString(2) %></td>
+          <td style="text-align: center; vertical-align: middle;"><%= purchase.paymentMethod %></td>
+          <td style="text-align: center; vertical-align: middle;">
+            <span class="badge badge-<%= getStatusColor(purchase.status) %>">
+              <%= purchase.status %>
+            </span>
+          </td>
+          
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>
+
+<!-- <% purchases.forEach(purchase => { %>
+  <div class="modal fade" id="purchaseModal<%= purchase._id %>" tabindex="-1" role="dialog" aria-labelledby="purchaseModalLabel<%= purchase._id %>" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="purchaseModalLabel<%= purchase._id %>">Purchase Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <table class="table table-bordered">
+            <tr>
+              <th>Hotel Name</th>
+              <td><%= purchase.hotelName %></td>
+            </tr>
+            <tr>
+              <th>Room Name</th>
+              <td><%= purchase.roomName %></td>
+            </tr>
+            <tr>
+              <th>Check-in</th>
+              <td><%= purchase.checkIn.toLocaleDateString() %></td>
+            </tr>
+            <tr>
+              <th>Check-out</th>
+              <td><%= purchase.checkOut.toLocaleDateString() %></td>
+            </tr>
+            <tr>
+              <th>Nights</th>
+              <td><%= purchase.nights %></td>
+            </tr>
+            <tr>
+              <th>Amount</th>
+              <td>฿<%= purchase.amount.toFixed(2) %></td>
+            </tr>
+            <tr>
+              <th>Payment Method</th>
+              <td><%= purchase.paymentMethod %></td>
+            </tr>
+            <tr>
+              <th>Status</th>
+              <td>
+                <span class="badge badge-<%= getStatusColor(purchase.status) %>">
+                  <%= purchase.status %>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>Created At</th>
+              <td><%= purchase.createdAt.toLocaleString() %></td>
+            </tr>
+            <tr>
+              <th>Updated At</th>
+              <td><%= purchase.updatedAt.toLocaleString() %></td>
+            </tr>
+            <tr>
+              <th>Process Description</th>
+              <td><%= purchase.processDescription %></td>
+            </tr>
+          </table>
+          <h6>Purchase Log</h6>
+          <ul class="list-group">
+            <% purchase.purchaseLog.forEach(log => { %>
+              <li class="list-group-item">
+                <%= log.timestamp.toLocaleString() %> - <%= log.message %>
+              </li>
+            <% }) %>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<% }); %> -->
+

@@ -1,0 +1,84 @@
+<div id="dashboardContent">
+  <div class="row">
+    <div class="col-md-3 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Total Users</h5>
+          <p class="card-text"><%= userCount %></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Total Bookings</h5>
+          <p class="card-text"><%= bookingCount %></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Total Hotels</h5>
+          <p class="card-text"><%= hotelCount %></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Total Vouchers</h5>
+          <p class="card-text"><%= voucherCount %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-4">
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Today's Sales</h5>
+          <p class="card-text"><%= todaySales %> THB</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Yesterday's Sales</h5>
+          <p class="card-text"><%= yesterdaySales %> THB</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-4">
+    <div class="col-12">
+      <canvas id="salesChart"></canvas>
+    </div>
+  </div>
+  <div class="row mt-4">
+    <div class="col-12">
+      <h3>Recent Invoices</h3>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <% Object.keys(Invoice.schema.obj).forEach(key => { %>
+                <th><%= key %></th>
+              <% }); %>
+            </tr>
+          </thead>
+          <tbody>
+            <% recentInvoices.forEach(invoice => { %>
+              <tr>
+                <% Object.keys(Invoice.schema.obj).forEach(key => { %>
+                  <td><%= invoice[key] %></td>
+                <% }); %>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

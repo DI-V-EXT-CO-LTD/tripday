@@ -1,0 +1,122 @@
+<link rel="stylesheet" href="/styles/index.css">
+<div class="head-container" >
+  <div class="top-row" style="max-width: 1160px; text-align: center; align-items: center;">
+    <div class="left-section">
+      <div class="logo">
+        <a href="/"><img src="/images/logo.png" alt="Tripday Logo" style="height: 50px;"></a>
+      </div>
+      <form action="/search" method="GET" class="search-input">
+        <input type="text" name="query" placeholder="Search hotels">
+        <button type="submit"><i class="fas fa-search"></i></button>
+      </form>
+    </div>
+    <div class="right-section">
+
+      <% if (user) { %>
+
+        <div class="user-dropdown">
+          <button class="icon-button" onclick="toggleUserMenu()">
+        
+            <i class="fas fa-user"></i> <%= user.email %>
+          </button>
+          <div class="user-menu" id="userMenu">
+            <% if (user.role === 'Admin' || user.role === 'SuperAdmin') { %>
+              <a href="/dashboard">Dashboard</a>
+              <a href="/admin/dashboard">Admin Dashboard</a>
+              <a href="/auth/logout">Logout</a>
+            <% } else { %>
+              <a href="/dashboard">Dashboard</a>
+              <a href="/auth/logout">Logout</a>
+            <% } %>
+          </div>
+        </div>
+      <% } else { %>
+        <button class="button-text" onclick="showAuthPopup()">Login / Register</button>
+      <% } %>
+    </div>
+  </div>
+  <div class="middle-row">
+    <div class="category-section">
+      <a href="/search" class="category-button">Hotels</a>
+      <button class="category-button">Activities</button>
+      <button class="category-button">Flights</button>
+      <button class="category-button">Hotel + Activities</button>
+      <button class="category-button">Hotel + Flights</button>
+      <button class="category-button">Activities + Flights</button>
+    </div>
+  </div>
+  <div class="bottom-row">
+    <div class="top-section">
+      <div class="section-row">
+        <h1>More Benefits with Thai Vouchers!</h1>
+      </div>
+      <div class="section-row" style="display: flex;">
+        <p style="color: rgb(254, 255, 190);">#Dive to Next Generation</p>
+        <p style="color: rgb(254, 255, 190); padding-left: 50px;">#Only Vouchers?</p>
+        <p style="color: rgb(254, 255, 190); padding-left: 50px;">#Positive #Exclusive</p>
+      </div>
+    </div>
+    <div class="bottom-section">
+      <div class="section-row category-row">
+        <button class="category-button">Hotels</button>
+        <button class="category-button">Activities</button>
+        <button class="category-button">Flights</button>
+        <button class="category-button">Hotel + Activities</button>
+        <button class="category-button">Hotel + Flights</button>
+        <button class="category-button">Activities + Flights</button>
+      </div>
+      <div class="background-rounded">
+        <div class="search-fields">
+          <div class="destinationbox">
+            <label for="destination" style="height: 30%;">Location</label>
+            <input class="destination" type="text" id="destination" placeholder="Search Location" style="width: 100%; height: 50%; bottom: 0; top: 0;">
+          </div>
+          <div class="checkin-outbox">
+            <div class="label-container">
+              <label for="check-in">Check-in</label>
+              <label for="check-out">Check-out</label>
+            </div>
+            <div class="input-container">
+              <div class="checkin-container">
+                <input type="text" id="check-in" placeholder="Add date" style="width: 100%; height: 100%; text-align: center;">
+              </div>
+              <div class="nightsdisplayer">
+                <span>0 nights</span>
+              </div>
+              <div class="checkout-container">
+                <input type="text" id="check-out" placeholder="Add date" style="width: 100%; height: 100%; text-align: center;">
+              </div>
+            </div>
+          </div>
+          <div class="rooms-and-guests-box">
+            <label for="rooms-guests">Rooms and Guests</label>
+            <button class="dropbtn" id="rooms-guests">1 room, 2 guests</button>
+            <div class="dropdown-content">
+         
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function toggleUserMenu() {
+  var menu = document.getElementById("userMenu");
+  menu.classList.toggle("show");
+}
+
+// Close the dropdown menu if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.icon-button')) {
+    var dropdowns = document.getElementsByClassName("user-menu");
+    for (var i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+</script>

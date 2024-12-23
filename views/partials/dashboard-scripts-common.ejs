@@ -1,0 +1,181 @@
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  function toggleSubmenu(id) {
+    const submenu = document.getElementById(id + 'Submenu');
+    submenu.classList.toggle('d-none');
+  }
+
+  function loadContent(page) {
+    console.log('Loading content for:', page);
+    const pageTitle = document.getElementById('pageTitle');
+    const content = document.getElementById('content');
+    const dashboardContent = document.getElementById('dashboardContent');
+
+    // Reset all menu items
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.classList.remove('active-menu-item');
+    });
+
+    // Set the clicked menu item as active
+    event.target.closest('.nav-link').classList.add('active-menu-item');
+
+    // Hide dashboard content and show dynamic content area
+    dashboardContent.style.display = 'none';
+    content.style.display = 'block';
+
+    switch(page) {
+      case 'dashboard':
+        pageTitle.textContent = 'Dashboard';
+        dashboardContent.style.display = 'block';
+        content.style.display = 'none';
+        break;
+      case 'userManagement':
+        pageTitle.textContent = 'User Management';
+        loadUserManagementContent();
+        break;
+      case 'invoices':
+        pageTitle.textContent = 'Invoices';
+        loadInvoicesContent();
+        break;
+      case 'vouchers':
+        pageTitle.textContent = 'Vouchers';
+        loadVouchersContent();
+        break;
+      // Add more cases for other menu items
+      default:
+        pageTitle.textContent = 'Content Not Available';
+        content.innerHTML = '<p>Content for this page is not available yet.</p>';
+    }
+  }
+
+  function loadUserManagementContent() {
+    fetch('/admin/users')
+      .then(response => response.json())
+      .then(users => {
+        const content = document.getElementById('content');
+        content.innerHTML = `
+          <div class="table-responsive">
+            <table class="table table-striped table-sm">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Email</th>
+                  <th>Name</th>
+                  <th>Role</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${users.map(user => `
+                  <tr>
+                    <td>${user._id}</td>
+                    <td>${user.email}</td>
+                    <td>${user.name || ''}</td>
+                    <td>${user.role || 'User'}</td>
+                    <td>
+                      <button class="btn btn-sm btn-primary">Edit</button>
+                      <button class="btn btn-sm btn-danger">Delete</button>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        `;
+      })
+      .catch(error => console.error('Error fetching users:', error));
+  }
+
+  function loadInvoicesContent() {
+    fetch('/admin/invoices?page=1&limit=20')
+      .then(response => response.json())
+      .then(data => {
+        const content = document.getElementById('content');
+        content.innerHTML = `
+          <div class="table-responsive">
+            <table class="table table-striped table-sm">
+              <thead>
+                <tr>
+                  <th>Invoice ID</th>
+                  <th>User</th>
+                  <th>Amount</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${data.invoices.map(invoice => `
+                  <tr>
+                    <td>${invoice._id}</td>
+                    <td>${invoice.user}</td>
+                    <td>${invoice.amount}</td>
+                    <td>${invoice.date}</td>
+                    <td>${invoice.status}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+          <nav aria-label="Invoice pagination">
+            <ul class="pagination">
+              ${generatePaginationLinks(data.currentPage, data.totalPages)}
+            </ul>
+          </nav>
+        `;
+      })
+      .catch(error => console.error('Error fetching invoices:', error));
+  }
+
+  function generatePaginationLinks(currentPage, totalPages) {
+    let links = '';
+    for (let i = 1; i <= totalPages; i++) {
+      links += `
+        <li class="page-item ${i === currentPage ? 'active' : ''}">
+          <a class="page-link" href="#" onclick="loadInvoicesContent(${i})">${i}</a>
+        </li>
+      `;
+    }
+    return links;
+  }
+
+  function loadVouchersContent() {
+    fetch('/admin/vouchers')
+      .then(response => response.json())
+      .then(vouchers => {
+        const content = document.getElementById('content');
+        content.innerHTML = `
+          <div class="table-responsive">
+            <table class="table table-striped table-sm">
+              <thead>
+                <tr>
+                  <th>Voucher ID</th>
+                  <th>Code</th>
+                  <th>Discount</th>
+                  <th>Expiry Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${vouchers.map(voucher => `
+                  <tr>
+                    <td>${voucher._id}</td>
+                    <td>${voucher.code}</td>
+                    <td>${voucher.discount}</td>
+                    <td>${voucher.expiryDate}</td>
+                    <td>${voucher.status}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        `;
+      })
+      .catch(error => console.error('Error fetching vouchers:', error));
+  }
+
+ 
+
+  document.getElementById('menu-toggle').addEventListener('click', function() {
+    document.getElementById('sidebarMenu').classList.toggle('active');
+  });
+</script>

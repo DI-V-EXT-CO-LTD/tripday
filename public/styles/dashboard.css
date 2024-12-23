@@ -1,0 +1,175 @@
+.sidebar {
+  background-color: #2c3e50;
+  transition: all 0.3s;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  min-height: 100vh;
+  min-width: 270px;
+}
+
+.sidebar .nav-link {
+  color: #ecf0f1;
+  padding: 10px 15px;
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar .nav-link:hover {
+  background-color: #34495e;
+}
+
+.sidebar .nav-item {
+  border-bottom: 1px solid #34495e;
+}
+
+.card {
+  background-color: #f8f9fa;
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.card-title {
+  color: #2c3e50;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.card-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #3498db;
+}
+
+.welcome-section {
+  padding: 15px;
+  background-color: #34495e;
+  color: #ecf0f1;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.exchange-rates {
+  padding: 15px;
+  color: #ecf0f1;
+  font-size: 0.9em;
+  background-color: #34495e;
+  border-radius: 5px;
+  margin-top: auto;
+}
+
+.exchange-rates p {
+  margin-bottom: 5px;
+}
+
+.version-info {
+  padding: 15px;
+  color: #ecf0f1;
+  font-size: 0.8em;
+  text-align: center;
+  background-color: #2c3e50;
+}
+
+.content {
+  margin-left: 250px;
+  position: relative;
+  overflow: auto;
+  resize: horizontal;
+  min-width: 300px;
+  max-width: calc(100% - 270px);
+}
+
+.content::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 5px;
+  background: #ccc;
+  cursor: ew-resize;
+}
+
+.table-responsive {
+  margin-top: 0;
+}
+
+#menu-toggle {
+  display: none;
+}
+
+.active-menu-item {
+  background-color: #3498db !important;
+  color: #ffffff !important;
+}
+
+.titles {
+  text-align: center;
+}
+
+/* New styles for summary content */
+#summary-content .card {
+  height: 100%;
+}
+
+#summary-content .card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#summary-content .card-title {
+  margin-bottom: 0.5rem;
+}
+
+#summary-content .card-text {
+  margin-bottom: 0;
+}
+
+/* New styles for hotels content */
+#hotels-content {
+  width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#hotels-content .col-md-9,
+#hotels-content .col-lg-10 {
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+
+@media (max-width: 1634px) {
+  .sidebar {
+    position: fixed;
+    left: -250px;
+    z-index: 1000;
+  }
+  .sidebar.active {
+    left: 0;
+  }
+  #menu-toggle {
+    display: block;
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 1001;
+  }
+  .welcome-section {
+    font-size: 0.9em;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .welcome {
+    font-size: 14px;
+  }
+}

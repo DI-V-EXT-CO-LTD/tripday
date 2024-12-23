@@ -1,0 +1,401 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Helvetica:wght@300;400;500;700&display=swap');
+  .header-hotel-details {
+    background-color: #003580;
+    color: white;
+    width: 100%;
+    height: 150px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+  }
+  .header-content {
+    display: flex;
+    flex-direction: column;
+    max-width: 1200px;
+    margin: auto;
+    padding: 10px 0;
+  }
+
+  .top-row, .middle-row, .bottom-row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+  }
+  .top-row {
+    justify-content: flex-end;
+    height: 20px;
+  }
+  .middle-row {
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+  .middle-row, .bottom-row {
+    justify-content: space-between;
+    margin-top: 5px;
+  }
+  .logo img {
+    height: 40px;
+  }
+  .promotion-section {
+    display: flex;
+    gap: 15px;
+  }
+  .category-section {
+    display: flex;
+    gap: 20px;
+    justify-content: flex-start;
+    width: 100%;
+    align-items: center;
+  }
+  .category-button, .promotion-button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0 ;
+      margin: 0;
+      line-height: 1.5;
+  }
+  .header-search-section {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 340px;
+    height: 44px; 
+  }
+  .header-search-input {
+    position: relative;
+    padding: 5px 10px;
+    margin-right: 10px;
+    flex-grow: 1;
+    width: 340px;
+    border-radius: 7px;
+  }
+  .header-search-inputfield {
+    width: 100%;
+    padding: 5px 10px; 
+    border: none;
+    border-radius: 7px;
+  }
+  .header-search-button {
+    position: absolute;
+    right: 13px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #0071c2;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    padding: 5px 10px;
+    cursor: pointer;
+    width: 80px;
+    height: 30px;
+  }
+  .user-dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  .user-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    z-index: 1000;
+    min-width: 200px;
+    padding: 10px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  }
+  .user-menu.show {
+    display: block;
+  }
+  .user-menu a {
+    display: block;
+    padding: 10px 20px;
+    color: #333;
+    text-decoration: none;
+  }
+  .user-menu a:hover {
+    background-color: #f5f5f5;
+  }
+  .button-text {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  .auth-support-section {
+    display: flex;
+    gap: 15px;
+  }
+  .hotels-dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  .hotels-list {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    z-index: 1000;
+    min-width: 200px;
+    padding: 10px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  }
+  .hotels-list.show {
+    display: block;
+  }
+  .hotels-list a {
+    display: block;
+    padding: 5px 20px;
+    color: #333;
+    text-decoration: none;
+  }
+  .hotels-list a:hover {
+    background-color: #f5f5f5;
+  }
+  .scroll-nav {
+    position: fixed;
+    right: 150px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #003580;
+    border-radius: 5px;
+    padding: 10px;
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1001;
+  }
+  .scroll-nav button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 5px 10px;
+    text-align: left;
+  }
+  .scroll-nav button:hover {
+    background-color: #0071c2;
+  }
+  .scroll-banner {
+    position: fixed;
+    left: 30px;
+    top: 60%;
+    transform: translateY(-50%);
+    display: none;
+    z-index: 1001;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  .scroll-banner img {
+    
+    width: 280px;
+    border-radius: 5px;
+    transition: transform 0.3s ease;
+  }
+  .scroll-banner img:hover {
+    transform: scale(1.05);
+  }
+  body {
+    padding-top: 150px;
+  }
+  @media (max-width: 768px) {
+    .scroll-nav, .scroll-banner {
+      display: none !important;
+    }
+  }
+</style>
+
+<div class="header-hotel-details">
+  <div class="header-content">
+    <div class="top-row">
+      <div class="auth-support-section">
+        <% if (typeof user !== 'undefined' && user) { %>
+          <div class="user-dropdown">
+            <button class="button-text" onclick="toggleUserMenu()">
+              <i class="button-text"></i> <%= user.email %>
+            </button>
+            <div class="user-menu" id="userMenu">
+              <% if (user.role === 'Admin' || user.role === 'SuperAdmin') { %>
+                <a href="/dashboard" <% if (!user.isVerified) { %>onclick="alert('Please verify your account to access the dashboard.'); return false;"<% } %>>Dashboard</a>
+                <a href="/admin/dashboard">Admin Dashboard</a>
+                <a href="/auth/logout">Logout</a>
+              <% } else { %>
+                <a href="/dashboard" <% if (!user.isVerified) { %>onclick="alert('Please verify your account to access the dashboard.'); return false;"<% } %>>Dashboard</a>
+                <a href="/auth/logout">Logout</a>
+              <% } %>
+            </div>
+          </div>
+        <% } else { %>
+          <button class="button-text" onclick="showAuthPopup()">Sign in / Register</button>
+        <% } %>
+      </div>
+    </div>
+    <div class="middle-row">
+      <div class="logo">
+        <a href="/"><img src="/images/logo.png" alt="Tripday Logo"></a>
+      </div>
+     
+    </div>
+    <div class="bottom-row">
+      <div class="category-section">
+        <a href="<% if (typeof user !== 'undefined' && user) { %>/ %><% } else { %><% } %>" class="category-button" <% if (!(typeof user !== 'undefined' && user)) { %>onclick="alert('Login is required');"<% } %>>Home</a>
+        <div class="hotels-dropdown">
+          <a href="<% if (typeof user !== 'undefined' && user) { %>/search %><% } else { %><% } %>" class="category-button" <% if (!(typeof user !== 'undefined' && user)) { %>onclick="alert('Login is required');"<% } %> onmouseover="showHotelsList()" onmouseout="hideHotelsList()">Hotels</a>
+          <div class="hotels-list" id="hotelsList" onmouseover="showHotelsList()" onmouseout="hideHotelsList()">
+            <a href="<% if (typeof user !== 'undefined' && user) { %>/search?query=Pattaya<% } else { %>#<% } %>" <% if (!(typeof user !== 'undefined' && user)) { %>onclick="alert('Login is required'); return false;"<% } %>>Pattaya</a>
+            <a href="<% if (typeof user !== 'undefined' && user) { %>/search?query=Bangkok<% } else { %>#<% } %>" <% if (!(typeof user !== 'undefined' && user)) { %>onclick="alert('Login is required'); return false;"<% } %>>Bangkok</a>
+            <a href="<% if (typeof user !== 'undefined' && user) { %>/search?query=Phuket<% } else { %>#<% } %>" <% if (!(typeof user !== 'undefined' && user)) { %>onclick="alert('Login is required'); return false;"<% } %>>Phuket</a>
+            <a href="<% if (typeof user !== 'undefined' && user) { %>/search?query=Chataburi<% } else { %>#<% } %>" <% if (!(typeof user !== 'undefined' && user)) { %>onclick="alert('Login is required'); return false;"<% } %>>Chataburi</a>
+            <a href="<% if (typeof user !== 'undefined' && user) { %>/search?query=Chiang mai<% } else { %>#<% } %>" <% if (!(typeof user !== 'undefined' && user)) { %>onclick="alert('Login is required'); return false;"<% } %>>Chiang mai</a>
+            <a href="<% if (typeof user !== 'undefined' && user) { %>/search?query=Krabi<% } else { %>#<% } %>" <% if (!(typeof user !== 'undefined' && user)) { %>onclick="alert('Login is required'); return false;"<% } %>>Krabi</a>
+            <a href="<% if (typeof user !== 'undefined' && user) { %>/search?query=Phang Nga<% } else { %>#<% } %>" <% if (!(typeof user !== 'undefined' && user)) { %>onclick="alert('Login is required'); return false;"<% } %>>Phang Nga</a>
+            <a href="<% if (typeof user !== 'undefined' && user) { %>/search?query=Kho samui<% } else { %>#<% } %>" <% if (!(typeof user !== 'undefined' && user)) { %>onclick="alert('Login is required'); return false;"<% } %>>Kho samui</a>
+            <a href="<% if (typeof user !== 'undefined' && user) { %>/search?query=Surat thani<% } else { %>#<% } %>" <% if (!(typeof user !== 'undefined' && user)) { %>onclick="alert('Login is required'); return false;"<% } %>>Surat thani</a>
+            <a href="<% if (typeof user !== 'undefined' && user) { %>/search?query=Huahin<% } else { %>#<% } %>" <% if (!(typeof user !== 'undefined' && user)) { %>onclick="alert('Login is required'); return false;"<% } %>>Huahin</a>
+            <a href="<% if (typeof user !== 'undefined' && user) { %>/search?query=Udon thani<% } else { %>#<% } %>" <% if (!(typeof user !== 'undefined' && user)) { %>onclick="alert('Login is required'); return false;"<% } %>>Udon thani</a>
+            <a href="<% if (typeof user !== 'undefined' && user) { %>/search?query=Phatthalung<% } else { %>#<% } %>" <% if (!(typeof user !== 'undefined' && user)) { %>onclick="alert('Login is required'); return false;"<% } %>>Phatthalung</a>
+            <a href="<% if (typeof user !== 'undefined' && user) { %>/search?query=Nakhon Phanom<% } else { %>#<% } %>" <% if (!(typeof user !== 'undefined' && user)) { %>onclick="alert('Login is required'); return false;"<% } %>>Nakhon Phanom</a>
+            <a href="<% if (typeof user !== 'undefined' && user) { %>/search?query=Korat<% } else { %>#<% } %>" <% if (!(typeof user !== 'undefined' && user)) { %>onclick="alert('Login is required'); return false;"<% } %>>Korat</a>
+            <a href="<% if (typeof user !== 'undefined' && user) { %>/search?query=Si Racha<% } else { %>#<% } %>" <% if (!(typeof user !== 'undefined' && user)) { %>onclick="alert('Login is required'); return false;"<% } %>>Si Racha</a>
+            <a href="<% if (typeof user !== 'undefined' && user) { %>/search?query=Sattahip<% } else { %>#<% } %>" <% if (!(typeof user !== 'undefined' && user)) { %>onclick="alert('Login is required'); return false;"<% } %>>Sattahip</a>
+            <a href="<% if (typeof user !== 'undefined' && user) { %>/search?query=Khao Yai<% } else { %>#<% } %>" <% if (!(typeof user !== 'undefined' && user)) { %>onclick="alert('Login is required'); return false;"<% } %>>Khao Yai</a>
+            <a href="<% if (typeof user !== 'undefined' && user) { %>/search?query=Rayong<% } else { %>#<% } %>" <% if (!(typeof user !== 'undefined' && user)) { %>onclick="alert('Login is required'); return false;"<% } %>>Rayong</a>
+            <a href="<% if (typeof user !== 'undefined' && user) { %>/search?query=Koh Smed<% } else { %>#<% } %>" <% if (!(typeof user !== 'undefined' && user)) { %>onclick="alert('Login is required'); return false;"<% } %>>Koh Smed</a>
+            <a href="<% if (typeof user !== 'undefined' && user) { %>/search?query=Ayutthaya<% } else { %>#<% } %>" <% if (!(typeof user !== 'undefined' && user)) { %>onclick="alert('Login is required'); return false;"<% } %>>Ayutthaya</a>
+            <a href="<% if (typeof user !== 'undefined' && user) { %>/search?query=Kanchanaburi<% } else { %>#<% } %>" <% if (!(typeof user !== 'undefined' && user)) { %>onclick="alert('Login is required'); return false;"<% } %>>Kanchanaburi</a>
+            <a href="<% if (typeof user !== 'undefined' && user) { %>/search?query=Samut Prakan<% } else { %>#<% } %>" <% if (!(typeof user !== 'undefined' && user)) { %>onclick="alert('Login is required'); return false;"<% } %>>Samut Prakan</a>
+          </div>
+        </div>
+        <a href="<% if (typeof user !== 'undefined' && user) { %>/golf/courses %><% } else { %><% } %>" class="category-button" <% if (!(typeof user !== 'undefined' && user)) { %>onclick="alert('Login is required');"<% } %>>Golf</a>
+        <a href="<% if (typeof user !== 'undefined' && user) { %>/package/list %><% } else { %><% } %>" class="category-button" <% if (!(typeof user !== 'undefined' && user)) { %>onclick="alert('Login is required');"<% } %>>Hotel & Golf</a>
+        <a href="https://www.skyscanner.co.th/" target="_blank" style="color: white;" class="category-button">Flights</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="scroll-nav" id="scrollNav">
+  <button onclick="scrollToTop()" class="promotion-button">Back to Top</button>
+  <a href="<% if (typeof user !== 'undefined' && user) { %>/dashboard#cart %><% } else { %><% } %>" class="promotion-button" <% if (!(typeof user !== 'undefined' && user)) { %>onclick="alert('Login is required');"<% } %>>Cart</a>
+  <a href="/promotions?type=BestSellers" class="promotion-button" >Best Sellers</a>
+  <a href="<% if (typeof user !== 'undefined' && user) { %>/promotions?type=FireSales %><% } else { %><% } %>" class="promotion-button" <% if (!(typeof user !== 'undefined' && user)) { %>onclick="alert('Login is required');"<% } %>>Fire Sales</a>
+  <a href="<% if (typeof user !== 'undefined' && user) { %>/promotions?type=EarlyBird %><% } else { %><% } %>" class="promotion-button" <% if (!(typeof user !== 'undefined' && user)) { %>onclick="alert('Login is required');"<% } %>>Early Bird</a>
+  <a href="<% if (typeof user !== 'undefined' && user) { %>/about/cancel-refund-policy %><% } else { %><% } %>" class="promotion-button" <% if (!(typeof user !== 'undefined' && user)) { %>onclick="alert('Login is required');"<% } %>>Cancel & Refund</a>
+</div>
+
+<div class="scroll-banner" id="scrollBanner">
+  <img src="/images/en1.png" alt="Promotional Banner 1">
+  <img src="/images/en2.png" alt="Promotional Banner 2">
+  <img src="/images/en3.png" alt="Promotional Banner 3">
+  <img src="/images/en4.png" alt="Promotional Banner 4">
+  <img src="/images/en5.png" alt="Promotional Banner 5">
+  <img src="/images/en6.png" alt="Promotional Banner 6">
+</div>
+
+<div id="authPopup" class="popup" style="display: none;"> 
+  <div class="popup-content">
+    <h2 id="popupTitle">Sign In / Register</h2>
+
+    <% if (messages.error) { %>
+      <div class="alert alert-danger">
+        <%= messages.error %>
+      </div>
+    <% } %>
+
+    <form id="authForm" action="/auth/register" method="post">
+      <input type="email" id="email" name="email" placeholder="Email Address" required>
+      <input type="password" id="password" name="password" placeholder="Password" style="display:none;">
+      
+      <div class="button-row">
+        <button type="submit" id="authButton">Submit</button>
+        <button type="button" onclick="closePopup()">Close</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="/scripts/auth.js"></script>
+<script>
+  function toggleUserMenu() {
+    var menu = document.getElementById("userMenu");
+    menu.classList.toggle("show");
+  }
+  
+  function showHotelsList() {
+    var list = document.getElementById("hotelsList");
+    list.classList.add("show");
+  }
+
+  function hideHotelsList() {
+    var list = document.getElementById("hotelsList");
+    list.classList.remove("show");
+  }
+
+  // Close the dropdown menu if the user clicks outside of it
+  window.onclick = function(event) {
+    if (!event.target.matches('.button-text')) {
+      var dropdowns = document.getElementsByClassName("user-menu");
+      for (var i = 0; i < dropdowns.length; i++) {
+        var openDropdown = dropdowns[i];
+        if (openDropdown.classList.contains('show')) {
+          openDropdown.classList.remove('show');
+        }
+      }
+    }
+  }
+
+  // Show/hide scroll navigation and banner
+  window.onscroll = function() {
+    var scrollNav = document.getElementById("scrollNav");
+    var scrollBanner = document.getElementById("scrollBanner");
+    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+      scrollNav.style.display = "flex";
+      scrollBanner.style.display = "flex";
+    } else {
+      scrollNav.style.display = "none";
+      scrollBanner.style.display = "none";
+    }
+  };
+
+  function scrollToTop() {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
+  function scrollToCart() {
+    // Implement this function to scroll to the cart section
+  }
+
+  function scrollToBestSellers() {
+    // Implement this function to scroll to the Best Sellers section
+  }
+
+  function scrollToFireSales() {
+    // Implement this function to scroll to the Fire Sales section
+  }
+
+  function scrollToEarlyBird() {
+    // Implement this function to scroll to the Early Bird section
+  }
+
+  function scrollToPolicies() {
+    // Implement this function to scroll to the Policies section
+  }
+</script>

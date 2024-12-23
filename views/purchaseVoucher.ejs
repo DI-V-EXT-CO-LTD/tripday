@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/hotel-head') %>
+<body>
+  <%- include('partials/hotel-header') %>
+
+  <div class="body-container">
+    <h1>Purchase Voucher</h1>
+
+    <div id="refundPolicy">
+      <h2>Refund Policy</h2>
+      <p><%= refundPolicy.content %></p>
+    </div>
+
+    <div id="voucherSummary">
+      <h2>Voucher Summary</h2>
+      <p>Hotel: <%= hotel.title %></p>
+      <p>Room: <%= room.name %></p>
+      <p>Number of nights: <input type="number" id="nightsInput" min="1" value="1"></p>
+      <p>Number of rooms: <input type="number" id="roomsInput" min="1" value="1"></p>
+      <p>Price per night: ฿<span id="pricePerNight"><%= room.price %></span></p>
+      <p>Total price: ฿<span id="totalPrice"><%= room.price %></span></p>
+    </div>
+
+    <div id="payment">
+      <h2>Payment</h2>
+      <form id="paymentForm">
+        <label for="cardNumber">Card Number:</label>
+        <input type="text" id="cardNumber" required>
+
+        <label for="expiryDate">Expiry Date:</label>
+        <input type="text" id="expiryDate" placeholder="MM/YY" required>
+
+        <label for="cvv">CVV:</label>
+        <input type="text" id="cvv" required>
+
+        <button type="submit" class="btn btn-primary">Confirm Payment</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const nightsInput = document.getElementById('nightsInput');
+      const roomsInput = document.getElementById('roomsInput');
+      const pricePerNightSpan = document.getElementById('pricePerNight');
+      const totalPriceSpan = document.getElementById('totalPrice');
+      const paymentForm = document.getElementById('paymentForm');
+
+      function updateTotalPrice() {
+        const nights = parseInt(nightsInput.value);
+        const rooms = parseInt(roomsInput.value);
+        const pricePerNight = parseFloat(pricePerNightSpan.textContent);
+        const totalPrice = nights * rooms * pricePerNight;
+        totalPriceSpan.textContent = totalPrice.toFixed(2);
+      }
+
+      nightsInput.addEventListener('input', updateTotalPrice);
+      roomsInput.addEventListener('input', updateTotalPrice);
+
+      paymentForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        // Here you would typically send the payment information to your server
+        // For this example, we'll just show an alert
+        alert('Payment confirmed! Voucher purchased successfully.');
+      });
+    });
+  </script>
+</body>
+</html>

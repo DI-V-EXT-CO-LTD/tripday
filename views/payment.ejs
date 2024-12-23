@@ -1,0 +1,439 @@
+<div class="payment-container">
+  <h2 class="page-title">Payment Details</h2>
+  <% if (typeof cart !== 'undefined' && cart && cart.items && cart.items.length > 0) { %>
+    <div class="order-summary">
+      <h3 class="section-title">Order Summary</h3>
+      <div class="card-container">
+        <% cart.items.forEach(item => { %>
+          <div class="card">
+            <div class="card-header">
+              <h4><%= item.hotelName %></h4>
+              <p class="room-type"><%= item.roomType %></p>
+            </div>
+            <div class="card-body">
+              <div class="info-row">
+                <span class="info-label">Price per night:</span>
+                <span class="info-value">฿<%= item.price.toLocaleString() %></span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Nights:</span>
+                <span class="info-value"><%= item.nights %></span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Check-in:</span>
+                <span class="info-value"><%= new Date(item.checkIn).toLocaleDateString() %></span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Check-out:</span>
+                <span class="info-value"><%= new Date(item.checkOut).toLocaleDateString() %></span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Quantity:</span>
+                <span class="info-value"><%= item.quantity %></span>
+              </div>
+            </div>
+            <div class="card-footer">
+              <span class="total-label">Total:</span>
+              <span class="total-value">฿<%= item.total.toLocaleString() %></span>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+      <div class="order-total">
+        <span class="total-label">Total:</span>
+        <span class="total-value">฿<%= typeof total !== 'undefined' ? total.toLocaleString() : cart.items.reduce((sum, item) => sum + item.total, 0).toLocaleString() %></span>
+      </div>
+    </div>
+    <div class="payment-methods">
+      <h3 class="section-title">Select Payment Method</h3>
+      <% if (typeof bankTransfer !== 'undefined' && bankTransfer) { %>
+        <div class="payment-option">
+          <input type="radio" id="bank-transfer" name="payment-method" value="bank_transfer">
+          <label for="bank-transfer">계좌이체 (Bank Transfer)</label>
+        </div>
+      <% } %>
+      <% if (typeof creditCard !== 'undefined' && creditCard) { %>
+        <div class="payment-option">
+          <input type="radio" id="card-payment" name="payment-method" value="credit_card">
+          <label for="card-payment">카드결제 (Credit Card)</label>
+        </div>
+      <% } %>
+      <% if (typeof crypto !== 'undefined' && crypto) { %>
+        <div class="payment-option">
+          <input type="radio" id="crypto-payment" name="payment-method" value="crypto">
+          <label for="crypto-payment">가상화폐 (Cryptocurrency)</label>
+        </div>
+      <% } %>
+    </div>
+    <button id="next-payment" class="next-btn">Next</button>
+  <% } else { %>
+    <p class="empty-cart-message">Your cart is empty. Please add items to your cart before proceeding to payment.</p>
+    <a href="/dashboard" class="btn">Return to Dashboard</a>
+  <% } %>
+</div>
+
+<div id="payment-details-modal" class="modal">
+  <div class="modal-content">
+    <h2 class="modal-title">Payment Details</h2>
+    <div id="payment-details-content"></div>
+    <div class="modal-buttons">
+      <button id="close-payment-details" class="modal-btn close-btn">Close</button>
+      <button id="accept-payment" class="modal-btn accept-btn">Accept</button>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const nextPaymentBtn = document.getElementById('next-payment');
+  const closePaymentDetailsBtn = document.getElementById('close-payment-details');
+  const acceptPaymentBtn = document.getElementById('accept-payment');
+
+  if (nextPaymentBtn) {
+    nextPaymentBtn.addEventListener('click', function() {
+      const selectedPaymentMethod = document.querySelector('input[name="payment-method"]:checked');
+      if (!selectedPaymentMethod) {
+        alert('Please select a payment method');
+        return;
+      }
+
+      if (selectedPaymentMethod.value === 'bank_transfer') {
+        fetchBankAccount();
+      } else if (selectedPaymentMethod.value === 'crypto') {
+        fetchCryptoAddress();
+      } else {
+        fetch('/dashboard/payment', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ paymentMethod: selectedPaymentMethod.value }),
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            renderPaymentDetails(data.paymentDetails);
+            document.getElementById('payment-details-modal').style.display = 'block';
+          } else {
+            alert(data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('An error occurred while processing the payment');
+        });
+      }
+    });
+  }
+
+  if (closePaymentDetailsBtn) {
+    closePaymentDetailsBtn.addEventListener('click', function() {
+      document.getElementById('payment-details-modal').style.display = 'none';
+    });
+  }
+
+  if (acceptPaymentBtn) {
+    acceptPaymentBtn.addEventListener('click', function() {
+      fetch('/dashboard/accept-payment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert('Payment accepted successfully. Purchase ID: ' + data.purchaseId);
+          window.location.href = '/dashboard';
+        } else {
+          alert(data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while accepting the payment');
+      });
+    });
+  }
+});
+
+function fetchBankAccount() {
+  fetch('/api/bank-account')
+    .then(response => response.json())
+    .then(data => {
+      renderPaymentDetails({
+        type: 'Bank Transfer',
+        accountNumber: data.accountNumber,
+        total: parseFloat(document.querySelector('.order-total .total-value').textContent.replace('฿', ''))
+      });
+      document.getElementById('payment-details-modal').style.display = 'block';
+    })
+    .catch(error => {
+      console.error('Error fetching bank account:', error);
+      alert('Error fetching bank account information');
+    });
+}
+
+function fetchCryptoAddress() {
+  fetch('/api/crypto-address')
+    .then(response => response.json())
+    .then(data => {
+      renderPaymentDetails({
+        type: 'Cryptocurrency',
+        walletAddress: data.address,
+        total: parseFloat(document.querySelector('.order-total .total-value').textContent.replace('฿', ''))
+      });
+      document.getElementById('payment-details-modal').style.display = 'block';
+    })
+    .catch(error => {
+      console.error('Error fetching crypto address:', error);
+      alert('Error fetching cryptocurrency address');
+    });
+}
+
+function renderPaymentDetails(paymentDetails) {
+  const paymentDetailsContent = document.getElementById('payment-details-content');
+  paymentDetailsContent.innerHTML = '';
+
+  if (paymentDetails.type === 'Bank Transfer') {
+    paymentDetailsContent.innerHTML = `
+      <h3>Bank Transfer Details</h3>
+      <p><strong>Account Number:</strong> ${paymentDetails.accountNumber}</p>
+      <p><strong>Total Amount:</strong> ฿${paymentDetails.total.toFixed(2)}</p>
+    `;
+  } else if (paymentDetails.type === 'Credit Card') {
+    paymentDetailsContent.innerHTML = `
+      <h3>Credit Card Payment</h3>
+      <p>You will be redirected to our secure payment gateway.</p>
+      <a href="${paymentDetails.redirectUrl}" class="btn">Proceed to Payment Gateway</a>
+    `;
+  } else if (paymentDetails.type === 'Cryptocurrency') {
+    paymentDetailsContent.innerHTML = `
+      <h3>Cryptocurrency Payment</h3>
+      <p><strong>Wallet Address:</strong> ${paymentDetails.walletAddress}</p>
+      <p><strong>Total Amount:</strong> ฿${paymentDetails.total.toFixed(2)}</p>
+    `;
+  }
+}
+</script>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Helvetica:wght@300;400;500;700&display=swap');
+:root {
+  --primary-color: #4a90e2;
+  --secondary-color: #f0f8ff;
+  --text-color: #333;
+  --border-color: #d1e5f9;
+}
+
+body {
+  font-family: 'Roboto', 'Helvetica', Arial, sans-serif, 'Noto Sans KR', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  line-height: 1.6;
+  color: var(--text-color);
+  background-color: #f0f8ff;
+}
+
+.payment-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.page-title {
+  color: var(--primary-color);
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.section-title {
+  color: var(--primary-color);
+  margin-bottom: 20px;
+}
+
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.card-header {
+  background-color: var(--primary-color);
+  color: #fff;
+  padding: 15px;
+}
+
+.card-header h4 {
+  margin: 0;
+  font-size: 1.2em;
+}
+
+.room-type {
+  font-size: 0.9em;
+  opacity: 0.8;
+}
+
+.card-body {
+  padding: 15px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.info-label {
+  font-weight: bold;
+}
+
+.card-footer {
+  background-color: var(--secondary-color);
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.total-label {
+  font-weight: bold;
+}
+
+.total-value {
+  font-size: 1.2em;
+  color: var(--primary-color);
+}
+
+.order-total {
+  background-color: var(--primary-color);
+  color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 20px;
+  text-align: right;
+  font-size: 1.2em;
+}
+
+.payment-methods {
+  margin-top: 30px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.payment-option {
+  margin-bottom: 15px;
+}
+
+.payment-option label {
+  margin-left: 10px;
+}
+
+.next-btn, .accept-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.next-btn:hover, .accept-btn:hover {
+  background-color: #3a7bca;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 15% auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 500px;
+}
+
+.modal-title {
+  color: var(--primary-color);
+  margin-bottom: 20px;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.modal-btn {
+  padding: 10px;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 48%;
+  transition: background-color 0.3s ease;
+}
+
+.close-btn {
+  background-color: #e74c3c;
+}
+
+.close-btn:hover {
+  background-color: #c0392b;
+}
+
+.accept-btn {
+  background-color: #2ecc71;
+}
+
+.accept-btn:hover {
+  background-color: #27ae60;
+}
+
+.empty-cart-message {
+  text-align: center;
+  font-size: 1.2em;
+  margin-bottom: 20px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: var(--primary-color);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #3a7bca;
+}
+</style>

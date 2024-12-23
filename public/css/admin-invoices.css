@@ -1,0 +1,68 @@
+/* Admin Invoices Styles */
+
+.content {
+  position: relative;
+  overflow: auto;
+  resize: horizontal;
+  min-width: 300px;
+  max-width: calc(100% - 270px);
+}
+
+.content::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 5px;
+  background: #ccc;
+  cursor: ew-resize;
+}
+
+.table-responsive {
+  margin-top: 20px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.table th {
+  background-color: #f8f9fa;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.table tbody tr:hover {
+  background-color: #f5f5f5;
+}
+
+.btn-info,
+.btn-warning {
+  padding: 5px 10px;
+  font-size: 12px;
+  margin-right: 5px;
+}
+
+.pagination {
+  margin-top: 20px;
+}
+
+.page-link {
+  color: #007bff;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+}
+
+.page-item.active .page-link {
+  background-color: #007bff;
+  border-color: #007bff;
+}

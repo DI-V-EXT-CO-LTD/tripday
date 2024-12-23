@@ -1,0 +1,37 @@
+<%- include('partials/head') %>
+<%- include('partials/header-common') %>
+<div class="container mt-5">
+  <h1>My Bookings</h1>
+  <% if (bookings.length > 0) { %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Booking ID</th>
+          <th>Hotel</th>
+          <th>Check-in</th>
+          <th>Check-out</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% bookings.forEach(booking => { %>
+          <tr>
+            <td><%= booking._id %></td>
+            <td><%= booking.hotel.name %></td>
+            <td><%= booking.checkIn.toDateString() %></td>
+            <td><%= booking.checkOut.toDateString() %></td>
+            <td><%= booking.status %></td>
+            <td>
+              <a href="/bookings/<%= booking._id %>" class="btn btn-info btn-sm">Details</a>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <p>You don't have any bookings.</p>
+  <% } %>
+</div>
+
+<%- include('footer') %>

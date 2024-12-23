@@ -1,0 +1,238 @@
+/* Checkout page styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f2f5;
+    color: #333;
+}
+
+.checkout-container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+#checkout-items {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.checkout-item {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.checkout-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.hotel-name {
+    font-size: 1.8rem;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.checkout-item p {
+    font-size: 1.1rem;
+    color: #34495e;
+    margin-bottom: 10px;
+}
+
+.item-total {
+    font-size: 1.4rem;
+    color: #e74c3c;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+#checkout-summary {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px;
+}
+
+#checkout-summary h2 {
+    font-size: 2rem;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #ecf0f1;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: #34495e;
+}
+
+.summary-item.total {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px solid #ecf0f1;
+}
+
+.terms-card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.terms-checkbox {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.terms-checkbox input[type="checkbox"] {
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+}
+
+.terms-checkbox label {
+    font-size: 1rem;
+    color: #34495e;
+    line-height: 1.4;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#confirm-checkout {
+    display: block;
+    width: 100%;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    background-color: #3498db;
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+#confirm-checkout:hover {
+    background-color: #2980b9;
+    transform: scale(1.03);
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .checkout-container {
+        padding: 30px 15px;
+    }
+
+    h1 {
+        font-size: 2.2rem;
+    }
+
+    .hotel-name {
+        font-size: 1.6rem;
+    }
+
+    .checkout-item p {
+        font-size: 1rem;
+    }
+
+    .item-total {
+        font-size: 1.3rem;
+    }
+
+    #checkout-summary h2 {
+        font-size: 1.8rem;
+    }
+
+    .summary-item {
+        font-size: 1.1rem;
+    }
+
+    .summary-item.total {
+        font-size: 1.4rem;
+    }
+
+    #confirm-checkout {
+        font-size: 1.1rem;
+        padding: 12px 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .checkout-container {
+        padding: 20px 10px;
+    }
+
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 30px;
+    }
+
+    .checkout-item {
+        padding: 20px;
+    }
+
+    .hotel-name {
+        font-size: 1.4rem;
+    }
+
+    .item-total {
+        font-size: 1.2rem;
+    }
+
+    #checkout-summary {
+        padding: 20px;
+    }
+
+    #checkout-summary h2 {
+        font-size: 1.6rem;
+    }
+
+    .summary-item {
+        font-size: 1rem;
+    }
+
+    .summary-item.total {
+        font-size: 1.3rem;
+    }
+
+    #confirm-checkout {
+        font-size: 1rem;
+        padding: 10px 20px;
+    }
+
+    .terms-checkbox label {
+        font-size: 0.9rem;
+    }
+}

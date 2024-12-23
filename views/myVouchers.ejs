@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Vouchers</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <%- include('partials/header') %>
+    
+    <div class="container mt-5">
+        <h1>My Vouchers</h1>
+        <% if (vouchers.length === 0) { %>
+            <p>You don't have any vouchers yet.</p>
+        <% } else { %>
+            <div class="row">
+                <% vouchers.forEach(voucher => { %>
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title"><%= voucher.hotel.title %></h5>
+                                <h6 class="card-subtitle mb-2 text-muted"><%= voucher.room.title %></h6>
+                                <p class="card-text">
+                                    Check-in: <%= voucher.check_in.toDateString() %><br>
+                                    Check-out: <%= voucher.check_out.toDateString() %><br>
+                                    Status: <%= voucher.status %><br>
+                                    Payment: <%= voucher.payment_status %>
+                                </p>
+                                <a href="/vouchers/details/<%= voucher._id %>" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } %>
+    </div>
+
+    <%- include('partials/footer') %>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

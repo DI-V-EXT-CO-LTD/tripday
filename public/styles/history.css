@@ -1,0 +1,154 @@
+/* public/styles/history.css */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Helvetica:wght@300;400;500;700&display=swap');
+body {
+    font-family: 'Roboto', 'Helvetica', Arial, sans-serif, 'Noto Sans KR', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+  }
+  
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+  }
+  
+  table {
+    width: 80%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 18px;
+    text-align: center;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  th, td {
+    padding: 12px;
+    border: 1px solid #ddd;
+  }
+  
+  th {
+    background-color: #f4f4f4;
+    color: #333;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  h1 {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 2em;
+  }
+  
+  .details {
+    text-align: right;
+    width: 80%;
+    margin: 0 auto 20px;
+  }
+  
+  .voucher-buttons a {
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    color: #fff;
+    background-color: #007bff;
+    margin: 5px;
+  }
+  
+  .voucher-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  @media (max-width: 768px) {
+    table {
+      width: 100%;
+    }
+    .voucher-buttons {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+  
+  .popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .popup-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+    width: 80%;
+    max-width: 500px;
+  }
+  
+  .popup-content input {
+    margin: 10px 0;
+    padding: 8px;
+    width: calc(100% - 16px);
+  }
+  
+  .popup-content button {
+    padding: 10px 20px;
+    margin: 10px;
+  }
+  
+  .status-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70px; /* 원하는 높이로 조정하세요 */
+  }
+  
+  .status {
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 10px;
+    display: inline-block;
+    vertical-align: middle; /* 상하 중앙 정렬 */
+    margin: 5px 0; /* 위아래 간격 추가 */
+    min-width: 150px; /* 최소 너비 설정 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+  }
+  
+  .status.pending {
+    background-color: #ff9800; /* PENDING: 주황색 */
+  }
+  
+  .status.confirmed {
+    background-color: #4caf50; /* CONFIRMED: 녹색 */
+  }
+  
+  .status.in_progress {
+    background-color: #2196f3; /* IN_PROGRESS: 파란색 */
+  }
+  
+  .status.completed {
+    background-color: #8bc34a; /* COMPLETED: 연두색 */
+  }
+  
+  .status.cancelled {
+    background-color: #f44336; /* CANCELLED: 빨간색 */
+  }
+  
+  .status.rejected {
+    background-color: #f44336; /* REJECTED: 빨간색 */
+  }
+  

@@ -1,0 +1,27 @@
+<h2>Hotel List</h2>
+<div class="hotel-list">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Location</th>
+        <th>Rating</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% hotels.forEach(function(hotel) { %>
+        <tr>
+          <td><%= hotel.name %></td>
+          <td><%= hotel.location %></td>
+          <td><%= hotel.rating %></td>
+          <td>
+            <a href="/admin/hotel/<%= hotel._id %>/edit" class="btn btn-sm btn-primary">Edit</a>
+            <a href="/admin/hotel/<%= hotel._id %>/delete" class="btn btn-sm btn-danger">Delete</a>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>
+<a href="#hotelRegistration" class="btn btn-success" data-content="hotelRegistration" data-title="Hotel Registration">Add New Hotel</a>

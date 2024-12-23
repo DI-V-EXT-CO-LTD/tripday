@@ -1,0 +1,346 @@
+/* public/styles/index.css */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Helvetica:wght@300;400;500;700&display=swap');
+body {
+    margin: 0;
+    font-family: 'Roboto', 'Helvetica', sans-serif, 'Noto Sans KR', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+    background-color: #f4f4f4;
+}
+
+
+
+.head-container .top-row {
+    height: 66px;
+    max-width: 1160px;
+    margin: auto;
+}
+
+.head-container .left-section {
+    display: flex;
+    align-items: center;
+}
+
+
+
+
+.head-container .right-section {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.head-container .right-section .button-text {
+    font-weight: 300;
+}
+
+.head-container .right-section .icon-button {
+    display: flex;
+    align-items: center;
+    font-weight: 300;
+}
+
+.head-container .category-section {
+    width: 47%;
+    align-items: center;
+}
+
+.head-container .category-button {
+    margin-right: 16px;
+    font-weight: 300;
+}
+
+.head-container .bottom-row {
+    height: 380px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+    padding-top: 50px;
+}
+
+.background-rounded {
+    position: absolute;
+    margin-top: 50px;
+    width: auto; /* 가변 너비로 설정 */
+    max-width: 1160px; /* 최대 너비 설정 */
+    background-color: rgba(255, 255, 255, 1); /* 반투명 흰색 배경 */
+    border-radius: 16px; /* 둥근 사각형 */
+    z-index: 1; /* z-index를 낮추어 뒷면에 위치 */
+    height: 127px;
+}
+
+
+
+.destinationbox, .checkin-outbox, .rooms-and-guests-box, .search-button-box {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    height: 72px;
+    font-size: 14px;
+}
+
+
+.destinationbox {
+    width: 360px;
+    overflow: hidden;
+    left: 0;
+    margin: 0;
+    margin-top: 40px;
+}
+
+.destinationbox label, 
+.checkin-outbox label, 
+.rooms-and-guests-box label {   
+    display: block;
+    text-align: left; 
+    color: #455873;
+    padding-left: 5px;
+    padding-bottom: 0;
+    padding-top: 5px;
+}
+
+.destinationbox input {
+    width: 100%;
+    border: hidden;
+}
+
+
+.destinationbox:hover input {
+    border: 1px solid #3264FF;
+}
+
+.checkin-outbox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 290px;
+    margin-top: 40px;    
+}
+
+.checkin-outbox .label-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 5px;    
+}
+
+.checkin-outbox .input-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;    
+    height: 50%;
+}
+
+.checkin-container, .checkout-container {
+    width: 120px;
+    height: 100%;
+}
+
+.nightsdisplayer {
+    text-align: center;
+    width: 64px;
+}
+
+.checkin-container input, .checkout-container input {
+    width: 100%;
+    border: hidden;
+}
+
+.checkin-container:hover input, .checkout-container:hover input {
+    border: 1px solid #3264FF;
+}
+
+.rooms-and-guests-box {
+    width: 304px;
+    position: relative;
+    margin-top: 40px;
+}
+
+.rooms-and-guests-box .dropbtn {
+    width: 100%;
+    background-color: white;
+    border: hidden;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    height: 50%;
+}
+
+.rooms-and-guests-box .dropbtn::after {
+    content: '▼';
+    font-size: 12px;
+}
+
+
+
+.rooms-and-guests-box .dropdown-content div {
+    padding: 12px 16px;
+}
+
+.rooms-and-guests-box .dropbtn:focus + .dropdown-content,
+.rooms-and-guests-box .dropbtn:active + .dropdown-content {
+    display: block;
+}
+
+.search-button-box {  
+    height: 72px;
+    width:108px;
+    margin-top: 40px;
+}
+
+.search-button {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    color: #3264FF;
+    border: 1px solid #3264FF;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.search-button i {
+    margin-right: 5px;
+}
+
+
+  
+.category-button:focus {
+    background-color: white;
+    color: black;
+}
+  
+#scrollToTopBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+    display: none;
+}
+  
+@media (min-width: 768px) {
+    .search-fields {
+      flex-direction: row;
+    }
+  
+    .search-fields .field-group {
+      flex: 1 1 auto;
+      flex-direction: row;
+    }
+  
+    .search-fields input, .search-fields span, .search-fields .dropdown, .search-fields .search-button {
+      width: auto; /* 큰 화면에서는 기본 너비로 */
+    }
+}
+  
+@media (max-width: 767px) {
+    
+  
+    .bottom-row {
+      height: auto; /* 작은 화면에서는 높이를 자동으로 설정 */
+      padding-bottom: 20px; /* 패딩 추가 */
+    }
+  
+   
+}
+
+.category-section {
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: left;
+    position: relative;
+}
+  
+.middle-row .category-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    position: relative;
+}
+  
+.middle-row .category-button {
+    background: none;
+    border: none; /* 경계선 제거 */
+    color: #ddd; /* 글씨 색상 연하게 변경 */
+    cursor: pointer;
+    font-size: 16px;
+    padding: 5px 16px; /* 패딩 설정 */
+    position: relative;
+    transition: all 0.3s ease;
+}
+  
+.middle-row .category-button::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    display: block;
+    background: white;
+    transition: width 0.3s;
+    bottom: 0;
+    left: 0;
+}
+  
+.middle-row .category-button:hover::after {
+    width: 100%;
+}
+  
+.middle-row .category-button:hover,
+.middle-row .category-button:focus {
+    color: white; /* 배경색 변경 없음, 글씨 색상만 변경 */
+}
+  
+.bottom-section .section-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: auto; /* 가변 너비로 설정 */
+    gap: 10px;
+    position: relative;
+}
+  
+.bottom-section .background-rounded {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px; /* 첫 번째와 마지막 버튼과의 간격 */
+    padding: 10px;
+    background-color: rgba(0, 0, 0, .8); /* 반투명 검정색 배경 */
+    border-radius: 30px;
+    position: absolute;
+    width: auto;
+    max-width: calc(100% - 10px); /* 최대 너비 설정 */
+    left: 50%;
+    transform: translateX(-50%);
+    overflow: hidden;
+}
+.clearfix-container{
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+.popup-content .button-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .popup-content .button-row button {
+    width: 48%;
+    padding: 10px 20px;
+    margin: 10px 0;
+  }
+  

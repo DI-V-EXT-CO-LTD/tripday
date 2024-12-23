@@ -1,0 +1,246 @@
+<%- include('../partials/head') %>
+<link rel="stylesheet" href="/styles/dashboard.css">
+<link rel="stylesheet" href="/sytles/manage-rooms.css">
+
+<style>
+  .add-room-form {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  .form-group {
+    margin-bottom: 20px;
+  }
+  .form-control {
+    border-radius: 4px;
+  }
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+  .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+  .custom-checkbox {
+    margin-bottom: 10px;
+  }
+  #room-details-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  .room-details-category {
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 5px;
+  }
+  .room-details-category h4 {
+    margin-bottom: 10px;
+    color: #007bff;
+  }
+  .category-items {
+    margin-left: 20px;
+  }
+  .capacity-group {
+    display: flex;
+    gap: 15px;
+  }
+  .capacity-field {
+    flex: 1;
+  }
+  .select-all-btn {
+    margin-bottom: 10px;
+    font-size: 0.9em;
+  }
+</style>
+
+<div class="container-fluid">
+  <div class="row">
+    <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block sidebar">
+      <div class="sidebar-sticky pt-3">
+        <div class="welcome-section">
+          <h5>Welcome Admin</h5>
+          <p><%= user.email %></p>
+        </div>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="fas fa-home"></i> Back to Trip-day
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/dashboard">
+              <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/admin/hotels">
+              <i class="fas fa-hotel"></i> Hotels
+            </a>
+          </li>
+          <!-- Add other menu items as needed -->
+        </ul>
+      </div>
+    </nav>
+
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Add New Room - <%= hotel.title %></h1>
+      </div>
+
+      <div class="add-room-form">
+        <form action="/admin/hotels/<%= hotel._id %>/rooms/add" method="POST" enctype="multipart/form-data">
+          <h3>Basic Room Details</h3>
+          <div class="form-group">
+            <label for="title">Room Title *</label>
+            <input type="text" class="form-control" id="title" name="title" required value="Standard Room">
+          </div>
+          <div class="form-group">
+            <label for="content">Room Content *</label>
+            <textarea class="form-control" id="content" name="content" rows="3" required>Comfortable room with modern amenities.</textarea>
+          </div>
+          <div class="form-group" style="display: none;">
+            <label for="description">Description</label>
+            <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="room_images">Room Images *</label>
+            <input type="file" class="form-control-file" id="room_images" name="room_images" multiple required>
+            <small class="form-text text-muted">You can select multiple images. The first image will be used as the main image.</small>
+          </div>
+          <div class="form-group">
+            <label for="price">Price per Night (THB) *</label>
+            <input type="number" class="form-control" id="price" name="price" step="0.01" required value="1000">
+          </div>
+          <div class="form-group">
+            <label for="number">Room Number *</label>
+            <input type="number" class="form-control" id="number" name="number" required value="101">
+          </div>
+          <div class="form-group">
+            <label for="size">Room Size (m²) *</label>
+            <input type="number" class="form-control" id="size" name="size" required value="30">
+          </div>
+          <div class="form-group">
+            <label for="beds">Number of Beds *</label>
+            <input type="number" class="form-control" id="beds" name="beds" required value="1" min="1">
+          </div>
+          <div class="form-group capacity-group">
+            <div class="capacity-field">
+              <label for="adults">Adult Capacity *</label>
+              <input type="number" class="form-control" id="adults" name="adults" required min="1" value="2">
+            </div>
+            <div class="capacity-field">
+              <label for="children">Child Capacity</label>
+              <input type="number" class="form-control" id="children" name="children" min="0" value="1">
+            </div>
+          </div>
+
+          <h3>Room Details</h3>
+          <div id="room-details-container">
+            <!-- Dynamically populated by JavaScript -->
+          </div>
+
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">Add Room</button>
+            <a href="/admin/hotels/<%= hotel._id %>/manage-rooms" class="btn btn-secondary">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const roomDetailsContainer = document.getElementById('room-details-container');
+    const roomDetails = {
+      Room_Amenities: [
+        'Clothes_rack', 'Drying_rack_for_clothing', 'Trash_cans', 'Socket_near_the_bed',
+        'Adapter', 'Sofa_bed', 'Fold_up_bed', 'Sofa', 'Carpeted', 'Tile_Marble_floor',
+        'Private_entrance', 'Interconnecting_room', 'Desk', 'Seating_Area',
+        'Dining_area', 'Outdoor_furniture', 'Patio', 'Balcony', 'Terrace', 'Garden'
+      ],
+      Toiletries: [
+        'Toothbrush', 'BodyWash', 'HairConditioner', 'ShowerCap', 'Shaver',
+        'ToothPaste', 'Shampoo', 'Soap', 'Comb'
+      ],
+      Accessibility: [
+        'Stair_free_property_entrance', 'Toilet_with_armrests',
+        'Lever_door_handles', 'Visual_Fire_Alarm'
+      ],
+      Cleaning_Services: ['Kitchen', 'Refrigerator', 'Microwave'],
+      Media_Technology: ['TV', 'Telephone', 'Satellite_channels'],
+      Food_Drink: ['Tea_Coffee_maker', 'Minibar'],
+      Internet: ['Free_Wifi'],
+      Parking: ['Free_Parking'],
+      Services: ['Room_service', 'Wake_up_service'],
+      General: [
+        'smoking', 'free_wifi', 'bathtub', 'Air_conditioning', 'private_bathroom',
+        'Heating', 'Safe', 'Iron', 'Ironing_facilities', 'Laptop_safe', 'Soundproof',
+        'Wardrobe', 'Hypoallergenic'
+      ]
+    };
+
+    for (const [category, items] of Object.entries(roomDetails)) {
+      const categoryDiv = document.createElement('div');
+      categoryDiv.className = 'room-details-category';
+      categoryDiv.innerHTML = `
+        <h4>${category.replace(/_/g, ' ')}</h4>
+        <button type="button" class="btn btn-sm btn-outline-primary select-all-btn" data-category="${category}">Select All</button>
+        <div class="category-items">
+          ${items.map(item => `
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input item-checkbox" id="${item}" name="room_details[${category}][${item}]" value="true">
+              <label class="custom-control-label" for="${item}">${item.replace(/_/g, ' ')}</label>
+            </div>
+          `).join('')}
+        </div>
+      `;
+      roomDetailsContainer.appendChild(categoryDiv);
+    }
+
+    // Add event listeners for "Select All" buttons
+    document.querySelectorAll('.select-all-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        const category = this.dataset.category;
+        const checkboxes = this.closest('.room-details-category').querySelectorAll('.item-checkbox');
+        const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+        
+        checkboxes.forEach(checkbox => {
+          checkbox.checked = !allChecked;
+        });
+        
+        this.textContent = allChecked ? 'Select All' : 'Deselect All';
+      });
+    });
+
+    const form = document.querySelector('form');
+    if (form) {
+      form.addEventListener('submit', function(event) {
+        // Sync content and description fields
+        document.getElementById('description').value = document.getElementById('content').value;
+
+        const roomDetails = {};
+        document.querySelectorAll('.room-details-category').forEach(category => {
+          const categoryName = category.querySelector('h4').textContent.replace(/ /g, '_');
+          roomDetails[categoryName] = {};
+          category.querySelectorAll('.item-checkbox:checked').forEach(checkbox => {
+            roomDetails[categoryName][checkbox.id] = true;
+          });
+        });
+        const roomDetailsInput = document.createElement('input');
+        roomDetailsInput.type = 'hidden';
+        roomDetailsInput.name = 'room_details';
+        roomDetailsInput.value = JSON.stringify(roomDetails);
+        form.appendChild(roomDetailsInput);
+      });
+    }
+  });
+</script>
+
+<%- include('../partials/dashboard-scripts') %>
+</body>
+</html>

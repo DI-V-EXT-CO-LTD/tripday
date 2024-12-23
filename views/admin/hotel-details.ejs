@@ -1,0 +1,104 @@
+<%- include('../partials/head') %>
+<link rel="stylesheet" href="/styles/dashboard.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<link rel="stylesheet" href="/css/hotel-details.css">
+
+<button id="menu-toggle" class="btn btn-primary">Menu</button>
+
+<div class="container-fluid">
+  <div class="row">
+    <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block sidebar">
+      <div class="sidebar-sticky pt-3">
+        <div class="welcome-section">
+          <h5>Welcome Admin</h5>
+          <p><%= user.email %></p>
+        </div>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="fas fa-home"></i> Back to Trip-day
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/dashboard">
+              <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/admin/hotels">
+              <i class="fas fa-hotel"></i> Hotels
+            </a>
+          </li>
+          <!-- Add other menu items as needed -->
+        </ul>
+      </div>
+    </nav>
+
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2"><%= pageTitle %></h1>
+      </div>
+
+      <div class="hotel-details">
+        <h2><%= hotel.title %> (<%= hotel.nameEn %>)</h2>
+        
+        <!-- Moved action buttons here -->
+        <div class="action-buttons mb-4">
+          <a href="/admin/hotels/<%= hotel._id %>/edit" class="btn btn-primary">Edit Hotel</a>
+          <a href="/admin/hotels/<%= hotel._id %>/rooms" class="btn btn-info">Manage Rooms</a>
+          <a href="/admin/hotels" class="btn btn-secondary">Back to Hotels</a>
+        </div>
+
+        <p><strong>Slug:</strong> <%= hotel.slug %></p>
+        <p><strong>Address:</strong> <%= hotel.address %></p>
+        <p><strong>Location:</strong> <%= hotel.cityName %>, <%= hotel.provinceName %>, <%= hotel.countryName %></p>
+        <p><strong>Description:</strong> <%= hotel.content %></p>
+        <p><strong>Star Rating:</strong> <%= hotel.star_rate %> (<%= hotel.starInfo ? hotel.starInfo.type : 'N/A' %>)</p>
+        <p><strong>Price:</strong> ฿<%= hotel.price %></p>
+        <p><strong>Sale Price:</strong> ฿<%= hotel.sale_price || 'N/A' %></p>
+        <p><strong>Check-in Time:</strong> <%= hotel.check_in_time %></p>
+        <p><strong>Check-out Time:</strong> <%= hotel.check_out_time %></p>
+        <p><strong>Allow Full Day:</strong> <%= hotel.allow_full_day ? 'Yes' : 'No' %></p>
+        <p><strong>Status:</strong> <%= hotel.status %></p>
+        <p><strong>Is Featured:</strong> <%= hotel.is_featured ? 'Yes' : 'No' %></p>
+        <p><strong>Open Year:</strong> <%= hotel.openYear || 'N/A' %></p>
+        <p><strong>Review Score:</strong> <%= hotel.review_score || 'N/A' %></p>
+        <p><strong>Minimum Days Before Booking:</strong> <%= hotel.min_day_before_booking || 'N/A' %></p>
+        <p><strong>Minimum Stay (Days):</strong> <%= hotel.min_day_stays || 'N/A' %></p>
+
+        <div class="facility-tags">
+          <h3>Facilities</h3>
+          <ul>
+            <% hotel.facilityTags.forEach(function(tag) { %>
+              <li><%= tag %></li>
+            <% }); %>
+          </ul>
+        </div>
+
+        <h3>Hotel Position Info</h3>
+        <p><strong>Address:</strong> <%= hotel.hotelPositionInfo ? hotel.hotelPositionInfo.address : 'N/A' %></p>
+        <p><strong>Traffic Info:</strong> <%= hotel.hotelPositionInfo && hotel.hotelPositionInfo.trafficInfo ? hotel.hotelPositionInfo.trafficInfo.trafficDesc : 'N/A' %></p>
+
+        <div class="hotel-images">
+          <h3>Images</h3>
+          <% if (hotel.image_id) { %>
+            <img src="/uploads/<%= hotel.image_id %>" alt="<%= hotel.title %>" class="hotel-image">
+          <% } %>
+          <% if (hotel.banner_image_id) { %>
+            <img src="/uploads/<%= hotel.banner_image_id %>" alt="<%= hotel.title %> Banner" class="hotel-image">
+          <% } %>
+          <% if (hotel.gallery && hotel.gallery.length > 0) { %>
+            <h4>Gallery</h4>
+            <div class="gallery">
+              <% hotel.gallery.forEach(function(image) { %>
+                <img src="/uploads/<%= image %>" alt="Gallery Image" class="gallery-image">
+              <% }); %>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<%- include('../partials/dashboard-scripts') %>

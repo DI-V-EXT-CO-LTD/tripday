@@ -1,0 +1,721 @@
+<!-- checkout.ejs -->
+<div class="checkout-container">
+  <div id="checkout-items"></div>
+  <div id="checkout-summary">
+    <h2>Order Summary</h2>
+    <div class="summary-item">
+      <span>Subtotal</span>
+      <span id="checkout-subtotal">฿0.00</span>
+    </div>
+    <div class="summary-item total">
+      <span>Total</span>
+      <span id="checkout-total">฿0.00</span>
+    </div>
+  </div>
+  <div class="terms-card">
+    <div class="terms-checkbox">
+      <input type="checkbox" id="terms-agreement" name="terms-agreement">
+      <label for="terms-agreement">By submitting this booking, I acknowledge that I have read and agree to Trip-day.com's Terms of Use and Privacy Statement.<br> Send me special Trip.com deals and travel reminders</label>
+    </div>
+  </div>
+  <button id="proceed-to-payment" class="proceed-btn" disabled>Proceed To Payment</button>
+</div>
+
+<div id="payment-modal" class="modal">
+  <div class="modal-content">
+    <h2 style="text-align: center;">Select Payment Method</h2>
+    <div class="payment-methods">
+      <div class="payment-option">
+        <input type="radio" id="bank-transfer" name="payment-method" value="bank_transfer">
+        <label for="bank-transfer">Bank Transfer</label>
+      </div>
+      <div class="payment-option">
+        <input type="radio" id="card-payment" name="payment-method" value="credit_card">
+        <label for="card-payment">Credit Card</label>
+      </div>
+      <div class="payment-option">
+        <input type="radio" id="crypto-payment" name="payment-method" value="crypto">
+        <label for="crypto-payment">Cryptocurrency</label>
+      </div>
+    </div>
+    <div class="modal-buttons">
+      <button id="cancel-payment" class="cancel-btn">Cancel</button>
+      <button id="confirm-payment" class="confirm-btn">Proceed to Payment</button>
+    </div>
+  </div>
+</div>
+
+<div id="card-payment-modal" class="modal">
+  <div class="modal-content">
+    <h2 style="text-align: center;">Select Card Payment Provider</h2>
+    <div class="payment-methods">
+      <div class="payment-option">
+        <input type="radio" id="stripe-payment" name="card-payment-method" value="stripe">
+        <label for="stripe-payment">Stripe</label>
+      </div>
+      <div class="payment-option">
+        <input type="radio" id="paypal-payment" name="card-payment-method" value="paypal">
+        <label for="paypal-payment">PayPal</label>
+      </div>
+      <div class="payment-option">
+        <input type="radio" id="omise-payment" name="card-payment-method" value="omise">
+        <label for="omise-payment">Omise</label>
+      </div>
+    </div>
+    <div class="modal-buttons">
+      <button id="cancel-card-payment" class="cancel-btn">Cancel</button>
+      <button id="confirm-card-payment" class="confirm-btn">Proceed to Payment</button>
+    </div>
+  </div>
+</div>
+
+<div id="payment-details-modal" class="modal">
+  <div class="modal-content">
+    <h2 style="text-align: center;">Payment Details</h2>
+    <div id="payment-details-content"></div>
+    <div id="card-element" style="display: none;"></div>
+    <div id="card-errors" role="alert"></div>
+    <div id="paypal-button-container" style="display: none;"></div>
+    <div id="omise-card-form" style="display: none;">
+      <input type="text" id="card-number" placeholder="Card Number" required>
+      <input type="text" id="card-name" placeholder="Card Holder Name" required>
+      <input type="text" id="card-expiration-month" placeholder="MM" required>
+      <input type="text" id="card-expiration-year" placeholder="YYYY" required>
+      <input type="text" id="card-cvc" placeholder="CVC" required>
+    </div>
+    <div class="modal-buttons">
+      <button id="close-payment-details" class="cancel-btn">Close</button>
+      <button id="confirm-final-payment" class="confirm-btn">Confirm Payment</button>
+    </div>
+  </div>
+</div>
+
+<!-- 취소 및 환불 정책 팝업 -->
+<div id="cancellation-policy-modal" class="modal">
+  <div class="modal-content">
+    <h2 style="text-align: center;">Cancellation and Refund Policy</h2>
+    <div id="cancellation-policy-content" style="max-height: 300px; overflow-y: auto;">
+      <!-- 여기에 취소 및 환불 정책 내용을 추가하세요 -->
+      <p>1. Cancellation Policy:</p>
+      <ul>
+        <li>Cancellation/refund is not possible due to unidentified precautions.</li>
+        <li>If a travel agency cancels a product booked/purchased on Trip-day.com, we may request a penalty or may not be able to cancel it as per the following regulations.</li>
+        <li>In case of cancellation due to natural disasters, no placebo will be processed and the regulations for each product will be observed in accordance with Thai law.</li>
+        <li>If you cancel or change, please register with the reservation number at Trip-Day.com.</li>
+      </ul>
+      <p>2. Refund Policy:</p>
+      <ul>
+        <li>E-tickets and reservation code products/date pre-order products cannot be canceled/refunded after ordering.</li>
+        <li>Physical receipt ticket products can be used within a set period from the date of purchase.</li>
+        <li>You can get a refund if you return the unused ticket before or within 7 days of receiving it.</li>
+        <li>Physical tickets cannot be reissued if you lose your ticket.</li>
+      </ul>
+      <p>3. Changes Policy:</p>
+      <ul>
+        <li>Changes are only applicable to physical tickets except E-Ticket/E Vouchers and are only applicable to non-overlapping attractions.</li>
+        <li>The schedule can be changed only for the possible schedule, and please refer to each product page for the possible period.</li>
+      </ul>
+      <p>4. Early Departure Policies:</p>
+      <ul>
+        <li>No refunds will be provided for early departures or unused nights.</li>
+      </ul>
+      <p>5. Hotel-Specific Policies:</p>
+      <ul>
+        <li>Trip-day.com is responsible for booking accommodation for each hotel and operates separately, so we ensure that we comply with the cancellation refund regulations specified by Trip-day.com.</li>
+        <li>Reservation fee: No refund regardless of the time of reservation.</li>
+        <li>Deposit:
+          If more than 30% of the total schedule is left: partial refund is possible
+          If less than 30% of the total schedule is left: No refund
+        </li>
+        <li>
+          Change and cancel:
+          After check-in: Reservation period change and reservation cancellation not allowed
+          Before check-in: Depending on the items, it may be partially possible (*refer to the hotel's change regulations)
+        </li>
+      </ul>
+      <p>6. Additional Policies:</p>
+      <ul>
+        <li>For more detailed information on change regulations, daily car tours, city tours, activities, tourist attractions, walking tours, pickup/drop services, and other specific policies, please refer to our complete policy document or contact our customer support.</li>
+       
+      </ul>
+    
+    </div>
+    <div id="policy-agreement-card" style="display: none; margin-top: 20px; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+      <p>I have <input type="text" id="policy-read-input" placeholder="Read" style="width: 60px; padding: 2px; margin: 0 5px; display: inline-block;"> and <input type="text" id="policy-agree-input" placeholder="Agree" style="width: 60px; padding: 2px; margin: 0 5px; display: inline-block;"> to all cancellation and refund Policy.</p>
+    </div>
+    <p>If you agree to the terms and conditions, please enter "Read" and "agree"</p>
+    <div class="modal-buttons" style="display: none;">
+      <button id="close-cancellation-policy" class="cancel-btn">Close</button>
+      <button id="agree-cancellation-policy" class="confirm-btn" disabled>Agree and Proceed</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=<%= process.env.PAYPAL_CLIENT_ID %>"></script>
+<script src="https://cdn.omise.co/omise.js"></script>
+
+<script>
+let clientSecret = null;
+let selectedCardPaymentMethod = null;
+
+document.addEventListener('DOMContentLoaded', function() {
+  const termsAgreement = document.getElementById('terms-agreement');
+  const proceedToPaymentBtn = document.getElementById('proceed-to-payment');
+  const cancellationPolicyModal = document.getElementById('cancellation-policy-modal');
+  const cancellationPolicyContent = document.getElementById('cancellation-policy-content');
+  const policyAgreementCard = document.getElementById('policy-agreement-card');
+  const policyReadInput = document.getElementById('policy-read-input');
+  const policyAgreeInput = document.getElementById('policy-agree-input');
+  const agreeCancellationPolicyBtn = document.getElementById('agree-cancellation-policy');
+  const closeCancellationPolicyBtn = document.getElementById('close-cancellation-policy');
+  const modalButtons = document.querySelector('#cancellation-policy-modal .modal-buttons');
+
+  termsAgreement.addEventListener('change', function() {
+    proceedToPaymentBtn.disabled = !this.checked;
+  });
+
+  proceedToPaymentBtn.addEventListener('click', function() {
+    cancellationPolicyModal.style.display = 'block';
+  });
+
+  cancellationPolicyContent.addEventListener('scroll', function() {
+    if (this.scrollHeight - this.scrollTop === this.clientHeight) {
+      policyAgreementCard.style.display = 'block';
+    }
+  });
+
+  function checkInputs() {
+    const readValue = policyReadInput.value.trim().toLowerCase();
+    const agreeValue = policyAgreeInput.value.trim().toLowerCase();
+    if (readValue === 'read' && agreeValue === 'agree') {
+      modalButtons.style.display = 'flex';
+      agreeCancellationPolicyBtn.disabled = false;
+    } else {
+      modalButtons.style.display = 'none';
+      agreeCancellationPolicyBtn.disabled = true;
+    }
+  }
+
+  policyReadInput.addEventListener('input', checkInputs);
+  policyAgreeInput.addEventListener('input', checkInputs);
+
+  agreeCancellationPolicyBtn.addEventListener('click', function() {
+    cancellationPolicyModal.style.display = 'none';
+    proceedToPayment();
+  });
+
+  closeCancellationPolicyBtn.addEventListener('click', function() {
+    cancellationPolicyModal.style.display = 'none';
+  });
+
+  document.getElementById('confirm-payment').addEventListener('click', confirmPayment);
+  document.getElementById('cancel-payment').addEventListener('click', cancelPayment);
+  document.getElementById('confirm-card-payment').addEventListener('click', confirmCardPayment);
+  document.getElementById('cancel-card-payment').addEventListener('click', cancelCardPayment);
+  document.getElementById('close-payment-details').addEventListener('click', closePaymentDetails);
+  document.getElementById('confirm-final-payment').addEventListener('click', confirmFinalPayment);
+
+  console.log('DOM Content Loaded');
+});
+
+function renderCheckoutItems(selectedItems) {
+  // ... (기존 코드 유지)
+}
+
+function proceedToPayment() {
+  document.getElementById('payment-modal').style.display = 'block';
+}
+
+function confirmPayment() {
+  console.log('confirmPayment called');
+  const selectedPaymentMethod = document.querySelector('input[name="payment-method"]:checked');
+
+  if (!selectedPaymentMethod) {
+    alert('Please select a payment method to proceed with the payment.');
+    return;
+  }
+
+  console.log('Selected payment method:', selectedPaymentMethod.value);
+  if (selectedPaymentMethod.value === 'credit_card') {
+    document.getElementById('payment-modal').style.display = 'none';
+    document.getElementById('card-payment-modal').style.display = 'block';
+    console.log('Calling processPayment with: stripe');
+    processPayment('stripe'); // 여기서 'credit_card' 대신 'stripe'로 수정
+  } else {
+    console.log('Calling processPayment with:', selectedPaymentMethod.value);
+    processPayment(selectedPaymentMethod.value);
+  }
+}
+
+function confirmCardPayment() {
+  selectedCardPaymentMethod = document.querySelector('input[name="card-payment-method"]:checked');
+
+  if (!selectedCardPaymentMethod) {
+    alert('Please select a card payment provider to proceed with the payment.');
+    return;
+  }
+
+  document.getElementById('card-payment-modal').style.display = 'none';
+  renderPaymentDetails({ type: selectedCardPaymentMethod.value });
+}
+// ... (이전 코드 유지)
+
+function processPayment(paymentMethod) {
+  const checkoutTotalText = document.getElementById('checkout-total').textContent;
+  const amountText = checkoutTotalText.replace('฿', '').replace(/,/g, '');
+  const amount = parseFloat(amountText);
+  const amountInCents = Math.round(amount * 100);
+
+  console.log('Processing payment...');
+
+  fetch('/purchases/create-payment-intent', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      paymentMethod: paymentMethod,
+      amount: amountInCents
+    }),
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('Server response:', data); // 서버 응답을 로그에 기록
+    if (paymentMethod == 'bank_transfer') {
+      alert(`Bank Transfer details: Account Number: ${data.accountNumber}, Total: ฿${data.total}`);
+      // 송금 계좌 정보를 사용자에게 표시
+      window.location.reload();
+    }
+    else if(paymentMethod == 'crypto'){
+      // 가상화폐 결제 처리
+      alert(`Crypto Payment Details
+      Wallet Address: ${data.walletAddress}
+      USDT Rate: 1 USDT = ฿${data.usdtRate}
+      Amount to Pay: ${data.usdtAmount} USDT`);
+
+      // 결제 확인 과정 안내
+      alert('Please send the specified USDT amount to the wallet address and confirm the payment.');
+      window.location.reload();
+      // 암호화폐 지갑 주소를 사용자에게 표시
+    }
+    else{
+      if (data.clientSecret) {
+      clientSecret = data.clientSecret;
+      console.log('Client secret received:', clientSecret);
+    } else {
+      console.log('PaymentIntent creation failed:', data.error || 'Unknown error'); // 오류 메시지 표시
+      alert('PaymentIntent creation failed: ' + (data.error || 'Unknown error'));
+    }
+    }
+
+    
+  })
+  .catch(error => {
+    console.error('Error during fetch:', error);
+    alert('An error occurred while creating the payment intent. Please try again.');
+  });
+}
+
+function renderPaymentDetails(paymentDetails) {
+  const paymentDetailsModal = document.getElementById('payment-details-modal');
+  const paymentDetailsContent = document.getElementById('payment-details-content');
+  const cardElement = document.getElementById('card-element');
+  const paypalButtonContainer = document.getElementById('paypal-button-container');
+  const omiseCardForm = document.getElementById('omise-card-form');
+  paymentDetailsContent.innerHTML = '';
+
+  switch (paymentDetails.type) {
+    case 'stripe':
+      paymentDetailsContent.innerHTML = `<h3>Stripe Credit Card Payment</h3><p>Please enter your card details below.</p>`;
+      cardElement.style.display = 'block';
+      paypalButtonContainer.style.display = 'none';
+      omiseCardForm.style.display = 'none';
+      setupStripeElement();
+      break;
+    case 'paypal':
+      paymentDetailsContent.innerHTML = `<h3>PayPal Payment</h3><p>Click the PayPal button below to complete your payment.</p>`;
+      cardElement.style.display = 'none';
+      paypalButtonContainer.style.display = 'block';
+      omiseCardForm.style.display = 'none';
+      setupPayPalButton();
+      break;
+    case 'omise':
+      paymentDetailsContent.innerHTML = `<h3>Omise Credit Card Payment</h3><p>Please enter your card details below to complete the payment.</p>`;
+      cardElement.style.display = 'none';
+      paypalButtonContainer.style.display = 'none';
+      omiseCardForm.style.display = 'block';
+      break;
+    default:
+      paymentDetailsContent.innerHTML = `<h3>Payment Details</h3><p>Please follow the instructions provided to complete your payment.</p>`;
+      cardElement.style.display = 'none';
+      paypalButtonContainer.style.display = 'none';
+      omiseCardForm.style.display = 'none';
+  }
+
+  paymentDetailsModal.style.display = 'block';
+}
+
+
+function cancelPayment() {
+  document.getElementById('payment-modal').style.display = 'none';
+}
+
+function cancelCardPayment() {
+  document.getElementById('card-payment-modal').style.display = 'none';
+}
+
+function closePaymentDetails() {
+  document.getElementById('payment-details-modal').style.display = 'none';
+}
+
+let stripe;
+let elements;
+let card;
+
+function setupStripeElement() {
+  stripe = Stripe('<%= stripePublishableKey %>');
+  elements = stripe.elements();
+  const style = {
+    base: {
+      color: "#32325d",
+      fontFamily: 'Arial, sans-serif',
+      fontSmoothing: "antialiased",
+      fontSize: "16px",
+      "::placeholder": {
+        color: "#32325d"
+      }
+    },
+    invalid: {
+      fontFamily: 'Arial, sans-serif',
+      color: "#fa755a",
+      iconColor: "#fa755a"
+    }
+  };
+  card = elements.create("card", { style: style });
+  card.mount("#card-element");
+
+  card.on('change', ({error}) => {
+    const displayError = document.getElementById('card-errors');
+    if (error) {
+      displayError.textContent = error.message;
+    } else {
+      displayError.textContent = '';
+    }
+  });
+
+  console.log('Stripe element setup complete');
+}
+
+function setupPayPalButton() {
+  paypal.Buttons({
+    createOrder: function(data, actions) {
+      return actions.order.create({
+        purchase_units: [{
+          amount: {
+            value: '0.01' // 실제 결제 금액으로 변경 필요
+          }
+        }]
+      });
+    },
+    onApprove: function(data, actions) {
+      return actions.order.capture().then(function(details) {
+        alert('Payment successful!');
+        // 성공 처리
+      });
+    }
+  }).render('#paypal-button-container');
+}
+
+  function setupOmisePayment(total) {
+  const confirmFinalPaymentBtn = document.getElementById('confirm-final-payment');
+  confirmFinalPaymentBtn.addEventListener('click', function() {
+    Omise.setPublicKey('<%= process.env.OMISE_PUBLIC_KEY %>');
+
+    // 카드 정보 폼에서 입력된 값을 가져옵니다.
+    const cardNumber = document.getElementById('card-number').value;
+    const cardName = document.getElementById('card-name').value;
+    const expirationMonth = document.getElementById('card-expiration-month').value;
+    const expirationYear = document.getElementById('card-expiration-year').value;
+    const securityCode = document.getElementById('card-cvc').value;
+
+    // Omise를 사용해 카드 정보를 토큰화합니다.
+    Omise.createToken('card', {
+      number: cardNumber,
+      name: cardName,
+      expiration_month: expirationMonth,
+      expiration_year: expirationYear,
+      security_code: securityCode
+    }, function(statusCode, response) {
+      if (statusCode === 200) {
+        // 카드 토큰이 성공적으로 생성된 경우 서버로 전송합니다.
+        createPurchase('omise', response.id, total);
+      } else {
+        console.error(response.message);
+        alert('Omise payment failed: ' + response.message);
+      }
+    });
+  });
+}
+
+async function confirmFinalPayment() {
+  const checkoutTotalText = document.getElementById('checkout-total').textContent;
+  const amountText = checkoutTotalText.replace('฿', '').replace(/,/g, '');
+  const amount = parseFloat(amountText); // 결제 금액을 바트 단위로 설정
+  console.log("clientSecret", clientSecret);
+
+  console.log('결제 시도 금액:', amount); // 결제 금액 확인을 위한 로그 추가
+  switch (selectedCardPaymentMethod.value) {
+    case 'stripe':
+      if (!clientSecret) {
+        alert('Error: Client secret not available');
+        return;
+      }
+
+      const result = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: card,
+          billing_details: {
+            name: document.getElementById('card-name').value
+          }
+        }
+      });
+
+      if (result.error) {
+        alert('Payment failed: ' + result.error.message);
+      } else {
+        if (result.paymentIntent.status === 'succeeded') {
+          alert('Payment successful!');
+          // 성공 처리
+        }
+      }
+      break;
+    case 'omise':
+      Omise.setPublicKey('<%= process.env.OMISE_PUBLIC_KEY %>');
+      Omise.createToken('card', {
+        number: document.getElementById('card-number').value,
+        name: document.getElementById('card-name').value,
+        expiration_month: document.getElementById('card-expiration-month').value,
+        expiration_year: document.getElementById('card-expiration-year').value,
+        security_code: document.getElementById('card-cvc').value
+      }, function(statusCode, response) {
+        if (statusCode === 200) {
+          fetch('/purchases/create', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              paymentMethod: 'omise',
+              token: response.id, // 생성된 토큰
+              amount: amount, // 결제 금액을 바트 단위로 전송
+              currency: 'thb' // 통화를 바트로 설정
+            }),
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              alert('Payment successful!');
+              window.location.href = '/dashboard'; // 결제 성공 시 대시보드로 이동
+            } else {
+              alert('Failed to create purchase: ' + data.message);
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while creating the purchase. Please try again.');
+          });
+        } else {
+          alert('Omise payment failed: ' + response.message);
+        }
+      });
+      break;
+    default:
+      alert('Unknown payment method');
+  }
+}
+ 
+
+
+function createPurchase(paymentMethod, paymentId = null) {
+    console.log('Creating purchase...');
+    const checkoutTotalText = document.getElementById('checkout-total').textContent;
+    const amountText = checkoutTotalText.replace('฿', '').replace(/,/g, '');
+    const amount = parseFloat(amountText);
+    const amountInCents = Math.round(amount * 100);
+
+    fetch('/purchases/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ 
+        paymentMethod: paymentMethod,
+        amount: amountInCents,
+        paymentId: paymentId
+      }),
+    })
+    .then(response => response.json())
+    .then(data => handlePurchaseResponse(data))
+    .catch(error => {
+      console.error('Error:', error);
+      alert('An error occurred while creating the purchase. Please try again. ' + error.message);
+    });
+  }
+
+  function handlePurchaseResponse(data) {
+    console.log('Purchase response:', data);
+    if (data.success) {
+      alert('Purchase created successfully!');
+      window.location.href = '/dashboard';
+    } else {
+      alert(data.message || 'Failed to create purchase. Please try again.');
+    }
+  }
+
+  // 기존 코드 유지
+</script>
+
+<style>
+ .checkout-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .checkout-item {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
+  
+  #checkout-summary {
+    margin-top: 20px;
+    border-top: 2px solid #ddd;
+    padding-top: 20px;
+  }
+  
+  .summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
+  .terms-card {
+    margin-top: 20px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .proceed-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  
+  .proceed-btn:hover {
+    background-color: #45a049;
+  }
+  
+  .proceed-btn:disabled {
+    background-color: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+  }
+  
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6);
+  }
+  
+  .modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+  
+  .payment-methods {
+    margin-bottom: 20px;
+  }
+  
+  .payment-option {
+    margin-bottom: 10px;
+  }
+  
+  .payment-option input[type="radio"] {
+    margin-right: 10px;
+  }
+  
+  .modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .cancel-btn, .confirm-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .cancel-btn {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .confirm-btn {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .cancel-btn:hover {
+    background-color: #d32f2f;
+  }
+  
+  .confirm-btn:hover {
+    background-color: #45a049;
+  }
+  
+  .confirm-btn:disabled {
+    background-color: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+  }
+  
+  #card-element {
+    margin-bottom: 20px;
+  }
+  
+  #card-errors {
+    color: #f44336;
+    margin-bottom: 10px;
+  }
+  #omise-card-form {
+  display: none;
+}
+</style>
+
+<link rel="stylesheet" href="/styles/checkout.css">

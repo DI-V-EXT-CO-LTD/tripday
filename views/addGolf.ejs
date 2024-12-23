@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Golf Course</title>
+</head>
+<body>
+    <h1>Add New Golf Course</h1>
+    <form action="/admin/add-golf" method="POST" enctype="multipart/form-data">
+        <div>
+            <label for="name">Golf Course Name: <!-- 골프 코스 이름 --></label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div>
+            <label for="description">Description: <!-- 설명 --></label>
+            <textarea id="description" name="description" required></textarea>
+        </div>
+        <div>
+            <label for="location">Location: <!-- 위치 --></label>
+            <input type="text" id="location" name="location" required>
+        </div>
+        <div>
+            <label for="price">Price: <!-- 가격 --></label>
+            <input type="number" id="price" name="price" required>
+        </div>
+        <div>
+            <label for="image">Main Image: <!-- 대표 이미지 --></label>
+            <input type="file" id="image" name="image" accept="image/*">
+        </div>
+        <div>
+            <label for="banner_image">Banner Image: <!-- 배너 이미지 --></label>
+            <input type="file" id="banner_image" name="banner_image" accept="image/*">
+        </div>
+        <div>
+            <label for="gallery">Gallery Images: <!-- 갤러리 이미지 --></label>
+            <input type="file" id="gallery" name="gallery" accept="image/*" multiple>
+        </div>
+        <button type="submit">Add Golf Course</button>
+    </form>
+</body>
+</html>

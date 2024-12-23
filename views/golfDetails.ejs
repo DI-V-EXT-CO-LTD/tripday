@@ -1,0 +1,374 @@
+<!-- golfDetails.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= golf.nameEn %></title>
+  <link rel="stylesheet" href="/styles/hotelDetails.css">
+  <link rel="stylesheet" href="/styles/index.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="/styles/auth-popup.css">
+  <style>
+    /* 스타일 코드는 hotelDetails.ejs와 동일하게 유지 */
+    .quantity-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .quantity-button {
+      background-color: #f0f0f0;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .quantity-input {
+      width: 60px;
+      text-align: center;
+      margin: 0 10px;
+      font-size: 18px;
+    }
+
+    #reserveBtn {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 18px;
+      margin-left: 20px;
+    }
+
+    .date-inputs {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .date-inputs label {
+      margin-right: 10px;
+    }
+
+    .date-inputs input[type="date"],
+    .date-inputs input[type="number"] {
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .quantity-reserve-container {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+  </style>
+</head>
+<body>
+  <%- include('partials/header-hotel-details') %>
+  <div class="body-container">
+    <!-- Golf Summary Section -->
+    <div class="section golf-summary-section">
+      <h2><%= golf.title %></h2>
+      <div class="golf-summary-container">
+        <div class="golf-information-row">
+          <div class="column-1">
+            <div class="address-row">
+              <i class="fa fa-map-marker"></i>
+              <span class="address-text"><%- golf.address %></span>
+            </div>
+            <div class="detailed-address-row">
+              <i class="fa fa-building"></i>
+              <span class="detailed-address-text"><%- golf.content %></span>
+            </div>
+          </div>
+          
+          <div class="column-2">
+            <div class="price-container">
+              <% if (golf.sale_price && golf.price > golf.sale_price) { %>
+                <s class="delete-price">THB <%= golf.price.toLocaleString() %></s>
+              <% } %>
+              <span class="real-price">THB <%= (golf.sale_price || golf.price).toLocaleString() %></span>
+            </div>
+            <div class="price-match">
+              <div class="price-match-icon"></div>
+              <span class="price-match-text">We Price Match</span>
+            </div>
+          </div>
+          
+        </div>
+        <div class="golf-images-row">
+          <div class="image-gallery-container">
+            <div class="main-image">
+              <% if (golf.gallery && golf.gallery.length > 0) { %>
+                <img src="/uploads/<%= golf.gallery[0] %>" alt="<%= golf.title %> Main Image" style="width: 100%; height: 100%;">
+              <% } else { %>
+                <p>No images available</p>
+              <% } %>
+            </div>
+            <div class="small-images">
+              <% for(let i = 0; i < Math.min(golf.gallery.length, 5); i++) { %>
+                <div class="small-image-item">
+                  <img src="/uploads/<%= golf.gallery[i] %>" alt="<%= golf.title %> Image <%= i %>">
+                </div>
+              <% } %>
+              <% if(golf.gallery.length > 6) { %>
+                <div class="small-image-item more-images">
+                  <img src="/uploads/<%= golf.gallery[5] %>" alt="<%= golf.title %> Image 5">
+                  <div class="see-all-images">
+                    <i class="smarticon u-icon u-icon-ic_images"></i>
+                    <span>See All <%= golf.gallery.length %> Photos</span>
+                  </div>
+                </div>
+              <% } else if (golf.gallery.length === 6) { %>
+                <div class="small-image-item">
+                  <img src="/uploads/<%= golf.gallery[5] %>" alt="<%= golf.title %> Image 5">
+                </div>
+              <% } %>
+            </div>
+          </div>
+        </div>
+        
+        <div class="amenities-column">
+          <h3 class="section-title">Amenities</h3>
+          <div class="amenities-list">
+            <% const amenities = [
+                {name: 'Pro Shop', icon: 'icon-shop'},
+                {name: 'Driving Range', icon: 'icon-driving-range'},
+                {name: 'Golf Cart', icon: 'icon-golf-cart'},
+                {name: 'Clubhouse', icon: 'icon-clubhouse'},
+                {name: 'Restaurant', icon: 'icon-restaurant'},
+                {name: 'Locker Room', icon: 'icon-locker-room'},
+                {name: 'Caddie Service', icon: 'icon-caddie'},
+                {name: 'Golf Lessons', icon: 'icon-lessons'},
+                {name: 'Putting Green', icon: 'icon-putting-green'},
+                {name: 'Golf Club Rental', icon: 'icon-club-rental'},
+                {name: 'Shower Facilities', icon: 'icon-shower'},
+                {name: 'Free Parking', icon: 'icon-parking'}
+              ];
+              for(let i = 0; i < 4; i++) { %>
+                <div class="amenities-row">
+                  <% for(let j = i*3; j < Math.min((i+1)*3, amenities.length); j++) { %>
+                    <span class="amenities-item">
+                      <i class="smarticon u-icon <%= amenities[j].icon %>"></i>
+                      <span class="amenities-desc"><%= amenities[j].name %></span>
+                    </span>
+                  <% } %>
+                </div>
+              <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Date Selection Section -->
+    <div class="section date-selection-section">
+      <div class="date-inputs">
+        <label for="valid-from">valid from:</label>
+        <input type="date" id="valid-from" name="valid-from" required>
+
+        <label for="days" style="margin-left: 40px;">Days:</label>
+        <input type="number" id="days" name="days" min="1" value="1" style="width: 50px; margin-right: 40px;">
+
+        <label for="valid-until">valid until:</label>
+        <input type="date" id="valid-until" name="valid-until" required>
+      </div>
+      <div class="quantity-reserve-container">
+        <div class="quantity-container">
+          <button class="quantity-button" onclick="decreaseQuantity()">-</button>
+          <input type="number" id="quantity" class="quantity-input" value="1" min="1">
+          <button class="quantity-button" onclick="increaseQuantity()">+</button>
+        </div>
+        <button id="reserveBtn" data-golf-id="<%= golf._id %>">Reserve</button>
+      </div>
+    </div>
+
+    <!-- Golf Course Details Section -->
+    <div class="section golf-course-details-section">
+      <h2>Golf Course Details</h2>
+      <div class="course-info">
+        <p>Holes: <%= golf.course_info.holes %></p>
+        <p>Par: <%= golf.course_info.par %></p>
+        <p>Length: <%= golf.course_info.length %> yards</p>
+        <p>Course Type: <%= golf.course_info.course_type %></p>
+      </div>
+    </div>
+
+    <!-- Booking Method Section -->
+    <div class="section booking-method-section">
+      <h2>Booking Method</h2>
+      <div class="step-container">
+        <div class="step">Check available tee times</div>
+        <div class="step">Select your preferred tee time</div>
+        <div class="step">Choose any additional services (e.g., caddie, golf cart)</div>
+        <div class="step">Review booking details and total amount</div>
+        <div class="step">Click the 'Book Now' button</div>
+        <div class="step">Provide necessary information and agree to terms and conditions</div>
+        <div class="step">Complete the payment process</div>
+        <div class="step">Receive booking confirmation</div>
+      </div>
+    </div>
+
+    <!-- Payment Method Section -->
+    <div class="section payment-method-section">
+      <h2>Payment Method</h2>
+      <div class="step-container">
+        <div class="step">Select 'My Bookings' in your profile</div>
+        <div class="step">Choose the golf booking you want to pay for</div>
+        <div class="step">Review and accept the cancellation/refund policy</div>
+        <div class="step">Check the invoice details</div>
+        <div class="step">Select your preferred payment method</div>
+        <div class="step">Confirm the details and amount, then click 'Pay Now'</div>
+        <div class="step">Complete the payment process</div>
+        <div class="step">Receive payment confirmation</div>
+      </div>
+    </div>
+
+    <!-- Frequently Asked Questions Section -->
+    <div class="section faq-section">
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq-chat">
+        <div class="chat-bubble question">How do I book a tee time?</div>
+        <div class="chat-bubble answer">You can book a tee time by selecting your preferred date and time on our booking calendar, then following the checkout process.</div>
+        
+        <div class="chat-bubble question">What is included in the green fee?</div>
+        <div class="chat-bubble answer">The green fee typically includes access to the golf course for 18 holes. Additional services like golf carts or caddies may be available for an extra fee.</div>
+        
+        <div class="chat-bubble question">Can I rent golf clubs?</div>
+        <div class="chat-bubble answer">Yes, golf club rentals are available. You can add this option during the booking process or inquire at the pro shop upon arrival.</div>
+        
+        <div class="chat-bubble question">What is the cancellation policy?</div>
+        <div class="chat-bubble answer">Please refer to our cancellation and refund policy on the website. Policies may vary depending on the specific golf course and booking conditions.</div>
+      </div>
+    </div>
+
+    <!-- Cancel & Refund Policy Section -->
+    <div class="section cancel-and-refund-policy-section">
+      <h2>Cancel & Refund Policy</h2>
+      <div class="policy-content">
+        <div class="policy-section">
+          <h3>Cancellation</h3>
+          <ul class="policy-list">
+            <li>Cancellation/refund is not possible due to unidentified precautions.</li>
+            <li>If a travel agency cancels a product booked/purchased on Trip-day.com, we may request a penalty or may not be able to cancel it as per the following regulations.</li>
+            <li>In case of cancellation due to natural disasters, no placebo will be processed and the regulations for each product will be observed in accordance with Thai law.</li>
+            <li>If you cancel or change, please register with the reservation number at Trip-Day.com.</li>
+          </ul>
+        </div>
+
+        <div class="policy-section">
+          <h3>Refund</h3>
+          <ul class="policy-list">
+            <li>E-tickets and reservation code products/date pre-order products cannot be canceled/refunded after ordering.</li>
+            <li>Physical receipt ticket products can be used within a set period from the date of purchase.</li>
+            <li>You can get a refund if you return the unused ticket before or within 7 days of receiving it.</li>
+            <li>Physical tickets cannot be reissued if you lose your ticket.</li>
+          </ul>
+        </div>
+
+        <div class="policy-section">
+          <h3>Changes</h3>
+          <ul class="policy-list">
+            <li>Changes are only applicable to physical tickets except E-Ticket/E Vouchers and are only applicable to non-overlapping attractions.</li>
+            <li>The schedule can be changed only for the possible schedule, and please refer to each product page for the possible period.</li>
+          </ul>
+        </div>
+
+        <div class="policy-note">
+          For more detailed information on change regulations, daily car tours, city tours, activities, tourist attractions, walking tours, pickup/drop services, and other specific policies, please refer to our complete policy document or contact our customer support.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <%- include('partials/footer') %>
+
+</body>
+</html>
+<script src="/js/datePickerHandler.js"></script>
+<script src="/js/golfDetails.js"></script>
+<script src="/scripts/auth.js"></script>
+<script>
+  const reserveBtn = document.getElementById('reserveBtn');
+  const validFromPicker = document.getElementById('valid-from');
+  const validUntilPicker = document.getElementById('valid-until');
+  const daysInput = document.getElementById('days');
+
+  function updateDates() {
+    const validFromDate = new Date(validFromPicker.value);
+    const days = parseInt(daysInput.value, 10);
+    
+    if (!isNaN(validFromDate.getTime()) && days > 0) {
+      const validUntilDate = new Date(validFromDate);
+      validUntilDate.setDate(validUntilDate.getDate() + days);
+      validUntilPicker.value = validUntilDate.toISOString().split('T')[0];
+    }
+  }
+
+  validFromPicker.addEventListener('change', updateDates);
+  daysInput.addEventListener('change', updateDates);
+  daysInput.addEventListener('input', updateDates);
+
+  validUntilPicker.addEventListener('change', function() {
+    const validFromDate = new Date(validFromPicker.value);
+    const validUntilDate = new Date(validUntilPicker.value);
+
+    if (!isNaN(validFromDate.getTime()) && !isNaN(validUntilDate.getTime())) {
+      const diffTime = Math.abs(validUntilDate - validFromDate);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+      daysInput.value = diffDays;
+    }
+  });
+
+  function decreaseQuantity() {
+    const quantityInput = document.getElementById('quantity');
+    let quantity = parseInt(quantityInput.value);
+    if (quantity > 1) {
+      quantity--;
+      quantityInput.value = quantity;
+    }
+  }
+
+  function increaseQuantity() {
+    const quantityInput = document.getElementById('quantity');
+    let quantity = parseInt(quantityInput.value);
+    quantity++;
+    quantityInput.value = quantity;
+  }
+
+  reserveBtn.addEventListener('click', () => {
+    const golfId = reserveBtn.dataset.golfId;
+    const quantity = parseInt(document.getElementById('quantity').value);
+    const validFrom = validFromPicker.value;
+    const validUntil = validUntilPicker.value;
+
+    fetch(`/cart/addGolf/${golfId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ 
+        quantity: quantity,
+        validFrom: validFrom,
+        validUntil: validUntil
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.message === 'Golf added to cart successfully!') {
+        alert('Golf added to cart successfully!');
+      } else {
+        alert('Failed to add golf to cart.');
+      }
+    })
+    .catch(error => {
+      console.error('Error adding golf to cart:', error);
+      alert('An error occurred while adding golf to cart.');
+    });
+  });
+</script>

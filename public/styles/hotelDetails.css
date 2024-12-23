@@ -1,0 +1,1662 @@
+/* public/styles/hotelDetails.css */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Helvetica:wght@300;400;500;700&display=swap');
+body {
+    margin: 0;
+    font-family: 'Roboto', 'Helvetica', sans-serif, 'Noto Sans KR', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+    background-color: #f4f4f4;
+}
+
+/* 헤더 스타일 */
+.header-hotel-details {
+  background-color: #003580;
+  color: white;
+  width: 100%;
+  height: 100px;
+}
+
+.header-content {
+  display: flex;
+  flex-direction: column;
+  max-width: 1200px;
+  margin: auto;
+  padding: 10px 0;
+}
+
+.top-row, .bottom-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.logo img {
+  height: 40px;
+}
+
+.category-section {
+  display: flex;
+  gap: 15px;
+}
+
+.category-button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+.section {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.room-lists-row {
+  display: flex;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: box-shadow 0.3s ease;
+}
+.room-lists-row:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+.room-image {
+  flex: 0 0 200px;
+  margin-right: 20px;
+}
+.room-image img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 4px;
+  height: 100%;
+}
+.room-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.room-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  
+}
+.room-title {
+  font-size: 1.6em;
+  font-weight: bold;
+  color: #333;
+}
+.room-capacity {
+  font-size: 0.9em;
+  color: #666;
+}
+.room-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  
+}
+.room-size {
+  font-size: 0.9em;
+  color: #666;
+}
+.room-amenities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+.amenity-tag {
+  background-color: #f0f0f0;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.8em;
+  color: #333;
+}
+.room-pricing {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+.price-per-night {
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #333;
+}
+.reserve-btn {
+  background-color: #3364ff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 200px;
+  height: 40px;
+}
+.reserve-btn:hover {
+  background-color: #3564ff;
+}
+.room-details-btn {
+  background-color: transparent;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 0.9em;
+}
+.amenities-popup {
+  display: none;
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ddd;
+  padding: 10px;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  border-radius: 4px;
+}
+.amenities-popup ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+.amenities-popup li {
+  margin-bottom: 5px;
+  font-size: 0.9em;
+}
+.date-selection-section {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.date-inputs {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+.date-inputs label {
+  font-weight: bold;
+  color: #333;
+}
+.date-inputs input[type="date"] {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1em;
+}
+.step-container {
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+.step {
+position: relative;
+padding: 10px;
+background-color: #f0f0f0;
+margin-bottom: 30px;
+width: 70%;
+text-align: center;
+}
+
+.step::after {
+content: '';
+position: absolute;
+bottom: -20px;
+left: 50%;
+transform: translateX(-50%);
+border-left: 10px solid transparent;
+border-right: 10px solid transparent;
+border-top: 10px solid #f0f0f0;
+}
+
+.step:last-child::after {
+display: none;
+}
+.faq-section {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 30px;
+  margin-top: 40px;
+}
+
+.faq-section h2 {
+  color: #333;
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.faq-content {
+  line-height: 1.6;
+}
+
+.faq-item {
+  margin-bottom: 20px;
+}
+
+.faq-question {
+  color: #3364ff;
+  font-size: 18px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.faq-answer {
+  color: #333;
+  padding-left: 20px;
+}
+
+.faq-answer::before {
+  content: "•";
+  color: #3364ff;
+  font-weight: bold;
+  display: inline-block;
+  width: 1em;
+  margin-left: -1em;
+}
+
+
+.chat-bubble {
+  max-width: 100%;
+  padding: 10px 15px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.question {
+  align-self: flex-end;
+  background-color: #3364ff;
+  color: white;
+  margin-top: 50px;
+}
+
+.answer {
+  align-self: flex-start;
+  background-color: #f0f0f0;
+  color: #333;
+  margin-top: 20px;
+}
+
+.faq-section h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.cancel-and-refund-policy-section {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 30px;
+  margin-top: 40px;
+}
+.cancel-and-refund-policy-section {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 30px;
+  margin-top: 40px;
+}
+
+.cancel-and-refund-policy-section h2 {
+  color: #333;
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.policy-content {
+  line-height: 1.6;
+  color: #444;
+}
+
+.policy-section {
+  margin-bottom: 20px;
+}
+
+.policy-section h3 {
+  color: #3364ff;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.policy-list {
+  list-style-type: none;
+  padding-left: 20px;
+}
+
+.policy-list li {
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.policy-list li::before {
+  content: "•";
+  color: #3364ff;
+  font-weight: bold;
+  display: inline-block;
+  width: 1em;
+  margin-left: -1em;
+}
+
+.policy-note {
+  background-color: #e6f3ff;
+  border-left: 4px solid #3364ff;
+  padding: 10px;
+  margin-top: 20px;
+  font-style: italic;
+}
+
+
+
+.head-container .logo img {
+    height: 43px;
+    width: 176px;
+}
+
+.head-container .category-section {
+   
+    margin-left: 16px;
+}
+
+.head-container .category-button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 16px;
+    font-weight: 300;
+}
+
+.head-container .right-section {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto; /* 우측 정렬 */
+}
+
+.head-container .right-section .button-text {
+    background: none;
+    border: none;
+
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 300;
+}
+
+.head-container .right-section .icon-button {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 300;
+}
+
+.head-container .bottom-row {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+    padding-top: 40px; /* 위쪽으로 올리기 */
+}
+
+.head-container .background-rounded {
+    position: relative;
+    margin-top: -20px; /* background-rounded를 위로 올리기 */
+    width: auto;
+    max-width: 1160px;
+    background-color: rgba(255, 255, 255, 1);
+    border-radius: 16px;
+    z-index: 1; /* background-rounded가 항상 맨 위에 보이도록 설정 */
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.body-container {
+    width: 100%;    
+    background-color: #f0f2f5;
+    border-radius: 20px; /* 둥근 사각형 모서리 */   
+    z-index: 0; /* head-container 아래에 위치 */
+
+    overflow-x: hidden; /* 가로 스크롤 방지 */
+}
+
+.section {
+    max-width: 1160px;
+
+    margin-top: 10px;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+}
+
+
+
+.search-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    padding: 8px 16px;
+    gap: 8px;
+}
+
+.destinationbox, .checkin-outbox, .rooms-and-guests-box, .search-button-box {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    height: 72px;
+    font-size: 12px;
+}
+
+.destinationbox {
+    width: 380px;
+    overflow: hidden;
+    left: 0;
+    margin: 0;
+    margin-top: 10px;
+}
+
+.destinationbox label, 
+.checkin-outbox label, 
+.rooms-and-guests-box label {   
+    display: block;
+    text-align: left; 
+    color: #455873;
+    padding-left: 5px;
+    padding-bottom: 0;
+    padding-top: 5px;
+}
+
+.destinationbox input {
+    width: 100%;
+    border: hidden;
+}
+
+.destinationbox:hover input {
+    border: 1px solid #1E4DEF;
+}
+
+.checkin-outbox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 290px;
+    margin-top: 10px;    
+}
+
+.checkin-outbox .label-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 5px;    
+}
+
+.checkin-outbox .input-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;    
+}
+
+.checkin-container, .checkout-container {
+    width: 120px;
+}
+
+.nightsdisplayer {
+    text-align: center;
+    width: 64px;
+}
+
+.checkin-container input, .checkout-container input {
+    width: 100%;
+    border: hidden;
+}
+
+.checkin-container:hover input, .checkout-container:hover input {
+    border: 1px solid #1E4DEF;
+}
+
+.rooms-and-guests-box {
+    width: 304px;
+    position: relative;
+    margin-top: 10px;
+}
+
+.rooms-and-guests-box .dropbtn {
+    width: 100%;
+    background-color: white;
+    border: hidden;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+}
+
+.rooms-and-guests-box .dropbtn::after {
+    content: '▼';
+    font-size: 12px;
+}
+
+.rooms-and-guests-box .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    width: 100%;
+}
+
+.rooms-and-guests-box .dropdown-content div {
+    padding: 12px 16px;
+}
+
+.rooms-and-guests-box .dropbtn:focus + .dropdown-content,
+.rooms-and-guests-box .dropbtn:active + .dropdown-content {
+    display: block;
+}
+
+.search-button-box {  
+    height: 52px;
+    width:108px;
+    margin-top: 10px;
+}
+
+.search-button {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    color: #1E4DEF;
+    border: 1px solid #1E4DEF;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.search-button i {
+    margin-right: 5px;
+}
+
+.hotel-summary-section {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;    
+  box-shadow: none;
+  margin-top: 20px; /* Hotel Summary Section의 상단 여백 줄임 */
+
+}
+
+.hotel-summary-container {
+  height: auto; /* 높이를 자동으로 조정 */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* 내용을 위쪽으로 정렬 */
+  background-color: white;
+  border-radius: 0px;
+}
+
+.hotel-information-row {
+  height: auto; /* 높이를 자동으로 조정 */
+  display: flex;
+  justify-content: space-between;   
+  margin-bottom: 10px;
+  align-items: flex-start; /* 내용을 위쪽으로 정렬 */
+}
+
+.hotel-information-row .column-1 {
+    width: 812.25px;
+    gap: 5px; /* 간격 줄임 */
+    font-size: 14px;
+}
+
+.hotel-information-row .column-2 {
+    width: 315.75px;
+
+}
+
+.hotel-information-row .column-3 {
+    width: 210.81px;
+
+}
+.hotel-information-row .column-1,
+.hotel-information-row .column-2,
+.hotel-information-row .column-3 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* 콘텐츠를 중앙에 맞춤 */
+}
+
+
+
+.column-1 {
+  display: flex;
+  flex-direction: column;
+  gap: 5px; /* 행 간격 줄임 */
+  overflow: hidden;
+}
+
+.address-row, .detailed-address-row {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.address-text{
+  color: #6f757e;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: calc(100% - 24px); /* 아이콘 너비와 간격을 고려하여 최대 너비 설정 */
+  line-height: 1; /* 텍스트 높이를 아이콘과 일치시킴 */
+}
+.address-row i, .detailed-address-row i {
+  margin-right: 8px; /* 아이콘과 텍스트 사이 간격 추가 */
+  font-size: 16px; /* 아이콘 크기 조정 */
+  line-height: 1; /* 아이콘 높이 조정 */
+}
+ 
+.column-2 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* 우측 정렬 */
+    justify-content: center;
+    gap: 1px; /* 간격 조정 */
+    margin-right: 20px;
+}
+
+.price-container {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    gap: -10px;
+    text-align: right; /* 우측 정렬 */    
+}
+
+.delete-price {
+    text-decoration: line-through;
+    margin-right: 8px; /* 삭제된 가격과 실제 가격 사이 간격 */
+    color: red; /* 색상 설정 */
+    text-align: right; /* 우측 정렬 */
+}
+
+.real-price {
+    font-weight: bold;
+    color: black;
+    text-align: right; /* 우측 정렬 */
+}
+
+.price-match {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* 아이콘과 텍스트 사이 간격 */
+    font-size: 14px;
+    text-align: right; /* 우측 정렬 */
+    font-weight: bold;
+    padding-top: -5px;
+}
+
+.price-match-text {
+    color: black; /* 색상 설정 */
+    text-align: right; /* 우측 정렬 */    
+}
+
+
+.price-match-icon {
+    width: 20px;
+    height: 20px;
+    background-image: url('https://ak-d.tripcdn.com/images/0AS5f120008whj34f2145.png'); /* 아이콘 이미지 경로 */
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+
+
+.column-3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.select-room-btn {
+    padding: 0 24px;
+    height: 56px;
+    font-size: 20px;
+    background-color: #007bff; /* 버튼 배경색 */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.select-room-btn:hover {
+    background-color: #0056b3; /* 호버 시 배경색 */
+}
+
+.select-room-btn-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.select-room-btn-text {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.hotel-images-row {
+    height: 282px;   
+    gap: 10px;
+    margin-bottom: 10px;   
+}
+.image-gallery-container {
+    display: grid;
+    grid-template-columns: 60% 40%; /* 큰 이미지와 작은 이미지를 위한 컬럼 설정 */
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    width: 100%;
+    height: 100%;
+}
+
+.main-image {
+    width: 100%;
+    height: 100%; /* 부모 요소의 높이를 채움 */
+    overflow: hidden; /* 이미지를 부모 요소의 높이에 맞춰 자르기 */
+    border-radius: 10px;
+}
+
+.main-video {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.video-controls {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    color: white;
+}
+
+.inspiration-text {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.small-images {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3열로 설정 */
+    grid-template-rows: repeat(2, 1fr); /* 2행으로 설정 */
+    gap: 10px;
+    width: 100%;
+    height: auto;
+}
+
+.small-image-item {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 이미지가 비율을 유지하면서 부모 요소를 채우도록 설정 */
+    border-radius: 10px;
+}
+
+.small-image-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.more-images {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.see-all-images {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 10px;
+    gap: 5px;
+    text-align: center;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+.extra-explains-row {
+    height: 160px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    overflow: hidden;
+}
+
+.amenities-column, .surroundings-column {
+    width: 100%; /* 두 열을 동일한 크기로 설정 */
+    background-color: #ffffff;
+    margin-top: 40px;
+    border-radius: 10px;
+    
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
+    overflow: hidden;
+}
+.hotelExplains-column{
+    width: 100%; /* 두 열을 동일한 크기로 설정 */
+    background-color: #ffffff;
+    border-radius: 10px;
+    margin-top: 40px;
+    height: 300px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
+    overflow: hidden;
+}
+
+.amenities-list {
+    display: flex;
+    flex-wrap: wrap; /* 아이템이 넘칠 경우 줄 바꿈 */
+    font-weight: bold;
+    width: 100%;
+    gap: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
+}
+
+.amenities-item {
+    display: flex;
+    align-items: center;
+    width: calc(100%); /* 두 열로 나누기 위해 너비 설정 */
+    gap: 60px;
+    
+}
+
+.amenities-icon {
+    margin-right: 8px;
+    font-size: 20px;
+    color: #455873;
+}
+
+.amenities-desc {
+    color: #6f757e;
+    font-size: 14px;
+    flex-grow: 1;
+    margin-bottom: 5px;
+}
+
+.amenities-free {
+    font-size: 12px;
+    color: #1E4DEF;
+    background-color: #E0E7FF;
+    border-radius: 5px;
+    padding: 2px 5px;
+    margin-left: 5px;
+}
+
+.show-more-amenities {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.show-more-desc {
+    font-size: 14px;
+    color: #1E4DEF;
+}
+
+.show-more-icon {
+    margin-left: 5px;
+    font-size: 14px;
+    color: #1E4DEF;
+}
+
+.surroundings-column {
+    width: 48%;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.surroundings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.surroundings-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.surroundings-icon {
+    font-size: 20px;
+    color: #455873;
+}
+
+.surroundings-desc {
+    color: #6f757e;
+    font-size: 14px;
+    flex-grow: 1;
+}
+
+.surroundings-distance {
+    color: #6f757e;
+    font-size: 14px;
+}
+
+.show-more-surroundings {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.show-more-desc {
+    font-size: 14px;
+    color: #1E4DEF;
+}
+
+.show-more-icon {
+    margin-left: 5px;
+    font-size: 14px;
+    color: #1E4DEF;
+}
+.section-title {
+    padding-left: 5px;
+    font-size: 18px; /* 폰트 크기 설정 */
+    font-weight: bold; /* 폰트 두께 설정 */
+    color: #455873; /* 색상 설정 */
+    margin-bottom: 5px; /* 아래쪽 여백 설정 */
+    text-align: left; /* 텍스트 정렬 설정 */
+    display: flex;
+    align-items: center;
+    gap: 10px; /* 아이콘과 텍스트 사이의 간격 */
+}
+
+.section-title i {
+    font-size: 20px; /* 아이콘 크기 설정 */
+    color: #455873; /* 아이콘 색상 설정 */
+}
+
+.room-detail-categories-row {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.row-1 {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    height: 50%; /* 첫 번째 행의 높이를 절반으로 설정 */
+    font-size: 18px; /* 첫 번째 행의 글자 크기를 크게 조정 */
+}
+
+.row-2 {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    height: 100%; /* 두 번째 행의 높이를 원래대로 유지 */
+}
+
+.separator {
+    width: 100%;
+    height: 2px;
+    background-color: #dcdcdc; /* 구분선 색상 */
+    margin: 0; /* 구분선 여백 제거 */
+}
+
+.category-button {    
+    background-color: transparent;
+    border: none;
+    font-size: 20px; /* 첫 번째 행의 글자 크기를 크게 조정 */
+    font-weight: bold;
+    color: #455873;
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    transition: color 0.3s ease;
+}
+
+.category-button:hover {
+    color: #455873;
+}
+.category-button::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #1E4DEF;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+}
+
+.category-button:hover::after {
+    transform: scaleX(1);
+}
+.category-item {
+    padding: 10px;
+    background-color: #f6f7fb;
+    font-size: 14px;
+    color: #455873;
+    border-radius: 5px;
+    flex: 1; /* 항목이 행 안에서 동일한 너비로 배치되도록 함 */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+
+
+.category-item.selected {
+    background-color: black;
+    color: white;
+}
+
+.section.room-lists-section {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+.section.room-lists-section .h2{
+    
+    text-align: left;
+}
+.room-lists-row.row-1 {
+    height: 46px; /* 첫 번째 행의 높이 설정 */    
+    display: flex;
+    align-items: center; /* 행의 내용이 수직 가운데 정렬되도록 설정 */    
+    padding: 10px; /* 여백 설정 (선택 사항) */
+    width: 100%;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  .room-type-text {
+    font-size: 25px;
+    font-weight: bold;
+    color: #455873; /* 텍스트 색상 설정 */
+  }
+  
+  .room-lists-row.row-2 {
+    display: flex;
+
+    height: 394px;
+  }
+  
+  .room-pic-container {
+    width: 204px;
+    height: 402px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .baseRoom_baseRoom__Sox8k {       
+    border-radius: 10px;
+  }
+  
+  .baseRoom_baseRoom-imgBox__UrQf1,
+  .baseRoom_baseRoom-bedsInfo__LNa7O,
+  .baseRoom_baseRoom-facility__WcsQp,
+  .baseRoom_baseRoom-roomAmenities__KbLuz {
+    margin-bottom: 10px;
+  }
+  .baseRoom_baseRoom-imgLegend__aK_FM {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 2px 5px;
+    border-radius: 5px;
+  }
+.detailed-address-text:hover::after {
+    content: attr(data-full-text);
+    position: absolute;
+    left: 0;
+    top: 100%;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 5px;
+    border-radius: 4px;
+    z-index: 1000;
+    white-space: normal;
+    max-width: 300px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+.baseRoom_baseRoom-singleRoomImgBox_bigImg__umGgI {
+    width: 100%;
+    border-radius: 10px;
+    border: black;
+  }
+  
+  .baseRoom_baseRoom-singleRoomImgBox_smallImgBox__bs5A9 {
+    display: flex;
+    gap: 5px;
+    border: black;
+  }
+  
+  .baseRoom_baseRoom-singleRoomImgBox_smallImg__U2iVM {
+    width: 100px;
+    height: 56px;
+    border-radius: 5px;
+    border: black;
+  }
+  
+  .baseRoom_baseRoom-bedsInfo__LNa7O {
+    display: flex;
+    align-items: center;
+  }
+  
+  .baseRoom_baseRoom-bedsInfo_iconList__CuyUc {
+    margin-right: 5px;
+  }
+  
+  .baseRoom_baseRoom-facility__WcsQp {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .room-info-table {
+    width: 900px;
+    height: 394px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;   
+  }
+  
+  .room-info-table table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 20px;
+  }
+  
+  .room-info-table td {
+    border: 0.5px solid #ccc;    
+    text-align: center;   
+  }
+ 
+  
+  .room-info-table tr:nth-child(1) td{
+    height: 38px;
+    background-color: #f6f7fb;
+  }
+
+  .room-info-table tr:nth-child(2) td,
+  .room-info-table tr:nth-child(3) td {
+    height: 177px;
+  }
+
+
+
+  .saleRoom_saleRoomItemBox-reservationNotesInfoBox__13uYU {
+    flex: 47 1;
+    padding: 16px 8px;
+    border-right: 1px solid #ced2d9;
+    text-align: left;
+}
+
+.saleRoom_saleRoomItemBox-priceInfoBox__YKNbL {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 0;
+   
+  }
+  .priceInfo_saleRoomItemBox-priceInfoBox__YKNbL {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px; /* 여백을 10px로 설정 */
+}
+  
+  .priceInfo_saleRoomItemBox-priceInfoBox-leftContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    text-align: right; /* 모든 텍스트를 우측 정렬 */
+    margin-left: 10px;
+    width: 70%;
+  }
+  
+  .priceInfo_saleRoomItemBox-priceBox-displayPrice__niIBD {
+    font-size: 24px;
+    font-weight: bold;
+    color: #122947;
+    text-decoration: underline;
+  }
+  
+  .priceInfo_saleRoomItemBox-priceBox-priceExplain__zF3oi,
+  .priceInfo_saleRoomItemBox-priceBox-tripCoins__9sN6k {
+    font-size: 12px;
+    color: #788292;
+  }
+  
+  .priceInfo_saleRoomItemBox-priceBox-tripCoins__9sN6k {
+    color: #886d3f;
+    font-size: 14px;
+  }
+  
+  .priceInfo_saleRoomItemBox-priceInfoBox-rightContent {
+    display: flex;
+    align-items: center; /* 수직 정렬을 중앙으로 설정 */
+    justify-content: flex-end; /* 오른쪽으로 정렬 */
+    margin-right:10px;
+  }
+  .priceInfo_saleRoomItemBox-priceInfoBox-mainContent__nmfMr {
+    display: flex;
+    justify-content: space-between; /* 좌우로 공간을 균등하게 배치 */
+    flex-direction: row; /* 기본값이지만 명시적으로 설정 */
+    width: 100%;    
+    gap: 20px;
+  }
+  .priceInfo_saleRoomItemBox-BookAndLoginButton__Vc_yI button {
+    width: 168px; /* 너비 설정 */
+    height: 38px; /* 높이 설정 */
+    background-color: #1E4DEF; /* 파란색 배경 */
+    color: white; /* 흰색 글씨 */
+    border: none; /* 테두리 제거 */
+    border-radius: 8px; /* 둥근 사각형 모양 */
+    cursor: pointer; /* 커서 모양 변경 */
+    font-size: 16px; /* 글씨 크기 */
+    font-weight: bold; /* 글씨 두께 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .priceInfo_saleRoomItemBox-BookAndLoginButton__Vc_yI button:hover {
+    background-color: #1642b1; /* 호버 시 배경색 */
+  }
+  
+  .section {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  .banner-section {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  .room-lists-row {
+    display: flex;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: box-shadow 0.3s ease;
+  }
+  .room-lists-row:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  }
+  .room-image {
+    flex: 0 0 200px;
+    margin-right: 20px;
+  }
+  .room-image img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 4px;
+    height: 100%;
+  }
+  .room-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .room-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .room-title {
+    font-size: 1.6em;
+    font-weight: bold;
+    color: #333;
+  }
+  .room-capacity {
+    font-size: 0.9em;
+    color: #666;
+  }
+  .room-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    
+  }
+  .room-size {
+    font-size: 0.9em;
+    color: #666;
+  }
+  .room-amenities {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  .amenity-tag {
+    background-color: #f0f0f0;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    color: #333;
+  }
+  .room-pricing {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+  }
+  .price-per-night {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #333;
+  }
+  .reserve-btn {
+    background-color: #3364ff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 200px;
+    height: 40px;
+  }
+  .reserve-btn:hover {
+    background-color: #3564ff;
+  }
+  .room-details-btn {
+    background-color: transparent;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    font-size: 0.9em;
+  }
+  .amenities-popup {
+    display: none;
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 10px;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-radius: 4px;
+  }
+  .amenities-popup ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  .amenities-popup li {
+    margin-bottom: 5px;
+    font-size: 0.9em;
+  }
+  .date-selection-section {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .date-inputs {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+  .date-inputs label {
+    font-weight: bold;
+    color: #333;
+  }
+  .date-inputs input[type="date"] {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1em;
+  }
+  .step-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .step {
+    position: relative;
+    padding: 10px;
+    background-color: #f0f0f0;
+    margin-bottom: 30px;
+    width: 70%;
+    text-align: center;
+  }
+
+  .step::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #f0f0f0;
+  }
+
+  .step:last-child::after {
+    display: none;
+  }
+  .faq-section {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 30px;
+    margin-top: 40px;
+  }
+
+  .faq-section h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .faq-content {
+    line-height: 1.6;
+  }
+
+  .faq-item {
+    margin-bottom: 20px;
+  }
+
+  .faq-question {
+    color: #3364ff;
+    font-size: 18px;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+
+  .faq-answer {
+    color: #333;
+    padding-left: 20px;
+  }
+
+  .faq-answer::before {
+    content: "•";
+    color: #3364ff;
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+  }
+
+
+  .chat-bubble {
+    max-width: 100%;
+    padding: 10px 15px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+
+  .question {
+    align-self: flex-end;
+    background-color: #3364ff;
+    color: white;
+    margin-top: 50px;
+  }
+
+  .answer {
+    align-self: flex-start;
+    background-color: #f0f0f0;
+    color: #333;
+    margin-top: 20px;
+  }
+
+  .faq-section h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .cancel-and-refund-policy-section {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 30px;
+    margin-top: 40px;
+  }
+  .cancel-and-refund-policy-section {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 30px;
+    margin-top: 40px;
+  }
+
+  .cancel-and-refund-policy-section h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .policy-content {
+    line-height: 1.6;
+    color: #444;
+  }
+
+  .policy-section {
+    margin-bottom: 20px;
+  }
+
+  .policy-section h3 {
+    color: #3364ff;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  .policy-list {
+    list-style-type: none;
+    padding-left: 20px;
+  }
+
+  .policy-list li {
+    margin-bottom: 10px;
+    position: relative;
+  }
+
+  .policy-list li::before {
+    content: "•";
+    color: #3364ff;
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+  }
+
+  .policy-note {
+    background-color: #e6f3ff;
+    border-left: 4px solid #3364ff;
+    padding: 10px;
+    margin-top: 20px;
+    font-style: italic;
+  }
+  .popup {
+    display: none;
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 10px;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-radius: 4px;
+    max-width: 300px;
+    white-space: normal;
+  }
+

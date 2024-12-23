@@ -1,0 +1,38 @@
+<%- include('../partials/head') %>
+<link rel="stylesheet" href="/styles/dashboard.css">
+
+<div class="container mt-4">
+  <h2>Bulk Hotel Upload</h2>
+  <form action="/admin/hotels/bulk-upload" method="POST" enctype="multipart/form-data">
+    <div class="form-group">
+      <label for="excelFile">Upload Excel File</label>
+      <input type="file" class="form-control-file" id="excelFile" name="excelFile" accept=".xlsx, .xls" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Upload</button>
+  </form>
+  <div class="mt-4">
+    <h3>Instructions</h3>
+    <p>Please ensure your Excel file has the following columns:</p>
+    <ul>
+      <li>title (required)</li>
+      <li>slug (required)</li>
+      <li>content (required)</li>
+      <li>address (required)</li>
+      <li>map_lat (required)</li>
+      <li>map_lng (required)</li>
+      <li>map_zoom (required)</li>
+      <li>star_rate (required)</li>
+      <li>price (required)</li>
+      <li>check_in_time (required)</li>
+      <li>check_out_time (required)</li>
+      <li>status (required)</li>
+      <li>nameEn</li>
+      <li>is_featured</li>
+      <li>allow_full_day</li>
+      <li>sale_price</li>
+    </ul>
+  </div>
+</div>
+
+<%- include('../partials/dashboard-scripts') %>
+<%- include('../footer') %>

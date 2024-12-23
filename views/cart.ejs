@@ -1,0 +1,191 @@
+<div class="cart-container">
+  <% if (cart && cart.items && cart.items.length > 0) { %>
+    <div class="cart-items-container">
+      <div class="cart-items">
+        <% cart.items.forEach(item => { %>
+          <div class="cart-item">
+            <div class="item-select">
+              <input type="checkbox" class="item-checkbox" data-id="<%= item._id %>" checked>
+            </div>
+            <div class="item-image">
+              <img src="<%= item.roomImage %>" alt="<%= item.roomType %>">
+            </div>
+            <div class="item-details">
+              <div class="item-column">
+                <h3 class="hotel-name" style="text-align: center;"><%= item.hotelName %></h3>
+                <p class="room-type" style="text-align: center;"><%= item.roomType %></p>
+              </div>
+              <div class="item-column">
+                <% if (item.ProductType == "Hotel" || item.ProductType == "Golf") { %>
+                <p style="text-align: center;"><strong><%= new Date(item.checkInDate).toLocaleDateString() || "" %> ~ <%= new Date(item.checkOutDate).toLocaleDateString() || ""%></strong></p>
+                <p class="item-nights" style="text-align: center;"><strong>Amount: <%= item.nights %> </strong></p>
+                <% } else{ %>
+                  <p class="item-nights" style="text-align: center;"><strong>Amount: <%= item.nights %> </strong></p>
+                <% } %>
+              </div>
+              <div class="item-column">
+                <p class="item-price" style="text-align: center;">฿<%= item.price.toLocaleString() %><br>per night</p>
+              </div>
+              <div class="item-column">
+                <p class="item-total" style="text-align: center;">Total: ฿<%= item.total.toLocaleString() %></p>
+              </div>
+              <div class="item-column">
+                <button class="remove-item" data-id="<%= item._id %>" style="text-align: center;">Remove</button>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    </div>
+    <div class="cart-summary">
+      <h2>Order Summary</h2>
+      <div class="summary-item">
+        <span>Subtotal</span>
+        <span id="subtotal">฿ <%= cart.subtotal.toLocaleString() %></span>
+      </div>
+      <div class="summary-item total">
+        <span>Total</span>
+        <span id="total">฿ <%= cart.subtotal.toLocaleString() %></span>
+      </div>
+      <button id="proceed-to-checkout" class="proceed-btn">Proceed To Checkout</button>
+    </div>
+  <% } else { %>
+    <div class="empty-cart">
+      <i class="fas fa-shopping-cart"></i>
+      <p>Your cart is empty.</p>
+      <a href="/" class="btn">Continue Shopping</a>
+    </div>
+  <% } %>
+</div>
+
+<script>
+  var subtotalElement = document.getElementById('subtotal');
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  const removeButtons = document.querySelectorAll('.remove-item');
+  removeButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const itemId = this.getAttribute('data-id');
+      removeItemFromCart(itemId);
+    });
+  });
+
+  const itemCheckboxes = document.querySelectorAll('.item-checkbox');
+  itemCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+      updateTotals();
+    });
+  });
+
+  const proceedToCheckoutBtn = document.getElementById('proceed-to-checkout');
+  if (proceedToCheckoutBtn) {
+    proceedToCheckoutBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const selectedItems = getSelectedItems();
+      if (selectedItems.length === 0) {
+        alert('Please select at least one item to proceed to checkout.');
+        return;
+      }
+      sendSelectedItemsToServer(selectedItems);
+    });
+  }
+
+  updateTotals();
+});
+
+function removeItemFromCart(itemId) {
+  fetch(`/cart/remove/${itemId}`, { method: 'POST' })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        location.reload();
+      } else {
+        alert('Failed to remove item from cart');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('An error occurred while removing the item');
+    });
+}
+
+function updateTotals() {
+  const itemCheckboxes = document.querySelectorAll('.item-checkbox:checked');
+  let subtotal = 0;
+
+  itemCheckboxes.forEach(checkbox => {
+    const itemTotalText = checkbox.closest('.cart-item').querySelector('.item-total').textContent.replace('Total: ฿', '').replace(/,/g, '');
+    const itemTotal = parseFloat(itemTotalText);
+    subtotal += itemTotal; // item.total을 더함
+    console.log(`Original item total: ฿${itemTotalText}`);
+    console.log(`Parsed item total: ฿${itemTotal.toLocaleString('en-US')}`);
+  });
+  console.log(`Calculated subtotal: ฿${subtotal.toLocaleString('en-US')}`);
+
+  document.getElementById('subtotal').textContent = `฿${subtotal.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})}`;
+  document.getElementById('total').textContent = `฿${subtotal.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})}`;
+}
+
+function getSelectedItems() {
+  return Array.from(document.querySelectorAll('.item-checkbox:checked')).map(cb => {
+    const cartItem = cb.closest('.cart-item');
+    return {
+      id: cb.getAttribute('data-id'),
+      hotelName: cartItem.querySelector('.hotel-name').textContent,
+      roomType: cartItem.querySelector('.room-type').textContent,
+      checkIn: cartItem.querySelector('p strong').textContent.split(' ~ ')[0],
+      checkOut: cartItem.querySelector('p strong').textContent.split(' ~ ')[1],
+      nights: parseInt(cartItem.querySelector('.item-nights strong').textContent),
+      price: parseFloat(cartItem.querySelector('.item-price').textContent.replace('฿', '').replace(/,/g, '')),
+      total: parseFloat(cartItem.querySelector('.item-total').textContent.replace('Total: ฿', '').replace(/,/g, ''))
+    };
+  });
+}
+
+function sendSelectedItemsToServer(selectedItems) {
+  fetch('/dashboard/cart/update-selected', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ selectedItems }),
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      // Trigger the checkout content display
+      const event = new CustomEvent('showCheckout');
+      window.dispatchEvent(event);
+    } else {
+      alert('Failed to update selected items. Please try again.');
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert('An error occurred while updating selected items');
+  });
+}
+</script>
+
+<style>
+.proceed-btn {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.proceed-btn:hover {
+  background-color: #45a049;
+}
+</style>
+
+<link rel="stylesheet" href="/styles/cart.css">

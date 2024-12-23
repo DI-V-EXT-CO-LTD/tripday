@@ -1,0 +1,51 @@
+.footer-wrapper {  
+    color: #fff; /* 텍스트 색상 설정 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+    display: flex;
+    justify-content: center; /* 가로 방향으로 중앙 정렬 */
+    align-items: center; /* 세로 방향으로 중앙 정렬 */
+    flex-direction: column; /* 콘텐츠를 세로로 배치 */
+}
+.copyright-section{
+    position: flex;
+    justify-content: center;
+    font-size: 13px;
+    text-align: center;
+    color: #0F294D;
+    padding-bottom: 30px;
+    line-height: 10px;
+}
+.footer-divider {    
+    border: 0;
+    border-top: 1px solid #ccc;
+    width: 100%; /* 구분선이 전체 너비를 차지하도록 설정 */
+    margin: 0; /* 구분선의 마진을 제거 */
+    position: relative;
+    padding-bottom: 30px;
+    display: flex;
+    justify-content: center;
+    max-width: 1160px;
+}
+.award-container{
+    text-align: center; /* 텍스트 중앙 정렬 */
+    display: flex;
+    justify-content: center; /* 가로 방향으로 중앙 정렬 */
+    align-items: center; /* 세로 방향으로 중앙 정렬 */
+    flex-direction: column; /* 콘텐츠를 세로로 배치 */ 
+    padding-bottom: 20px;
+}
+.award-divider{
+    width: 1160px;
+}
+.brand-divider{
+    width: 1160px;
+}
+.brand-container{
+    text-align: center; /* 텍스트 중앙 정렬 */
+    display: flex;
+    justify-content: center; /* 가로 방향으로 중앙 정렬 */
+    align-items: center; /* 세로 방향으로 중앙 정렬 */
+    flex-direction: column; /* 콘텐츠를 세로로 배치 */    
+    padding-bottom: 30px;
+}
+  

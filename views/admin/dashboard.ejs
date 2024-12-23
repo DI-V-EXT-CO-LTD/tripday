@@ -1,0 +1,951 @@
+<%- include('../partials/head') %>
+<link rel="stylesheet" href="/styles/dashboard.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<link rel="stylesheet" href="/styles/userDetails.css">
+
+<button id="menu-toggle" class="btn btn-primary">Menu</button>
+
+<div class="container-fluid">
+  <div class="row">
+    <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block sidebar">
+      <div class="sidebar-sticky pt-3">
+        <div class="welcome-section">
+          <h5>Welcome Admin</h5>
+          <p><%= user.email %></p>
+        </div>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="fas fa-home"></i> Back to Trip-day
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="#dashboard" data-content="dashboard" data-title="Dashboard">
+              <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#users" data-content="users" data-title="Users">
+              <i class="fas fa-users"></i> Users
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#hotels" data-content="hotels" data-title="Hotels">
+              <i class="fas fa-hotel"></i> Hotels
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#golf" data-content="golf" data-title="Golf Courses">
+              <i class="fas fa-golf-ball"></i> Golf Courses
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#invoices" data-content="invoices" data-title="Invoices">
+              <i class="fas fa-file-invoice-dollar"></i> Invoices
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#purchases" data-content="purchases" data-title="Purchases">
+              <i class="fas fa-shopping-cart"></i> Purchases
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#vouchers" data-content="vouchers" data-title="Vouchers">
+              <i class="fas fa-ticket-alt"></i> Vouchers
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#booking" data-content="booking" data-title="Booking">
+              <i class="fas fa-book"></i> Booking
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/logout">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <!-- Flash messages -->
+      <% if (messages.success) { %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <%= messages.success %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      <% } %>
+      <% if (messages.error) { %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <%= messages.error %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      <% } %>
+      <!-- End of flash messages -->
+
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2" id="pageTitle">Admin Dashboard</h1>
+      </div>
+
+      <div id="content">
+        <div id="dashboard-content" class="content-section">       
+          <%- include('dashboardContent') %>
+          
+          <!-- Current Purchase Card -->
+          <div class="card mt-4">
+            <div class="card-header">
+              <h3 class="card-title">Current Purchases</h3>
+            </div>
+            <div class="card-body">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th style="text-align: center;">Purchase ID</th>
+                    <th style="text-align: center;">User</th>
+                    <th style="text-align: center;">Hotel Name</th>
+                    <th style="text-align: center;">Room Type</th>
+                    <th style="text-align: center;">Nights</th>
+                    <th style="text-align: center;">Check-In Date</th>
+                    <th style="text-align: center;">Check-Out Date</th>
+                    <th style="text-align: center;">Created At</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% currentPurchases.forEach(purchase => { %>
+                    <tr>
+                      <td style="text-align: center;"><%= purchase.purchaseId %></td>
+                      <td style="text-align: center;"><%= purchase.user ? purchase.user.email : 'N/A' %></td>
+                      <td style="text-align: center;"><%= purchase.hotelName %></td>
+                      <td style="text-align: center;"><%= purchase.roomName %></td>
+                      <td style="text-align: center;"><%= purchase.nights %></td>
+                      <td style="text-align: center;"><%= new Date(purchase.checkIn).toLocaleDateString() %></td>
+                      <td style="text-align: center;"><%= new Date(purchase.checkOut).toLocaleDateString() %></td>
+                      <td style="text-align: center;"><%= new Date(purchase.createdAt).toLocaleString() %></td>
+                    </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Pending Invoices Card -->
+          <div class="card mt-4">
+            <div class="card-header">
+              <h3 class="card-title">Pending Invoices</h3>
+            </div>
+            <div class="card-body">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th style="text-align: center;">Transaction No.</th>
+                    <th style="text-align: center;">Total Transactions</th>
+                    <th style="text-align: center;">Invoice ID</th>
+                    <th style="text-align: center;">Status</th>
+                    <th style="text-align: center;">Invoice Price</th>
+                    <th style="text-align: center;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% pendingInvoices.forEach(invoice => { %>
+                    <tr>
+                      <td style="text-align: center;"><%= invoice.transactionNo %></td>
+                      <td style="text-align: center;"><%= invoice.totalTransactions %></td>
+                      <td style="text-align: center;"><%= invoice.invoiceId %></td>
+                      <td style="text-align: center;"><%= invoice.status %></td>
+                      <td style="text-align: center;"><%= invoice.total.toLocaleString() %></td>
+                      <td style="text-align: center;">
+                        <button class="btn btn-sm btn-success process-invoice" data-invoice-id="<%= invoice.invoiceId %>">Remittance ID</button>
+                      </td>
+                    </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Golf Courses Management Card -->
+          <div class="card mt-4">
+            <div class="card-header">
+              <h3 class="card-title">Golf Courses Management</h3>
+            </div>
+            <div class="card-body">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th style="text-align: center;">Name</th>
+                    <th style="text-align: center;">Price</th>
+                    <th style="text-align: center;">Status</th>
+                    <th style="text-align: center;">Holes</th>
+                    <th style="text-align: center;">Par</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% golfCourses.forEach(golfCourse => { %>
+                    <tr>
+                      <td style="text-align: center;"><%= golfCourse.title %></td>
+                      <td style="text-align: center;"><%= golfCourse.price.toLocaleString() %></td>
+                      <td style="text-align: center;"><%= golfCourse.status %></td>
+                      <td style="text-align: center;"><%= golfCourse.course_info.holes %></td>
+                      <td style="text-align: center;"><%= golfCourse.course_info.par %></td>
+                    </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div id="users-content" class="content-section" style="display: none;">
+          <div class="loading">Loading users data...</div>
+        </div>
+
+        <div id="hotels-content" class="content-section" style="display: none;">
+          <div class="loading">Loading hotels data...</div>
+        </div>
+
+        <div id="golf-content" class="content-section" style="display: none;">
+          <div class="loading">Loading golf courses data...</div>
+        </div>
+
+        <div id="invoices-content" class="content-section" style="display: none;">
+          <div class="loading">Loading invoices data...</div>
+        </div>
+
+        <div id="reservations-content" class="content-section" style="display: none;">
+          <div class="loading">Loading reservations data...</div>
+        </div>
+
+        <div id="purchases-content" class="content-section" style="display: none;">
+          
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th style="text-align: center;">Purchase ID</th>
+                <th style="text-align: center;">User</th>
+                <th style="text-align: center;">Hotel</th>
+                <th style="text-align: center;">Room Type</th>
+                <th style="text-align: center;">Nights</th>
+                <th style="text-align: center;">Check-In Date</th>
+                <th style="text-align: center;">Check-Out Date</th>
+                <th style="text-align: center;">Status</th>
+                <th style="text-align: center;">Create</th>
+              </tr>
+            </thead>
+            <tbody id="purchases-table-body">
+              <!-- Purchases data will be loaded here -->
+            </tbody>
+          </table>
+          <nav aria-label="Purchases pagination">
+            <ul class="pagination justify-content-center" id="purchases-pagination">
+              <!-- Pagination controls will be added here -->
+            </ul>
+          </nav>
+        </div>
+
+        <div id="vouchers-content" class="content-section" style="display: none;">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th style="text-align: center;">Voucher Code</th>
+                <th style="text-align: center;">Booking Code</th>
+                <th style="text-align: center;">Hotel</th>
+                <th style="text-align: center;">Room Type</th>
+                <th style="text-align: center;">Remain Vouchers</th>
+                <th style="text-align: center;">Valid from</th>
+                <th style="text-align: center;">Valid Until</th>
+                <th style="text-align: center;">Owned By</th>
+              </tr>
+            </thead>
+            <tbody id="vouchers-table-body">
+              <!-- Purchases data will be loaded here -->
+            </tbody>
+          </table>
+          <nav aria-label="Vouchers pagination">
+            <ul class="pagination justify-content-center" id="vouchers-pagination">
+              <!-- Pagination controls will be added here -->
+            </ul>
+          </nav>
+        </div>
+
+        <div id="booking-content" class="content-section" style="display: none;">
+          <div class="booking-container">
+            <div id="calendar"></div>
+            <div id="booking-list" class="booking-list-overlay">
+              <ul class="list-group">
+                <!-- Booking list items will be dynamically added here -->
+                
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div id="partner-content" class="content-section" style="display: none;">
+          <div class="loading">Loading partner data...</div>
+        </div>
+
+        <div id="agency-content" class="content-section" style="display: none;">
+          <div class="loading">Loading agency data...</div>
+        </div>
+
+        <div id="user-details-content" class="content-section" style="display: none;">
+          <div class="loading">Loading user details data...</div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Remittance Modal -->
+<div class="modal" id="remittanceModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="remittanceModalLabel">Process Remittance</h5>
+        <button type="button" class="close-modal" aria-label="Close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="remittanceForm">
+          <input type="hidden" id="invoiceId" name="invoiceId">
+          <div class="mb-3">
+            <label for="remittanceNumber" class="form-label">Remittance Number</label>
+            <input type="text" class="form-control" id="remittanceNumber" name="remittanceNumber" required>
+          </div>
+          <div id="remittanceError" class="alert alert-danger" style="display: none;">
+            Please enter a remittance number.
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary close-modal">Close</button>
+        <button type="button" class="btn btn-primary" id="submitRemittance">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Hidden booking data -->
+<div id="booking-data" style="display: none;">
+  <%= JSON.stringify(bookings) %>
+</div>
+
+<%- include('../partials/dashboard-scripts') %>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('Dashboard script loaded');
+    let bookings = null;
+    const bookingDataElement = document.getElementById('booking-data');
+    if (bookingDataElement) {
+        bookings = JSON.parse(bookingDataElement.textContent || bookingDataElement.innerText);
+        console.log("Bookings:::", bookings); // 데이터가 제대로 들어왔는지 확인
+
+        // 달력 초기화 및 예약 리스트 업데이트
+        
+    } else {
+        console.error("Booking data element not found.");
+    }
+
+    const menuItems = document.querySelectorAll('#sidebar .nav-link[data-content]');
+    const contentSections = document.querySelectorAll('.content-section');
+    const pageTitleElement = document.getElementById('pageTitle');
+    const remittanceModal = document.getElementById('remittanceModal');
+    const remittanceForm = document.getElementById('remittanceForm');
+    const invoiceIdInput = document.getElementById('invoiceId');
+    const remittanceNumberInput = document.getElementById('remittanceNumber');
+    const remittanceError = document.getElementById('remittanceError');
+    const submitRemittanceButton = document.getElementById('submitRemittance');
+    const closeModalButtons = document.querySelectorAll('.close-modal');
+    const userDetailsContainer = document.getElementById('user-details');
+
+    menuItems.forEach(item => {
+      item.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Remove active class from all menu items
+        menuItems.forEach(mi => mi.classList.remove('active'));
+        
+        // Add active class to clicked menu item
+        this.classList.add('active');
+
+        // Update the page title
+        const menuTitle = this.getAttribute('data-title');
+        pageTitleElement.textContent = `Admin Dashboard - ${menuTitle}`;
+
+        // Hide all content sections
+        contentSections.forEach(section => {
+          if (section) {
+            section.style.display = 'none';
+          }
+        });
+
+        // Show the selected content section
+        const contentType = this.getAttribute('data-content');
+        const contentSection = document.getElementById(`${contentType}-content`);
+        if (contentSection) {
+          contentSection.style.display = 'block';
+        } else {
+          console.error(`Content section not found: ${contentType}-content`);
+        }
+
+        // Load data for the selected section
+        if (contentType !== 'dashboard') {
+          loadSectionData(contentType, 1);
+        }
+      });
+    });
+
+    function loadSectionData(section, page = 1) {
+      console.log(`Loading ${section} data for page ${page}`);
+      const contentSection = document.getElementById(`${section}-content`);
+      
+      if (section === 'purchases') {
+        loadPurchasesData(page);
+      } else if (section === 'hotels') {
+        loadHotelsData(page);
+      } else if (section === 'golf') {
+        loadGolfData(page);
+      } else {
+        contentSection.innerHTML = '<div class="loading">Loading data...</div>';
+
+        fetch(`/admin/${section}?page=${page}`)
+          .then(response => response.text())
+          .then(html => {
+            contentSection.innerHTML = html;
+            setupPagination(section);
+            if (section === 'users') {
+              setupUserDetailsLinks();
+            }
+          })
+          .catch(error => {
+            console.error(`Error loading ${section} data:`, error);
+            contentSection.innerHTML = `<div class="error">Error loading ${section} data. Please try again.</div>`;
+          });
+      }
+    }
+
+    function loadPurchasesData(page = 1) {
+      const purchasesTableBody = document.getElementById('purchases-table-body');
+      const purchasesPagination = document.getElementById('purchases-pagination');
+      
+      purchasesTableBody.innerHTML = '<tr><td colspan="9" class="text-center">Loading purchases data...</td></tr>';
+      purchasesPagination.innerHTML = '';
+
+      fetch(`/admin/purchases?page=${page}`)
+        .then(response => response.json())
+        .then(data => {
+          purchasesTableBody.innerHTML = data.purchases.map(purchase => `
+            <tr>
+              <td style="text-align: center;">${purchase.purchaseId}</td>
+              <td style="text-align: center;">${purchase.user ? purchase.user.email : 'N/A'}</td>
+              <td style="text-align: center;">${purchase.hotelName}</td>
+              <td style="text-align: center;">${purchase.roomName}</td>
+              <td style="text-align: center;">${purchase.nights}</td>
+              <td style="text-align: center;">${new Date(purchase.checkIn).toLocaleDateString()}</td>
+              <td style="text-align: center;">${new Date(purchase.checkOut).toLocaleDateString()}</td>
+              <td style="text-align: center;">${purchase.status}</td>
+              <td style="text-align: center;">${new Date(purchase.createdAt).toLocaleString()}</td>
+            </tr>
+          `).join('');
+      
+          // Set up pagination
+          const totalPages = Math.ceil(data.total / data.perPage);
+          let paginationHTML = '';
+          for (let i = 1; i <= totalPages; i++) {
+            paginationHTML += `
+              <li class="page-item ${i === page ? 'active' : ''}">
+                <a class="page-link" href="#" data-page="${i}">${i}</a>
+              </li>
+            `;
+          }
+          purchasesPagination.innerHTML = paginationHTML;
+
+          setupPurchasesPagination();
+        })
+        .catch(error => {
+          console.error('Error loading purchases data:', error);
+          purchasesTableBody.innerHTML = '<tr><td colspan="9" class="text-center text-danger">Error loading purchases data. Please try again.</td></tr>';
+        });
+    }
+
+    function loadVouchersData(page = 1) {
+      const vouchersContent = document.getElementById('vouchers-table-body');
+      const vouchersPagination = document.getElementById('vouchers-pagination');
+      vouchersContent.innerHTML = '<div class="loading">Loading vouchers data...</div>';
+      vouchersPagination.innerHTML = '';
+      fetch(`/admin/vouchers?page=${page}`)
+        .then(response => response.json())
+        .then(data => {
+          vouchersContent.innerHTML = data.vouchers.map(voucher => `
+            <tr>
+              <td style="text-align: center;">${voucher.voucherCode}</td>
+              <td style="text-align: center;">${voucher.bookingCode}</td>
+              <td style="text-align: center;">${voucher.hotelName}</td>
+              <td style="text-align: center;">${voucher.roomTitle}</td>
+              <td style="text-align: center;">${voucher.quantity} / ${voucher.initialQuantity}</td>
+              <td style="text-align: center;">${new Date(voucher.validFrom).toLocaleDateString()}</td>
+              <td style="text-align: center;">${new Date(voucher.validUntil).toLocaleDateString()}</td>
+              <td style="text-align: center;">${voucher.userId}</td>
+              <td style="text-align: center;">
+                <a href="/admin/vouchers/${voucher._id}" class="btn btn-sm btn-info">View</a>
+                <a href="/admin/vouchers/${voucher._id}/edit" class="btn btn-sm btn-warning">Edit</a>
+              </td>
+            </tr>
+          `).join('');
+          
+          // Set up pagination
+          const totalPages = data.totalPages;
+          let paginationHTML = '';
+          for (let i = 1; i <= totalPages; i++) {
+            paginationHTML += `
+              <li class="page-item ${i === data.currentPage ? 'active' : ''}">
+                <a class="page-link" href="#" data-page="${i}">${i}</a>
+              </li>
+            `;
+          }
+          vouchersPagination.innerHTML = paginationHTML;
+
+          setupVouchersPagination();
+        })
+        .catch(error => {
+          console.error('Error loading vouchers data:', error);
+          vouchersContent.innerHTML = '<div class="error">Error loading vouchers data. Please try again.</div>';
+        });
+    }
+    
+    function setupVouchersPagination() {
+      const paginationLinks = document.querySelectorAll('#vouchers-pagination .page-link');
+      paginationLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const page = parseInt(this.getAttribute('data-page'));
+          loadVouchersData(page);
+        });
+      });
+    }
+    function setupPurchasesPagination() {
+      const paginationLinks = document.querySelectorAll('#purchases-pagination .page-link');
+      paginationLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const page = parseInt(this.getAttribute('data-page'));
+          loadPurchasesData(page);
+        });
+      });
+    }
+
+    function loadHotelsData() {
+      console.log('Loading hotels data');
+      const hotelsContent = document.getElementById('hotels-content');
+      
+      hotelsContent.innerHTML = '<div class="loading">Loading hotels data...</div>';
+
+      fetch('/admin/hotels')
+          .then(response => response.text())
+          .then(html => {
+              console.log('Hotels data received');
+              hotelsContent.innerHTML = html;
+          })
+          .catch(error => {
+              console.error('Error loading hotels data:', error);
+              hotelsContent.innerHTML = `<div class="alert alert-danger">Error loading hotels data: ${error.message}</div>`;
+          });
+    }
+
+    function loadGolfData(page = 1) {
+      console.log('Loading golf courses data');
+      const golfContent = document.getElementById('golf-content');
+      
+      golfContent.innerHTML = '<div class="loading">Loading golf courses data...</div>';
+
+      fetch(`/admin/golf-courses?page=${page}`)
+          .then(response => response.text())
+          .then(html => {
+              console.log('Golf courses data received');
+              golfContent.innerHTML = html;
+              setupPagination('golf');
+          })
+          .catch(error => {
+              console.error('Error loading golf courses data:', error);
+              golfContent.innerHTML = `<div class="alert alert-danger">Error loading golf courses data: ${error.message}</div>`;
+          });
+    }
+
+    function setupPagination(section) {
+      const paginationLinks = document.querySelectorAll(`#${section}-content .pagination .page-link`);
+      paginationLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const page = this.getAttribute('href').split('page=')[1];
+          loadSectionData(section, page);
+        });
+      });
+    }
+
+    function setupUserDetailsLinks() {
+      const userLinks = document.querySelectorAll('.user-link');
+      userLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const userId = this.getAttribute('data-user-id');
+          loadUserDetails(userId);
+        });
+      });
+    }
+
+    function loadUserDetails(userId) {
+      fetch(`/admin/user-details/${userId}`)
+        .then(response => response.text())
+        .then(html => {
+          userDetailsContainer.innerHTML = html;
+        })
+        .catch(error => {
+          console.error('Error loading user details:', error);
+          userDetailsContainer.innerHTML = '<div class="error">Error loading user details. Please try again.</div>';
+        });
+    }
+
+    // Booking 메뉴 클릭 시 달력과 리스트 로드
+    document.querySelector('a[href="#booking"]').addEventListener('click', function() {
+      setTimeout(() => {
+        initializeCalendar(bookings);
+      }, 100);
+    });
+
+    function initializeCalendar(bookings) {
+    const today = new Date();
+    let currentMonth = today.getMonth() + 1;  // 현재 달 (0부터 시작하므로 +1)
+    let currentYear = today.getFullYear();
+
+    function renderCalendar() {
+        const firstDay = new Date(currentYear, currentMonth - 1, 1);
+        const lastDay = new Date(currentYear, currentMonth, 0);
+        const daysInMonth = lastDay.getDate();  // 해당 월의 일 수
+
+        let calendarHTML = `
+          <div class="calendar-header">
+            <button onclick="changeMonth(-1)" style="color:#2c3e50">&lt;</button>
+            <h2 style="color:#2c3e50; font-weight: bold;">${firstDay.toLocaleString('en-US', { month: 'long' })} ${currentYear}</h2>
+            <button onclick="changeMonth(1)" style="color:#2c3e50">&gt;</button>
+          </div>
+          <table>
+            <tr>
+              <th style="color:red">Sun</th>
+              <th>Mon</th>
+              <th>Tues</th>
+              <th>Wed</th>
+              <th>Thurs</th>
+              <th>Fri</th>
+              <th style="color:#1e90ff">Sat</th>
+            </tr>
+        `;
+
+        let day = 1;
+        for (let i = 0; i < 6; i++) {
+            calendarHTML += '<tr style="height:200px">';
+            for (let j = 0; j < 7; j++) {
+                if (i === 0 && j < firstDay.getDay()) {
+                    calendarHTML += '<td></td>';  // 첫 주의 빈 칸
+                } else if (day > daysInMonth) {
+                    calendarHTML += '<td></td>';  // 남은 빈 칸
+                } else {
+                    calendarHTML += `<td id="day-${day}" class="calendar-day">${day}</td>`;
+                    day++;
+                }
+            }
+            calendarHTML += '</tr>';
+            if (day > daysInMonth) {
+                break;
+            }
+        }
+
+        calendarHTML += '</table>';
+        document.getElementById('calendar').innerHTML = calendarHTML;
+
+        // 달력에 예약 데이터 표시
+        updateCalendar(currentYear, currentMonth, bookings);
+    }
+
+    // 달 변경
+    window.changeMonth = function(delta) {
+        currentMonth += delta;
+        if (currentMonth > 12) {
+            currentMonth = 1;
+            currentYear++;
+        } else if (currentMonth < 1) {
+            currentMonth = 12;
+            currentYear--;
+        }
+        renderCalendar();
+    }
+
+    renderCalendar();
+}
+
+
+    function updateBookingList(bookings, year, month) {
+        console.log("Update Booking List: Booking: ", bookings);
+        const bookingListContainer = document.getElementById('booking-list');
+      
+        if (bookingListContainer) {
+            const bookingList = bookingListContainer.querySelector('.list-group');
+            
+            if (bookingList) {
+                bookingList.innerHTML = '';
+
+                const filteredBookings = bookings.filter(booking => {
+                    const bookingDate = new Date(booking.checkIn);
+                    return bookingDate.getFullYear() === year && bookingDate.getMonth() + 1 === month;
+                });
+
+                filteredBookings.forEach(booking => {
+                    const listItem = document.createElement('li');
+                    listItem.className = 'list-group-item';
+                    listItem.textContent = `${booking.hotelName} - ${booking.roomType}`;
+                    bookingList.appendChild(listItem);
+                });
+            } else {
+                console.error("List group element not found inside booking list.");
+            }
+        } else {
+            console.error("Booking list container not found.");
+        }
+    }
+    
+    function updateCalendar(year, month, bookings) {
+    // 주어진 year와 month에 해당하는 예약을 필터링
+        const filteredBookings = bookings.filter(booking => {
+            const bookingDate = new Date(booking.useDate);
+            return bookingDate.getFullYear() === year && (bookingDate.getMonth() + 1) === month;
+        });
+
+        // 달력의 날짜 셀에 예약 정보 추가
+        const daysInMonth = new Date(year, month, 0).getDate(); // 해당 월의 일 수
+
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dayCell = document.getElementById(`day-${day}`);
+            if (dayCell) {
+                // 해당 날짜에 맞는 예약을 필터링
+                const bookingsForDay = filteredBookings.filter(booking => {
+                    const bookingDate = new Date(booking.useDate);
+                    return bookingDate.getDate() === day;
+                });
+
+                // 해당 날짜 셀에 예약 정보를 표시
+                dayCell.innerHTML = `${day}`; // 기본 날짜 표기
+                bookingsForDay.forEach(booking => {
+                    dayCell.innerHTML += `<br><small>${booking.Hotel} - (${booking.Amount.toLocaleString()} vc)</small>`;
+                });
+            }
+        }
+    }
+
+    // 예시로 현재 년도와 월로 필터링
+    // updateBookingList(bookingLists, new Date().getFullYear(), new Date().getMonth() + 1);
+
+    // Setup event listeners for remittance and upload buttons
+    document.addEventListener('click', function(e) {
+      if (e.target.classList.contains('process-invoice')) {
+        const invoiceId = e.target.getAttribute('data-invoice-id');
+        invoiceIdInput.value = invoiceId;
+        remittanceNumberInput.value = ''; // Clear previous input
+        remittanceError.style.display = 'none'; // Hide error message
+        remittanceModal.style.display = 'block';
+      }
+    });
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+      if (event.target == remittanceModal) {
+        remittanceModal.style.display = "none";
+      }
+    }
+
+    // Close modal when clicking on close buttons
+    closeModalButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        remittanceModal.style.display = "none";
+      });
+    });
+
+    // Handle remittance form submission
+    submitRemittanceButton.addEventListener('click', function() {
+      if (remittanceNumberInput.value.trim() === '') {
+        remittanceError.style.display = 'block';
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('invoiceId', invoiceIdInput.value);
+      formData.append('remittanceNumber', remittanceNumberInput.value);
+      
+      fetch('/admin/process-remittance', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(Object.fromEntries(formData))
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert('Remittance processed successfully');
+          remittanceModal.style.display = "none";
+          // Refresh the page or update the invoice status in the table
+          location.reload();
+        } else {
+          alert('Error processing remittance: ' + data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while processing the remittance');
+      });
+    });
+  });
+</script>
+<script>
+  console.log('Inline script executed');
+    
+  let currentUserEmail = '';
+
+  function openPasswordPopup(email) {
+    currentUserEmail = email;
+    document.getElementById('passwordPopup').style.display = 'block';
+  }
+
+  function closePasswordPopup() {
+    document.getElementById('passwordPopup').style.display = 'none';
+  }
+
+  function submitPasswordChange(event) {
+    event.preventDefault();
+    const newPassword = document.getElementById('newPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+
+    if (newPassword !== confirmPassword) {
+      alert('Passwords do not match!');
+      return false;
+    }
+    fetch('/admin/change-user-password', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email: currentUserEmail, newPassword: newPassword })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        alert('Password changed successfully');
+        
+      } else {
+        alert('Error changing password: ' + data.message);
+      }
+      closePasswordPopup();
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('An error occurred while changing the password');
+      closePasswordPopup();
+    });
+
+    console.log('Password change requested for:', currentUserEmail);
+   
+   
+    closePasswordPopup();
+    return false;
+  }
+
+  window.addEventListener('error', function(event) {
+    console.error('Script error:', event.error);
+  });
+</script>
+
+<style>
+  .popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  .popup-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    width: 300px;
+    position: relative;
+  }
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+    }
+  .booking-container {
+    position: relative;
+    width: 100%;
+    height: 600px;
+  }
+  #calendar {
+    width: 100%;
+    height: 100%;
+  }
+  .booking-list-overlay {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 300px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    max-height: 100%;
+    overflow-y: auto;
+  }
+  .list-group-item {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 3px;
+    border: 1px solid #e9ecef;
+  }
+  .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    color: white;
+  }
+  .calendar-header button {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  #calendar table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  #calendar th, #calendar td {
+    border: 1px solid #2c3e50;
+    padding: 10px;
+    text-align: center;
+    width: 185px;
+  }
+  #calendar th {
+    background-color: #2c3e50;
+    color: white;
+  }
+  .calendar-day {
+    vertical-align: top;
+    height: 100px;
+  }
+</style>

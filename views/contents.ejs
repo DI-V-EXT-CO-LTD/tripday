@@ -1,0 +1,33 @@
+<!-- views/contents.ejs -->
+<div class="contents-wrapper">
+    <div class="section banner-section">  
+      <div class="banner-carousel">
+        <div class="banner-wrapper">
+          <img src="/images/en1.png" alt="Banner 1">
+          <img src="/images/en2.png" alt="Banner 2">
+          <img src="/images/en3.png" alt="Banner 3">
+          <img src="/images/en4.png" alt="Banner 4">
+          <img src="/images/en5.png" alt="Banner 5">
+          <img src="/images/en6.png" alt="Banner 6">
+          <img src="/images/en_reward.png" alt="Banner 7">
+        </div>
+        <button class="carousel-control prev" onclick="prevSlide()">&#10094;</button>
+        <button class="carousel-control next" onclick="nextSlide()">&#10095;</button>
+      </div>
+    </div>
+
+    <div class="section featured-properties-section">
+      <%- include('featured-properties') %>
+    </div>
+  
+    <div class="section popular-attractions-section">
+        <%- include('popular-attraction') %>
+      <!-- 인기 명소 섹션 내용 -->
+    </div>
+  
+    <div class="section recommended-car-rentals-section">
+        <%- include('recommended-car-rentals') %>
+      <!-- 추천 렌터카 섹션 내용 -->
+    </div>
+</div>
+<script src="/scripts/contents.js"></script>

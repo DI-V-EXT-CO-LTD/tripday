@@ -1,0 +1,38 @@
+/* userDetails.css */
+.user-details-container {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.user-details {
+    margin-bottom: 20px;
+}
+
+.user-details p {
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.user-details strong {
+    font-weight: 600;
+    color: #333;
+}
+
+.user-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.user-actions button {
+    flex: 1 1 calc(50% - 5px);
+    min-width: 120px;
+}
+
+@media (max-width: 768px) {
+    .user-actions button {
+        flex: 1 1 100%;
+    }
+}

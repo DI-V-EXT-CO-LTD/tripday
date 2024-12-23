@@ -1,0 +1,84 @@
+<!-- views/featured-properties.ejs -->
+
+<link rel="stylesheet" href="/styles/featured-properties.css">
+
+<div class="recommended-module recomended-hotel-new-theme new-theme" dir="ltr">
+  <div class="recommended-module-title">Best Sellers</div>
+  <div class="recommend-module-usp-container">
+    <div class="recommend-module-usp-item">
+      <img src="https://ak-d.tripcdn.com/images/0AS5f120008whj34f2145.png" alt="icon" class="recommend-module-usp-icon">
+      <div class="recommend-module-usp-text-con">
+        <span class="recommend-module-usp-text">We Price Match</span><span class="usp__title__dashline"></span>
+      </div>
+    </div>
+    <div class="recommend-module-usp-item">
+      <img src="https://ak-d.tripcdn.com/images/0AS6o120009gxfriv28B3.png" alt="icon" class="recommend-module-usp-icon">
+      <div class="recommend-module-usp-text-con">
+        <span class="recommend-module-usp-text">Hotel Booking Guarantee</span><span class="usp__title__dashline"></span>
+      </div>
+    </div>
+    <div class="recommend-module-usp-item">
+      <img src="https://ak-d.tripcdn.com/images/0AS2j120009gxknwsA052.png" alt="icon" class="recommend-module-usp-icon">
+      <div class="recommend-module-usp-text-con">
+        <span class="recommend-module-usp-text">Hotel Stay Guarantee</span><span class="usp__title__dashline"></span>
+      </div>
+    </div>
+  </div>
+  <div class="js-tab-ajax-switch new-theme">
+    <div class="content-con">
+      <div class="new-recommend-list l-tile-hotels online-hotel-recommend">
+        <% bestsellers.slice(0, 4).forEach(function(hotel) { %>
+          
+          <div class="l-tile__item c-hot-hotel-item-v2__wrapper">
+            <div class="c-hot-hotel-item-v2">
+              <div class="c-hot-hotel-item-v2__image-con">
+                <div class="c-hot-hotel-item-v2__image-clipping">
+                  <a href="<% if (typeof user !== 'undefined' && user) { %>/hotel-details/<%= hotel.slug %><% } else { %><% } %>" target="_blank" <% if (!(typeof user !== 'undefined' && user)) { %>onclick="alert('Login is required');"<% } %>>
+                    <div class="c-hot-hotel-item-v2__image" style="background-image: url('/uploads/<%= hotel.image_id %>');"></div>
+                  </a>
+                </div>
+              </div>
+              <div class="c-hot-hotel-item-v2__content">
+                <div class="c-hot-hotel-item-v2__overlay-label">
+                  <a href="<% if (typeof user !== 'undefined' && user) { %>/hotel-details/<%= hotel.slug %><% } else { %><% } %>" target="_blank" <% if (!(typeof user !== 'undefined' && user)) { %>onclick="alert('Login is required');"<% } %>>
+                    <div class="c-hot-hotel-item-v2__name" title="<%= hotel.title %>"><%= hotel.title %> &nbsp;
+                      <div class="c-hot-hotel-item-v2__level">
+                        <% for (let i = 0; i < hotel.star_rate; i++) { %>
+                          <i class="fa fa-star"></i>
+                        <% } %>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                
+                <div class="hotel-tag-con">
+                  <div class="tag-txt"><%= hotel.facilityTags ? hotel.facilityTags.join(', ') : 'No tags available' %></div>
+                </div>
+                <div class="c-hot-hotel-item-v2__info-con u-clearfix">
+                  <div class="c-hot-hotel-item-v2__price-box">
+                    <div class="o-price">
+                      <span class="o-price__from">From</span><span class="o-price__content"><%= hotel.price.toLocaleString('en-US', { style: 'currency', currency: 'THB' }) %> / 1 night</span><br>
+                    </div>
+                    <div class="o-price">
+                      <span class="o-price__from">From</span><span class="o-price__content"><%= (hotel.price*100).toLocaleString('en-US', { style: 'currency', currency: 'THB' }) %> / 100 night</span><br>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+        <!-- <div class="l-tile__item promo-card" >
+          <div class="promo-card-content" style="background-image: url('/images/Hotel_Promo.png'); background-size: 100% 100%; width: 100%; height: 100%; left: 0; right: 0;">
+            <div class="promo-text">Discover great deals on hotels around the world</div>
+            <button class="tripui-online-btn tripui-online-btn-middle tripui-online-btn-solid-primary tripui-online-btn-block" type="button">
+              <div class="tripui-online-btn-content">
+                <span class="tripui-online-btn-content-children">Go Now</span>
+              </div>
+            </button>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>

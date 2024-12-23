@@ -1,0 +1,22 @@
+<%- include('../partials/head') %>
+<link rel="stylesheet" href="/styles/dashboard.css">
+
+<div class="container mt-4">
+  <h2>Bulk Upload Results</h2>
+  <div class="alert alert-info">
+    <p>Successfully added hotels: <%= results.success %></p>
+    <p>Failed to add hotels: <%= results.failed %></p>
+  </div>
+  <% if (results.errors.length > 0) { %>
+    <h3>Errors:</h3>
+    <ul class="list-group">
+      <% results.errors.forEach(error => { %>
+        <li class="list-group-item list-group-item-danger"><%= error %></li>
+      <% }); %>
+    </ul>
+  <% } %>
+  <a href="/admin/hotels" class="btn btn-primary mt-3">Back to Hotel Management</a>
+</div>
+
+<%- include('../partials/dashboard-scripts') %>
+<%- include('../footer') %>

@@ -1,0 +1,275 @@
+<!-- views/invoice/invoice.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoice</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Helvetica:wght@300;400;500;700&display=swap');
+    body {
+      font-family: 'Roboto', 'Helvetica', Arial, sans-serif, 'Noto Sans KR', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+    }
+    .invoice-box {
+      max-width: 800px;
+      margin: auto;
+      padding: 30px;
+      border: 1px solid #eee;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+      font-size: 16px;
+      line-height: 24px;
+      color: #555;
+      page-break-after: always;
+      position: relative;
+    }
+    .invoice-box table {
+      width: 100%;
+      line-height: inherit;
+      text-align: left;
+    }
+    .invoice-box table td {
+      padding: 5px;
+      vertical-align: top;
+    }
+    .invoice-box table tr td:nth-child(2) {
+      text-align: right;
+    }
+    .invoice-box table tr.top table td.title {
+      font-size: 22.5px;
+      line-height: 22.5px;
+      color: #333;
+      text-align: center;
+      padding-bottom: 20px;
+      text-decoration: underline;
+    }
+    .invoice-box table tr.information table td {
+      padding-bottom: 40px;
+    }
+    .invoice-box table tr.heading td {
+      background: #eee;
+      border-bottom: 1px solid #ddd;
+      font-weight: bold;
+    }
+    .invoice-box table tr.details td {
+      padding-bottom: 20px;
+    }
+    .invoice-box table tr.item td {
+      border-bottom: 1px solid #eee;
+    }
+    .invoice-box table tr.item.last td {
+      border-bottom: none;
+    }
+    .invoice-box table tr.total td:nth-child(2) {
+      border-top: 2px solid #eee;
+      font-weight: bold;
+      font-size: 20px;
+    }
+    .bank-info {
+      margin-top: 50px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .stamp {
+      position: absolute;
+      bottom: 50px;
+      right: 10px;
+      width: 100px;
+      z-index: 1;
+    }
+    .watermark {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.1;
+      background: url('../images/InvoiceBG.png') center center no-repeat;
+      background-size: cover;
+    }
+    .invoice-details {
+      text-align: center;
+      font-size: 12px;
+    }
+    .title {
+      text-align: center;
+      width: 100%;
+    }
+    .company-info {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .company-info .company-name {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="watermark"></div>
+  <% function formatDate(date) { %>
+    <% const d = new Date(date); %>
+    <% const day = ('0' + d.getDate()).slice(-2); %>
+    <% const month = ('0' + (d.getMonth() + 1)).slice(-2); %>
+    <% const year = d.getFullYear(); %>
+    <% return `${day}/${month}/${year}`; %>
+  <% } %>
+  <% if (bookings.length === 0) { %>
+    <p>No bookings available.</p>
+  <% } else { %>
+    <% bookings.forEach(function(booking, index) { %>
+      <div class="invoice-box">
+        <!-- <img src="../images/Logo.png" class="logo" alt="Logo"> -->
+        <table cellpadding="0" cellspacing="0">
+          <tr class="top">
+            <td colspan="2">
+              <table>
+                <tr>
+                  <td class="company-info">
+                    <span class="company-name">DiveXT Co.,Ltd.</span><br>
+                    Address: 340/96 Moo9 Nongprue Banglamung Chonburi 20150 Thailand<br>
+                    Contact Number: +66 6 3329 7811<br>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="title">
+                    <h1>Invoice</h1>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="invoice-details">
+                    Date: <%= booking.createAt %><br>
+                    Invoice #: <%= booking.code %>-<%= index + 1 %>-<%= bookings.length %><br>
+                    Transaction No. <%= index + 1 %> of <%= bookings.length %>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr class="information">
+            <td colspan="2">
+              <table>
+                <tr>
+                  <td>
+                    Trip-Day<br>
+                    12345 Sunny Road<br>
+                    Wonderland, 12345
+                  </td>
+                  <td>
+                    admin@trip-day.com<br>
+                    DiveXT<br>
+                    +66 63 329 7811
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr class="heading">
+            <td>Booking Code</td>
+            <td></td>
+          </tr>
+          <tr class="item">
+            <td colspan="2"><%= booking.code %></td>
+          </tr>
+          <tr class="heading">
+            <td>Hotel Name</td>
+            <td></td>
+          </tr>
+          <tr class="item">
+            <td colspan="2"><%= booking.Hotel_Info.hotelName %></td>
+          </tr>
+          <tr class="heading">
+            <td>Room Names</td>
+            <td></td>
+          </tr>
+          <tr class="item">
+            <td colspan="2">
+              <ul>
+                <% booking.Hotel_Info.RoomName.forEach(function(name) { %>
+                  <li><%= name %></li>
+                <% }); %>
+              </ul>
+            </td>
+          </tr>
+          <tr class="total">
+            <td></td>
+            <td style="font-weight: bold; font-size: 30px;">Total: ฿<%= booking.total.toLocaleString() %></td>
+          </tr>
+        </table>
+        <td class="title">
+          <h1>Bank Information</h1>
+        </td>   
+        <div class="bank-info">   
+          <p>            
+            <strong>Collection company name:</strong> DI V-EXT COMPANY LIMITED<br>
+            <strong>Collection company Account number:</strong> 669 267 6768<br>
+            <strong>Name of bank:</strong> THE SIAM COMMERCIAL BANK PUBLIC COMPANY LIMITED<br>
+            <strong>Branch:</strong> PATTAYA SAI 2<br>
+            <strong>Bank Address:</strong> 116/19 MOO9 NONGPRUE BANGLAMUNG CHONBURI 20150 THAILAND<br>
+            <strong>Swift code:</strong> SICOTHBK<br>
+            <strong>The bank code:</strong> 0669
+          </p>
+          <img src="../images/Stamp.png" class="stamp" alt="Stamp">
+        </div>
+      </div>
+    <% }); %>
+    <% if (extraPrices.length > 0) { %> <!-- Extra Prices 페이지 -->
+      <div class="invoice-box">
+        <img src="../images/Logo.png" class="logo" alt="Logo">
+        <table cellpadding="0" cellspacing="0">
+          <tr class="top">
+            <td colspan="2">
+              <table>
+                <tr>
+                  <td class="company-info">
+                    <span class="company-name">DiveXT Co.,Ltd.</span><br>
+                    Address: 340/96 Moo9 Nongprue Banglamung Chonburi 20150 Thailand<br>
+                    Contact Number: +66 6 3329 7811<br>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="title">
+                    <h1>Extra Prices</h1>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr class="heading">
+            <td>Extra Prices</td>
+            <td></td>
+          </tr>
+          <% extraPrices.forEach(function(extraPrice) { %>
+            <tr class="item">
+              <td><%= extraPrice.name %></td>
+              <td>฿<%= parseFloat(extraPrice.total).toLocaleString() %></td>
+            </tr>
+          <% }); %>
+          <tr class="total">
+            <td></td>
+            <td>Total Extra Prices: ฿<%= extraPricesTotal.toLocaleString() %></td>
+          </tr>
+        </table>
+        <td class="title">
+          <h1>Bank Information</h1>
+        </td>   
+        <div class="bank-info">   
+          <p>            
+            <strong>Collection company name:</strong> DI V-EXT COMPANY LIMITED<br>
+            <strong>Collection company Account number:</strong> 669 267 6768<br>
+            <strong>Name of bank:</strong> THE SIAM COMMERCIAL BANK PUBLIC COMPANY LIMITED<br>
+            <strong>Branch:</strong> PATTAYA SAI 2<br>
+            <strong>Bank Address:</strong> 116/19 MOO9 NONGPRUE BANGLAMUNG CHONBURI 20150 THAILAND<br>
+            <strong>Swift code:</strong> SICOTHBK<br>
+            <strong>The bank code:</strong> 0669
+          </p>
+          <img src="../images/Stamp.png" class="stamp" alt="Stamp">
+        </div>
+      </div>
+    <% } %>
+  <% } %>
+</body>
+</html>

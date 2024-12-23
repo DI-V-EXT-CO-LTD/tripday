@@ -1,0 +1,82 @@
+
+<link rel="stylesheet" href="/styles/dashboard.css">
+
+<body>
+  <button id="menu-toggle" class="btn btn-primary">Menu</button>
+
+  <div class="container-fluid" style="width: 100%;">
+    <div class="row" style="width: 100%;">
+
+
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4" style="width: 100%;">
+        <div id="content" style="width: 100%;">
+          <div class="table-responsive">
+            <table class="table table-striped table-sm" >
+              <thead >
+                <tr >
+                  <th style="text-align: center;">Voucher Code</th>
+                  <th style="text-align: center;">User</th>
+                  <th style="text-align: center;">Hotel</th>
+                  <th style="text-align: center;">Room Title</th>
+                  <th style="text-align: center;">Quantity</th>
+                  <th style="text-align: center;">Valid From</th>
+                  <th style="text-align: center;">Valid Until</th>
+                  <th style="text-align: center;">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% vouchers.forEach(voucher => { %>
+                  <tr>
+                    <td style="text-align: center;"><%= voucher.voucherCode %></td>
+                    <td style="text-align: center;"><%= voucher.customer_first_name %> <%= voucher.customer_last_name %></td>
+                    <td style="text-align: center;"><%= voucher.hotelName %></td>
+                    <td style="text-align: center;"><%= voucher.roomTitle %></td>
+                    <td style="text-align: center;"><%= voucher.quantity %> / <%= voucher.initialQuantity %></td>
+                    <td style="text-align: center;"><%= voucher.validFrom.toLocaleDateString() %></td>
+                    <td style="text-align: center;"><%= voucher.validUntil.toLocaleDateString() %></td>
+                    <td  style="text-align: center;">
+                      <a href="/admin/vouchers/<%= voucher._id %>" class="btn btn-sm btn-info" style="text-align: center;">View</a>
+                    </td>
+                  </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+
+          <%
+          var currentPage = (typeof currentPage !== 'undefined') ? currentPage : 1;
+          var totalPages = (typeof totalPages !== 'undefined') ? totalPages : 1;
+          %>
+
+          <% if (totalPages > 1) { %>
+            <nav aria-label="Page navigation" class="mt-4">
+              <ul class="pagination justify-content-center">
+                <% if (currentPage > 1) { %>
+                  <li class="page-item">
+                    <a class="page-link" href="/admin/vouchers?page=<%= currentPage - 1 %>">Previous</a>
+                  </li>
+                <% } %>
+                
+                <% for(var i = 1; i <= totalPages; i++) { %>
+                  <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+                    <a class="page-link" href="/admin/vouchers?page=<%= i %>"><%= i %></a>
+                  </li>
+                <% } %>
+                
+                <% if (currentPage < totalPages) { %>
+                  <li class="page-item">
+                    <a class="page-link" href="/admin/vouchers?page=<%= currentPage + 1 %>">Next</a>
+                  </li>
+                <% } %>
+              </ul>
+            </nav>
+          <% } %>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <%- include('../partials/dashboard-scripts') %>
+
+</body>
+</html>

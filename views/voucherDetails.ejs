@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voucher Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <%- include('partials/header') %>
+    
+    <div class="container mt-5">
+        <h1>Voucher Details</h1>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"><%= voucher.hotel.title %></h5>
+                <h6 class="card-subtitle mb-2 text-muted"><%= voucher.room.title %></h6>
+                <p class="card-text">
+                    <strong>Voucher Code:</strong> <%= voucher.voucher_code %><br>
+                    <strong>Check-in:</strong> <%= voucher.check_in.toDateString() %><br>
+                    <strong>Check-out:</strong> <%= voucher.check_out.toDateString() %><br>
+                    <strong>Price:</strong> ฿<%= voucher.price.toFixed(2) %><br>
+                    <strong>Status:</strong> <%= voucher.status %><br>
+                    <strong>Payment Status:</strong> <%= voucher.payment_status %><br>
+                    <strong>Booked by:</strong> <%= voucher.user.email %><br>
+                    <strong>Booking Date:</strong> <%= voucher.created_at.toDateString() %>
+                </p>
+            </div>
+        </div>
+        <div class="mt-4">
+            <h3>Hotel Information</h3>
+            <p>
+                <strong>Address:</strong> <%= voucher.hotel.address %><br>
+                <strong>Check-in Time:</strong> <%= voucher.hotel.check_in_time %><br>
+                <strong>Check-out Time:</strong> <%= voucher.hotel.check_out_time %><br>
+            </p>
+        </div>
+        <div class="mt-4">
+            <h3>Room Information</h3>
+            <p>
+                <strong>Room Type:</strong> <%= voucher.room.title %><br>
+                <strong>Capacity:</strong> <%= voucher.room.adults %> Adults, <%= voucher.room.children %> Children<br>
+                <strong>Amenities:</strong> <%= voucher.room.amenities.join(', ') %>
+            </p>
+        </div>
+        <a href="/vouchers/my-vouchers" class="btn btn-primary mt-4">Back to My Vouchers</a>
+    </div>
+
+    <%- include('partials/footer') %>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

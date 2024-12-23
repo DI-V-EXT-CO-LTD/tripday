@@ -1,0 +1,92 @@
+<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+  <div class="position-sticky">
+    <div class="welcome-section">
+      <h5>Welcome</h5>
+      <p><%= user.email %></p>
+    </div>
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        <a class="nav-link" href="/">
+          <i class="fas fa-home"></i>
+          Back to Index
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="/admin/dashboard">
+          <i class="fas fa-tachometer-alt"></i>
+          Home
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="usersBtn">
+          <i class="fas fa-users"></i>
+          Users
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/bookings">
+          <i class="fas fa-calendar-check"></i>
+          Bookings
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/hotels">
+          <i class="fas fa-hotel"></i>
+          Hotels
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/golf-courses">
+          <i class="fas fa-golf-ball"></i>
+          Golf Courses
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/vouchers">
+          <i class="fas fa-ticket-alt"></i>
+          Vouchers
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/invoices">
+          <i class="fas fa-file-invoice"></i>
+          Invoices
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/customer-service">
+          <i class="fas fa-headset"></i>
+          Customer Service
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/notices">
+          <i class="fas fa-bell"></i>
+          Notices
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/sales">
+          <i class="fas fa-chart-line"></i>
+          Sales Management
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/auth/logout">
+          <i class="fas fa-sign-out-alt"></i>
+          Logout
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="sidebar">
+    <div class="exchange-rates">
+      <p><i class="fas fa-exchange-alt"></i> Exchange Rates</p>
+      <p>1 THB = <%= exchangeRates.thbToKrw %> KRW</p>
+      <p>1 THB = <%= exchangeRates.thbToUsd %> USD</p>
+    </div>
+    <div class="version-info">
+      <p>Version: <%= version %></p>
+    </div>
+  </div>
+</nav>

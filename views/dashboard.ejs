@@ -1,0 +1,233 @@
+<%- include('partials/head') %>
+<link rel="stylesheet" href="/styles/dashboard.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<button id="menu-toggle" class="btn btn-primary">Menu</button>
+
+<div class="container-fluid">
+  <div class="row">
+    <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block sidebar">
+      <div class="sidebar-sticky pt-3">
+        <div class="welcome-section">
+          <h5>Welcome</h5>
+          <p><%= user.email %></p>
+        </div>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="/" id="back-to-tripday">
+              <i class="fas fa-home"></i> Back to Trip-day
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="#profile" data-content="profile" data-title="My Profile">
+              <i class="fas fa-user"></i> My Profile
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#cart" data-content="cart" data-title="My Cart">
+              <i class="fas fa-shopping-basket"></i> Cart
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#checkout" data-content="checkout" data-title="Check Out">
+              <i class="fas fa-credit-card"></i> CheckOut
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#purchases" data-content="purchases" data-title="My Purchases">
+              <i class="fas fa-shopping-cart"></i> Purchases
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#vouchers" data-content="vouchers" data-title="My Vouchers">
+              <i class="fas fa-ticket-alt"></i> Vouchers
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#messages" data-content="messages" data-title="Messages">
+              <i class="fas fa-envelope"></i> Messages
+              <% if (unreadMessagesCount > 0) { %>
+                <span class="badge badge-danger"><%= unreadMessagesCount %></span>
+              <% } %>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/auth/logout" id="logout">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2" id="pageTitle">Dashboard - My Profile</h1>
+      </div>
+
+      <div id="content">
+        <div id="profile-content" class="content-section">
+          <%- include('profile') %>
+        </div>
+
+        <div id="cart-content" class="content-section" style="display: none;">
+          <%- include('cart') %>
+        </div>
+
+        <div id="checkout-content" class="content-section" style="display: none;">
+          <%- include('checkout') %>
+        </div>
+
+        <div id="purchases-content" class="content-section" style="display: none;">
+          <%- include('purchases') %>
+        </div>
+
+        <div id="vouchers-content" class="content-section" style="display: none;">
+          <!-- Vouchers content will be dynamically loaded here -->
+          <%- include('vouchers') %>
+        </div>
+
+        <div id="messages-content" class="content-section" style="display: none;">
+          <%- include('messages') %>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<%- include('partials/dashboard-scripts') %>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const menuItems = document.querySelectorAll('#sidebar .nav-link[data-content]');
+    const contentSections = document.querySelectorAll('.content-section');
+    const pageTitleElement = document.getElementById('pageTitle');
+    const backToTripdayLink = document.getElementById('back-to-tripday');
+    const logoutLink = document.getElementById('logout');
+
+    function showContent(contentId, title) {
+      contentSections.forEach(section => {
+        section.style.display = 'none';
+      });
+
+      const contentElement = document.getElementById(`${contentId}-content`);
+      if (contentElement) {
+        contentElement.style.display = 'block';
+        if (contentId === 'checkout') {
+          fetchSelectedItems();
+        } 
+      } else {
+        console.error(`Content element not found for: ${contentId}`);
+      }
+
+      pageTitleElement.textContent = `Dashboard - ${title}`;
+
+      menuItems.forEach(mi => mi.classList.remove('active'));
+      document.querySelector(`#sidebar .nav-link[href="#${contentId}"]`).classList.add('active');
+
+      // Update URL hash
+      window.location.hash = contentId;
+    }
+
+    menuItems.forEach(item => {
+      item.addEventListener('click', function(e) {
+        e.preventDefault();
+        const contentId = this.getAttribute('data-content');
+        const title = this.getAttribute('data-title');
+        showContent(contentId, title);
+      });
+    });
+
+    backToTripdayLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      window.location.href = '/';
+    });
+
+    logoutLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      window.location.href = '/auth/logout';
+    });
+
+    window.addEventListener('showCheckout', function() {
+      showContent('checkout', 'Check Out');
+    });
+
+    function fetchSelectedItems() {
+      fetch('/dashboard/get-selected-items', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          renderCheckoutItems(data.selectedItems);
+        } else {
+          console.error('Failed to fetch selected items:', data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    }
+
+    function renderCheckoutItems(items) {
+      const checkoutItems = document.getElementById('checkout-items');
+      const checkoutSubtotal = document.getElementById('checkout-subtotal');
+      const checkoutTotal = document.getElementById('checkout-total');
+      let subtotal = 0;
+
+      checkoutItems.innerHTML = '';
+
+      items.forEach(item => {
+        const checkoutItem = document.createElement('div');
+        checkoutItem.classList.add('checkout-item');
+        checkoutItem.innerHTML = `
+          <h3>${item.hotelName}</h3>
+          <p>${item.roomType}</p>
+          <p>Check-in: ${new Date(item.checkIn).toLocaleDateString()} | Check-out: ${new Date(item.checkOut).toLocaleDateString()}</p>
+          <p>${item.nights} Nights</p>
+          <p>Price: ฿${item.price.toLocaleString()} per night</p>
+          <p>Total: ฿${item.total.toLocaleString()}</p>
+        `;
+        checkoutItems.appendChild(checkoutItem);
+
+        subtotal += item.total;
+      });
+
+      // Calculate the total (you might need to add tax or other fees here)
+      const total = subtotal;
+
+      checkoutSubtotal.textContent = `฿ ${subtotal.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})}`;
+      checkoutTotal.textContent = `฿ ${total.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})}`;
+
+      const proceedToPaymentBtn = document.getElementById('proceed-to-payment');
+      if (proceedToPaymentBtn) {
+        proceedToPaymentBtn.disabled = items.length === 0 || !document.getElementById('terms-agreement').checked;
+      }
+    }
+
+
+    // Check URL hash on page load and show corresponding content
+    function checkUrlHash() {
+      const hash = window.location.hash.substring(1);
+      if (hash) {
+        const menuItem = document.querySelector(`#sidebar .nav-link[href="#${hash}"]`);
+        if (menuItem) {
+          const contentId = menuItem.getAttribute('data-content');
+          const title = menuItem.getAttribute('data-title');
+          showContent(contentId, title);
+        }
+      } else {
+        // Show My Profile by default if no hash is present
+        showContent('profile', 'My Profile');
+      }
+    }
+
+    // Call checkUrlHash on page load
+    checkUrlHash();
+
+    // Listen for hash changes
+    window.addEventListener('hashchange', checkUrlHash);
+  });
+</script>

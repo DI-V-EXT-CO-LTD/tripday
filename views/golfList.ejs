@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./partials/head') %>
+<body>
+    <%- include('./partials/header-hotel-details') %>
+
+    <style>
+       .hotel-card {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        .hotel-card:hover {
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            transform: translateY(-5px);
+        }
+        .hotel-card .card-img-container {
+            height: 200px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .hotel-card .card-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .hotel-card .card-body {
+            padding: 1.5rem;
+        }
+        .hotel-card .card-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        .hotel-card .card-text {
+            color: #555;
+            margin-bottom: 0.5rem;
+        }
+        .hotel-card .btn-primary {
+            background-color: #007bff;
+            border: none;
+            padding: 0.5rem 1rem;
+            transition: background-color 0.3s ease;
+        }
+        .hotel-card .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .ribbon {
+            position: absolute;
+            top: 20px;
+            left: -5px;
+            padding: 5px 10px;
+            background: #007bff;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: bold;
+            z-index: 1;
+        }
+        .ribbon::before {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 0;
+            border-top: 5px solid #0056b3;
+            border-left: 5px solid transparent;
+        }
+        .ribbon::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -10px;
+            border-bottom: 15px solid #007bff;
+            border-right: 10px solid transparent;
+            border-top: 15px solid #007bff;
+        }
+        .ribbon-text {
+            background: linear-gradient(45deg, #e5ff00, #d9ff00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+        @keyframes fullAnimation {
+            0%, 100% { width: 0; opacity: 1; }
+            40% { width: 100%; opacity: 1; }
+            60% { width: 100%; opacity: 1; }
+            70% { width: 100%; opacity: 0; }
+            80% { width: 100%; opacity: 1; }
+            90% { width: 100%; opacity: 0; }
+        }
+        .ribbon-text {
+            overflow: hidden;
+            white-space: nowrap;
+            animation: fullAnimation 10s infinite;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+        }
+        .pagination li {
+            margin: 0 5px;
+        }
+        .pagination a {
+            color: #007bff;
+            padding: 8px 16px;
+            text-decoration: none;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .pagination a:hover {
+            background-color: #007bff;
+            color: white;
+        }
+        .pagination .active a {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+        .pagination .disabled a {
+            color: #6c757d;
+            pointer-events: none;
+            cursor: default;
+        }
+        .md-choice-medal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+            color: #333;
+            z-index: 2;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+            transition: all 0.3s ease;
+            clip-path: polygon(
+                50% 0%, 80% 10%, 100% 35%, 100% 70%, 80% 90%, 50% 100%, 20% 90%, 0% 70%, 0% 35%, 20% 10%
+            );
+        }
+        .md-choice-medal::before {
+            content: '';
+            position: absolute;
+            top: 5%;
+            left: 5%;
+            right: 5%;
+            bottom: 5%;
+            background: radial-gradient(circle, #FFD700, #FFA500);
+            border-radius: 50%;
+            z-index: -1;
+        }
+        .md-choice-medal::after {
+            content: '';
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            right: 10%;
+            bottom: 10%;
+            background: #FFF;
+            border-radius: 50%;
+            z-index: -1;
+        }
+        .md-choice-medal span {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            animation: blink 1.5s infinite;
+        }
+        .md-choice-medal:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .md-choice-counter {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: #FFF;
+            padding: 5px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+    </style>
+
+    <div style="display: flex; justify-content: center; margin-top: 45px; ">
+        <img src="/images/GolfTop.png" alt="Banner 1" style="padding-left: 8px; padding-right: 8px; border-radius: 8px;">
+    </div>
+
+    <div class="container mt-5">
+     
+        
+        <% if (golfCourses && golfCourses.length > 0) { %>
+            <div class="row">
+                <% golfCourses.forEach((golf, index) => { %>
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card hotel-card h-100">
+                            <div class="card-img-container">
+                                <img src="/uploads/<%= golf.banner_image_id || '/images/default-golf.jpg' %>" class="card-img-top" alt="<%= golf.name || 'Golf' %>">
+                                <% 
+                                    let ribbonText;
+                                    let isSpecialDeal = false;
+                                    switch(index % 4) {
+                                        case 0:
+                                            ribbonText = 'Events';
+                                            break;
+                                        case 1:
+                                            ribbonText = 'Hot Deal';
+                                            isSpecialDeal = true;
+                                            break;
+                                        case 2:
+                                            ribbonText = 'Season';
+                                            break;
+                                        case 3:
+                                            ribbonText = 'Featured';
+                                            break;
+                                    }
+                                %>
+                                <div class="ribbon"><span class="ribbon-text"><%= ribbonText %></span></div>
+                                <% if (index % 5 === 0) { %>
+                                    <div class="md-choice-medal">
+                                        <span>MD<br>Choice</span>
+                                    </div>
+                                <% } %>
+                                <% if (isSpecialDeal) { %>
+                                    <div class="md-choice-counter" data-server-now="<%= Date.now() %>">
+                                        00:00:00 Left
+                                    </div>
+                                <% } %>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title"><%= golf.title || 'Unnamed Golf' %></h5>
+                                <% if (golf.content) { %>
+                                    <p class="card-text flex-grow-1"><%= golf.content.substring(0, 100) %>...</p>
+                                <% } else { %>
+                                    <p class="card-text flex-grow-1">no explains.</p>
+                                <% } %>
+                                <p class="card-text"><small class="text-muted"><%= golf.address || 'location not specified' %></small></p>
+                                <p class="card-text"><strong>THB <%= golf.price ? golf.price.toLocaleString() : 'N/A' %></strong></p>
+                                <a href="/golf/golf-courses/<%= golf._id %>" class="btn btn-primary mt-auto">See Details</a>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+
+            <!-- Pagination -->
+            <% if (typeof totalPages !== 'undefined' && totalPages > 1) { %>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <% 
+                            const pageRange = 5;
+                            let startPage = Math.max(currentPage - Math.floor(pageRange / 2), 1);
+                            let endPage = Math.min(startPage + pageRange - 1, totalPages);
+
+                            if (endPage - startPage + 1 < pageRange) {
+                                startPage = Math.max(endPage - pageRange + 1, 1);
+                            }
+                        %>
+
+                        <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+                            <a class="page-link" href="?page=1" aria-label="First">
+                                <span aria-hidden="true">&laquo;&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+                            <a class="page-link" href="?page=<%= currentPage - 1 %>" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+
+                        <% if (startPage > 1) { %>
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1">...</a>
+                            </li>
+                        <% } %>
+
+                        <% for(let i = startPage; i <= endPage; i++) { %>
+                            <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+                                <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                            </li>
+                        <% } %>
+
+                        <% if (endPage < totalPages) { %>
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1">...</a>
+                            </li>
+                        <% } %>
+
+                        <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+                            <a class="page-link" href="?page=<%= currentPage + 1 %>" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+                            <a class="page-link" href="?page=<%= totalPages %>" aria-label="Last">
+                                <span aria-hidden="true">&raquo;&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            <% } %>
+        <% } else { %>
+            <p>No registered golf course.</p>
+        <% } %>
+    </div>
+
+    <%- include('./partials/footer') %>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function updateCountdown() {
+            $('.md-choice-counter').each(function() {
+                var $this = $(this);
+                var serverNow = parseInt($this.data('server-now'));
+                var clientNow = Date.now();
+                var timeDiff = clientNow - serverNow;
+
+                var thailandTime = new Date(new Date().getTime() + timeDiff + (7 * 60 * 60 * 1000)); // UTC+7 for Thailand
+                var endOfDay = new Date(thailandTime);
+                endOfDay.setHours(23, 59, 59, 999);
+
+                var distance = endOfDay - thailandTime;
+
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                $this.html(
+                    "Time left: "+
+                    hours.toString().padStart(2, '0') + ": " + 
+                    minutes.toString().padStart(2, '0') + ": " + 
+                    seconds.toString().padStart(2, '0') + ""
+                );
+
+                if (distance < 0) {
+                    // Reset the timer
+                    $this.data('server-now', Date.now());
+                }
+            });
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown(); // Initial call to avoid delay
+    </script>
+</body>
+</html>

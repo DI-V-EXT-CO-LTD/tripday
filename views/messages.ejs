@@ -1,0 +1,64 @@
+<div class="container mt-4">
+  <h2 class="mb-4">Messages</h2>
+  <div id="messageList" class="chat-container">
+    <% if (messages && messages.length > 0) { %>
+      <% messages.forEach(function(message) { %>
+        <div class="message <%= message.isRead ? 'read' : 'unread' %>">
+          <div class="message-content"><%= message.content %></div>
+          <div class="message-time"><%= new Date(message.createdAt).toLocaleString() %></div>
+        </div>
+      <% }); %>
+    <% } else { %>
+      <p>No messages to display.</p>
+    <% } %>
+  </div>
+</div>
+
+<style>
+  .chat-container {
+    min-height: 200px; /* Set a minimum height */
+    max-height: none; /* Remove the max-height constraint */
+    overflow-y: visible; /* Change from auto to visible */
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  .message {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+  }
+  .message:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  }
+  .message.unread {
+    border-left: 4px solid #007bff;
+  }
+  .message.read {
+    opacity: 0.7;
+  }
+  .message-content {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    color: #333;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+  }
+  .message-time {
+    font-size: 0.9em;
+    color: #888;
+  }
+  .mark-as-read {
+    margin-top: 10px;
+  }
+  h2 {
+    color: #333;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+  }
+</style>

@@ -1,0 +1,128 @@
+<%- include('../partials/head') %>
+<link rel="stylesheet" href="/css/admin-invoices.css">
+
+<body>
+  <button id="menu-toggle" class="btn btn-primary">Menu</button>
+
+  <div class="container-fluid" style="width: 100%;">
+    <div class="row">
+     
+      <div id="content" style="width: 100%;">
+        <div class="table-responsive">
+          <table class="table table-striped table-sm" style="width: 100%;">
+            <thead>
+              <tr>
+                <th class="BookingCode-column" style="text-align: center;">Booking Code</th>
+                <th class="BookingCode-column" style="text-align: center;">user</th>
+                <th class="Total-column" style="text-align: center;">Total</th>
+                <th class="HotelName-column" style="text-align: center;">Hotel Name</th>
+                <th class="Transaction-column" style="text-align: center;">Transactions</th>
+                <th class="InvoiceNumber-column" style="text-align: center;">Invoice Number</th>
+                <th class="Actions-column" style="text-align: center;">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% invoices.forEach(invoice => { %>
+                <tr>
+                  <td class="BookingCode-column" style="text-align: center;"><%= invoice.bookingCode %></td>
+                  <td class="BookingCode-column" style="text-align: center;"><%= invoice.userId %></td>
+                  <td class="Total-column" style="text-align: center;"><%= invoice.total.toLocaleString() %></td>
+                  <td class="HotelName-column" style="text-align: center;"><%= invoice.hotelName %></td>
+                  <td class="Transaction-column" style="text-align: center;"><%= invoice.transactionNo %> / <%= invoice.totalTransactions %></td>
+                  <td class="InvoiceNumber-column" style="text-align: center;"><%= invoice.invoiceNumber %></td>
+                  <td class="Actions-column"  style="text-align: center;">
+                    <a href="/admin/invoices/<%= invoice._id %>" class="btn btn-sm btn-info" style="text-align: center;">View</a>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+
+        <%
+        let paginationTotalPages, paginationCurrentPage;
+        if (typeof invoiceTotalPages !== 'undefined' && typeof invoiceCurrentPage !== 'undefined') {
+          paginationTotalPages = invoiceTotalPages;
+          paginationCurrentPage = invoiceCurrentPage;
+        } else if (typeof totalPages !== 'undefined' && typeof currentPage !== 'undefined') {
+          paginationTotalPages = totalPages;
+          paginationCurrentPage = currentPage;
+        } else {
+          paginationTotalPages = 1;
+          paginationCurrentPage = 1;
+        }
+        %>
+
+        <% if (paginationTotalPages > 1) { %>
+          <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+              <% 
+                const maxVisiblePages = 9;
+                const halfMaxPages = Math.floor(maxVisiblePages / 2);
+                let startPage = Math.max(paginationCurrentPage - halfMaxPages, 1);
+                let endPage = Math.min(startPage + maxVisiblePages - 1, paginationTotalPages);
+
+                if (endPage - startPage + 1 < maxVisiblePages) {
+                  startPage = Math.max(endPage - maxVisiblePages + 1, 1);
+                }
+              %>
+
+              <% if (paginationCurrentPage > 1) { %>
+                <li class="page-item">
+                  <a class="page-link" href="/admin/invoices?page=<%= paginationCurrentPage - 1 %>">Previous</a>
+                </li>
+              <% } %>
+              
+              <% for(let i = startPage; i <= endPage; i++) { %>
+                <li class="page-item <%= i === paginationCurrentPage ? 'active' : '' %>">
+                  <a class="page-link" href="/admin/invoices?page=<%= i %>"><%= i %></a>
+                </li>
+              <% } %>
+              
+              <% if (paginationCurrentPage < paginationTotalPages) { %>
+                <li class="page-item">
+                  <a class="page-link" href="/admin/invoices?page=<%= paginationCurrentPage + 1 %>">Next</a>
+                </li>
+              <% } %>
+
+              <% if (endPage < paginationTotalPages) { %>
+                <li class="page-item">
+                  <a class="page-link" href="/admin/invoices?page=<%= endPage + 1 %>">...</a>
+                </li>
+              <% } %>
+            </ul>
+          </nav>
+        <% } %>
+      </div>
+      </main>
+    </div>
+  </div>
+
+  <%- include('../partials/dashboard-scripts') %>
+  <script>
+    // JavaScript to handle the resizing
+    const content = document.querySelector('.content');
+    let isResizing = false;
+    let lastDownX = 0;
+
+    content.addEventListener('mousedown', (e) => {
+      if (e.offsetX > content.offsetWidth - 11) {
+        isResizing = true;
+        lastDownX = e.clientX;
+      }
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!isResizing) return;
+      const width = content.offsetWidth - (lastDownX - e.clientX);
+      content.style.width = `${width}px`;
+      lastDownX = e.clientX;
+    });
+
+    document.addEventListener('mouseup', () => {
+      isResizing = false;
+    });
+  </script>
+
+</body>
+</html>

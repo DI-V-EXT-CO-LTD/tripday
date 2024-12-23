@@ -1,0 +1,157 @@
+/* public/styles/dbanner.css */
+.dbanner-wrapper {
+    width: 100%;
+    height: 348px;
+}
+
+.d-banner-image-wrap {
+    width: 100%;
+    height: 100%;
+}
+
+.dbanner-backgroundImageContainer {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center; /* 상하 중앙 정렬 */
+}
+
+.dbanner-backgroundImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    align-items: center;
+    display: flex;
+    z-index: -1;
+    border-radius: 8px;
+}
+
+.dbanner-contents-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    line-height: normal;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.l-content-round {
+    background-color: rgba(35, 70, 255, .48);
+    border-radius: 0 183px 183px 0;
+    height: 366px;
+    margin-left: -73px;
+    width: 183px;
+}
+
+.dbanner-l-content {
+    flex-grow: 1;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    width: 100px;
+}
+
+.dbanner-c-content {
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 70px 0;
+    overflow: hidden;
+    position: relative;
+    width: 800px;
+    margin: 36px;
+}
+
+.dbanner-c-content .title-row {
+    height: 48px;
+    display: flex;
+    align-items: left;
+    justify-content: left;
+    font-size: 30px;
+    font-weight: bold;
+    color: #fff; /* 텍스트 색상 */
+    width: 100%;
+    margin: 0;
+}
+
+.dbanner-c-content .slogan-row {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    font-size: 20px;
+    color: #fff; /* 텍스트 색상 */
+    width: 80%;
+    padding-left: 20px;
+    margin: 10px 0 0 0;
+    background-color: #2346FF;
+    border-radius: 32px;
+    height:46px;    
+}
+.slogan-row{
+    margin-top: 150px;
+}
+
+.slogan-item {
+    display: flex;
+    align-items: center;
+    margin: 0 10px;
+    gap: 10px;
+}
+
+.slogan-item i {
+    margin-left: 80px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.dbanner-c-content .image-description-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 162px;
+}
+.image-description-row{
+    text-align: center;
+}
+
+.image-description-row .description {
+    flex: 1;
+    font-size: 16px;
+    color: #fff; /* 텍스트 색상 */
+}
+
+.image-description-row .image {
+    flex: 1;
+    max-width: 200px;
+    margin-left: 20px;
+}
+  
+.dbanner-r-content {
+    display: flex;
+    flex-grow: 2.5;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%;
+    padding-top: 45px;
+}
+
+.r-content-img {
+    background-position: 0;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 9999px 0 0 9999px;
+    flex: 1 1;
+    height: 388px;
+    max-width: 854px;
+    min-width: 276px;
+    display: flex;
+    align-items: center;
+}
